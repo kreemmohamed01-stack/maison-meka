@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="i18n.js"></script>
+<title>Maison Meka</title>
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maison Meka">
+<meta property="og:title" content="Maison Meka">
+<meta property="og:description" content="A curated piece from the Maison Meka collection.">
+<meta property="og:image" content="https://maison-meka-lemon.vercel.app/assets/og-image.jpg">
+<meta property="og:url" content="https://maison-meka-lemon.vercel.app/product.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="A piece from the Maison Meka collection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Marcellus&family=Dancing+Script:wght@400;500;600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="shop.css">
+<link rel="stylesheet" href="product.css">
+<link rel="stylesheet" href="rtl.css">
+</head>
+<body class="shop-page prod-page">
+
+<!-- Instagram brand gradient, referenced by every .ig-real icon -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FEDA75"/>
+      <stop offset="25%"  stop-color="#FA7E1E"/>
+      <stop offset="50%"  stop-color="#D62976"/>
+      <stop offset="75%"  stop-color="#962FBF"/>
+      <stop offset="100%" stop-color="#4F5BD5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="index.html" class="logo">
+      <img src="assets/logo-white.webp" alt="Maison Meka" class="logo-img">
+    </a>
+
+    <div class="icon-group">
+      <a href="search.html" class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      </a>
+      <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+      </a>
+      <button class="icon-btn cart-btn" id="cartBtn" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+        <span class="cart-badge" style="display:none"></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ===== SLIDE-IN MENU ===== -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<nav class="side-menu" id="sideMenu">
+  <button class="menu-close" id="menuClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+  </button>
+
+  <!-- the house mark sits at the head of the drawer -->
+  <div class="sm-brand">
+    <img loading="lazy" decoding="async" src="assets/logo-original.webp" alt="Maison Meka" class="sm-logo">
+    <span class="orn orn-sm sm-orn"><i></i><b></b><i></i></span>
+  </div>
+
+  <div class="sm-scroll">
+    <ul class="sm-nav">
+      <li><a href="index.html">HOME</a></li>
+      <li><a href="category.html">SHOP</a></li>
+      <li><a href="wishlist.html">WISHLIST</a></li>
+      <!-- the fourth row opens the fourteen houses of the collection -->
+      <li class="sm-cats-row">
+        <button class="sm-heading" id="smCatsToggle" aria-expanded="false" aria-controls="smCats">
+          <span class="sm-heading-label">CATEGORIES</span>
+          <span class="sm-plus" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="sm-cats-fold" id="smCatsFold">
+    <ul class="sm-cats" id="smCats">
+      <li><a href="category.html?c=antiques">Antiques &amp; Vintage</a></li>
+      <li><a href="category.html?c=tableaux">Tableaux</a></li>
+      <li><a href="category.html?c=murano">Murano</a></li>
+      <li><a href="category.html?c=lampstands">Lamp Stands &amp; Lampdaire</a></li>
+      <li><a href="category.html?c=vases">Vases</a></li>
+      <li><a href="category.html?c=cachpots">Cachpots</a></li>
+      <li><a href="category.html?c=potiches">Potiches</a></li>
+      <li><a href="category.html?c=wallplates">Wall Plates</a></li>
+      <li><a href="category.html?c=bonboniera">Bonboniera</a></li>
+      <li><a href="category.html?c=jardiniere">Jardinière</a></li>
+      <li><a href="category.html?c=stands">Stands &amp; Stools</a></li>
+      <li><a href="category.html?c=candleholders">Candle Holders</a></li>
+      <li><a href="category.html?c=centerpieces">Center Pieces</a></li>
+      <li><a href="category.html?c=decor">Decor</a></li>
+    </ul>
+    </div>
+
+    <ul class="sm-nav sm-nav-minor">
+      <li><a href="about.html">ABOUT US</a></li>
+      <li><a href="index.html#contact">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <!-- foot: language, then the two houses we keep -->
+  <div class="sm-foot">
+    <button class="sm-lang" id="smLang" aria-label="Change language">
+      <span class="sm-lang-globe">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8c2.4 2.5 3.7 5.8 3.7 9.2s-1.3 6.7-3.7 9.2c-2.4-2.5-3.7-5.8-3.7-9.2S9.6 5.3 12 2.8z"/></svg>
+      </span>
+      <span class="sm-lang-opts" data-no-i18n>
+        <span class="sm-lang-opt is-on" data-lang="en">EN</span>
+        <span class="sm-lang-sep">/</span>
+        <span class="sm-lang-opt" data-lang="ar">عربي</span>
+      </span>
+    </button>
+
+    <div class="sm-social">
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg class="ig-real" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" fill="url(#igGrad)" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg class="fb-real" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z" fill="#1877F2" stroke="none"/><path d="M16.67 15.56l.53-3.49h-3.33V9.82c0-.96.47-1.89 1.96-1.89h1.51V4.96s-1.37-.24-2.68-.24c-2.74 0-4.53 1.67-4.53 4.69v2.66H7.08v3.49h3.05V24a12.1 12.1 0 003.74 0v-8.44z" fill="#fff" stroke="none"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="sm-credit">
+    <span>POWERED BY</span>
+    <a href="https://wa.me/201211179625" target="_blank" rel="noopener" class="credit-name">
+      <span class="cn-text">kreemaly</span>
+      <span class="cn-glow"></span>
+    </a>
+  </div>
+</nav>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag">
+
+  <header class="cd-head">
+    <div class="cd-title-row">
+      <h2 class="cd-title">YOUR BAG</h2>
+      <button class="cd-close" id="cartClose" aria-label="Close bag">
+        <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <span class="orn orn-sm cd-orn"><i></i><b></b><i></i></span>
+    <p class="cd-count"><span id="cdCount">0</span> pieces kept aside</p>
+  </header>
+
+  <div class="cd-items" id="cdItems"></div>
+
+  <div class="cd-empty" id="cdEmpty">
+    <span class="cd-empty-mark">
+      <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+    </span>
+    <h3>Your bag is empty</h3>
+    <p>Every piece begins with a first glance.</p>
+    <a href="search.html" class="cd-empty-cta">BROWSE THE COLLECTION</a>
+  </div>
+
+  <footer class="cd-foot" id="cdFoot">
+    <div class="cd-line">
+      <span>Subtotal</span>
+      <span id="cdSubtotal">EGP 0</span>
+    </div>
+    <div class="cd-line cd-line-soft">
+      <span>Shipping</span>
+      <span>Calculated at order</span>
+    </div>
+    <span class="cd-rule"></span>
+    <div class="cd-line cd-line-total">
+      <span>Total</span>
+      <span id="cdTotal">EGP 0</span>
+    </div>
+
+    <!-- orders are taken on Instagram, so the drawer hands you straight over -->
+    <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="cd-order" id="cdOrder">
+      <span class="cdo-sheen"></span>
+      <span class="cdo-ig">
+        <svg viewBox="0 0 24 24"><rect x="2.2" y="2.2" width="19.6" height="19.6" rx="5.6"/><circle cx="12" cy="12" r="4.6"/><circle cx="17.9" cy="6.1" r="1.3" fill="currentColor" stroke="none"/></svg>
+      </span>
+      <span class="cdo-label">ORDER FROM INSTAGRAM</span>
+      <span class="cdo-arrow">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+    </a>
+    <p class="cd-note">We complete every order personally, by direct message.</p>
+  </footer>
+
+</aside>
+
+<main class="pp">
+
+  <!-- ===== the piece: gallery + details ===== -->
+  <section class="pp-hero">
+    <nav class="pp-crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Home</a><i></i>
+      <a href="category.html">Shop</a><i></i>
+      <a href="category.html" id="pdCatLink">Category</a><i></i>
+      <span id="pdCrumbName"></span>
+    </nav>
+
+    <div class="pp-grid">
+      <div class="pp-gallery">
+        <div class="pp-thumbs" id="galThumbs"></div>
+        <div class="pp-stage" id="gal" aria-roledescription="carousel" aria-label="Product photos">
+          <div id="galSlides"></div>
+          <button class="pp-fav" id="pdFav" aria-label="Save to wishlist">
+            <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+          </button>
+          <span class="pp-zoom" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="15 3.5 20.5 3.5 20.5 9"/><polyline points="9 20.5 3.5 20.5 3.5 15"/><line x1="20.5" y1="3.5" x2="14" y2="10"/><line x1="3.5" y1="20.5" x2="10" y2="14"/></svg>
+          </span>
+          <div class="pp-dots" id="galDots"></div>
+        </div>
+      </div>
+
+      <div class="pp-info">
+        <span class="pp-badge" id="pdBadge"></span>
+        <h1 class="pp-title" id="pdTitle"></h1>
+        <p class="pp-stock" id="pdStock"><i></i><span>In Stock</span></p>
+        <p class="pp-price" id="pdPrice"></p>
+        <p class="pp-desc" id="pdDesc"></p>
+        <div class="pp-variants" id="ppVariants"></div>
+
+        <dl class="pp-specs">
+          <div><dt>Dimensions</dt><dd id="pdDims"></dd></div>
+          <div><dt>Material</dt><dd id="pdMat"></dd></div>
+        </dl>
+
+        <div class="pp-buy" id="pdBuy">
+          <div class="pp-qty">
+            <button id="qtyDown" aria-label="Fewer"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <output id="qtyN">1</output>
+            <button id="qtyUp" aria-label="More"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <button class="pp-add" id="pdAdd">
+            <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+            <span id="pdAddTx">Add to Cart</span>
+          </button>
+        </div>
+        <button class="pp-now" id="pdNow">Buy It Now</button>
+
+        <div class="pp-acc" id="acc">
+          <div class="pp-acc-row">
+            <button class="pp-acc-head" aria-expanded="false">Product Details<span class="pp-plus"><i></i><i></i></span></button>
+            <div class="pp-acc-fold"><div><div class="pp-acc-body" id="accDetails"></div></div></div>
+          </div>
+          <div class="pp-acc-row">
+            <button class="pp-acc-head" aria-expanded="false">Materials &amp; Care<span class="pp-plus"><i></i><i></i></span></button>
+            <div class="pp-acc-fold"><div><div class="pp-acc-body" id="accCare"></div></div></div>
+          </div>
+          <div class="pp-acc-row">
+            <button class="pp-acc-head" aria-expanded="false">Ordering &amp; Delivery<span class="pp-plus"><i></i><i></i></span></button>
+            <div class="pp-acc-fold"><div><div class="pp-acc-body">
+              <p>Add the piece to your bag and send your order to us on Instagram — we confirm availability, delivery and payment with you personally by direct message.</p>
+            </div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== four promises ===== -->
+  <section class="pp-feats">
+    <div class="pp-feat">
+      <span class="pp-ic" style="--tint:#dfe6d6;--tone:#4d6243"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19l8-8"/></svg></span>
+      <h3>Premium Materials</h3><p>Glass, porcelain and gilded metal, made to last.</p>
+    </div>
+    <div class="pp-feat">
+      <span class="pp-ic" style="--tint:#f1e7d3;--tone:#8a6a35"><svg viewBox="0 0 24 24"><path d="M12 2.5l1.8 6.2 6.2 1.8-6.2 1.8-1.8 6.2-1.8-6.2-6.2-1.8 6.2-1.8z"/></svg></span>
+      <h3>Timeless Design</h3><p>A piece that fits every interior style.</p>
+    </div>
+    <div class="pp-feat">
+      <span class="pp-ic" style="--tint:#dce6ee;--tone:#4b6a82"><svg viewBox="0 0 24 24"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg></span>
+      <h3>Versatile Use</h3><p>On a console, a shelf or a dining table.</p>
+    </div>
+    <div class="pp-feat">
+      <span class="pp-ic" style="--tint:#f4dcd6;--tone:#9a5546"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg></span>
+      <h3>Curated With Care</h3><p>Hand-picked by Maison Meka, one by one.</p>
+    </div>
+  </section>
+
+  <!-- ===== more to love ===== -->
+  <section class="pp-rel">
+    <div class="pp-rel-head">
+      <h2>You May Also Like</h2>
+      <span class="pp-rel-line"></span>
+      <a href="category.html" class="pp-viewall" id="relAll">View All <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+    </div>
+    <div class="pp-rel-row" id="relGrid"></div>
+  </section>
+
+</main>
+
+<!-- ===== the bar that follows you down the page on a phone ===== -->
+<div class="pp-bar" id="pdBar">
+  <img loading="lazy" decoding="async" id="barImg" src="" alt="">
+  <div class="pp-bar-tx"><b id="barName"></b><span id="barPrice"></span></div>
+  <button id="barAdd">
+    <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+    <span>Add to Cart</span>
+  </button>
+</div>
+
+<!-- ===== full-screen photo viewer ===== -->
+<div class="lb" id="lb" aria-hidden="true">
+  <button class="lb-close" id="lbClose" aria-label="Close"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+  <button class="lb-nav prev" id="lbPrev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></button>
+  <img loading="lazy" decoding="async" id="lbImg" src="" alt="">
+  <button class="lb-nav next" id="lbNext" aria-label="Next photo"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></button>
+  <span class="lb-count" id="lbCount"></span>
+</div>
+<footer class="site-footer">
+  <div class="foot-bg"><img loading="lazy" decoding="async" src="assets/footer-bg.webp" alt=""></div>
+
+  <div class="foot-top">
+    <div class="foot-brand">
+      <img loading="lazy" decoding="async" src="assets/logo-circle.webp" alt="Maison Meka" class="foot-logo fade-up" data-d="1">
+      <h3 class="foot-tagline fade-up" data-d="2">CURATED WITH SOUL,<br><em>MADE TO LAST.</em></h3>
+      <span class="orn orn-sm fade-up" data-d="3"><i></i><b></b><i></i></span>
+      <p class="foot-blurb fade-up" data-d="4">
+        Timeless pieces, thoughtfully designed<br>
+        to bring beauty, warmth, and harmony<br>
+        into your space.
+      </p>
+    </div>
+
+    <nav class="foot-col fade-up" data-d="2">
+      <h4>DISCOVER</h4>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="category.html">Shop</a>
+      <a href="index.html#collections">Collections</a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener">Custom Orders</a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener">Contact Us</a>
+    </nav>
+
+    <nav class="foot-col fade-up" data-d="3">
+      <h4>HELP &amp; INFO</h4>
+      <a href="faq.html">FAQs</a>
+      <a href="shipping.html">Shipping &amp; Delivery</a>
+      <a href="returns.html">Returns &amp; Exchanges</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </nav>
+
+  </div>
+
+  <div class="foot-bottom">
+
+    <div class="foot-mark fade-up" data-d="2">
+      <svg class="foot-tulip" viewBox="0 0 60 70"><path d="M30 8C22 8 16 16 16 26c0 10 6 18 14 26 8-8 14-16 14-26 0-10-6-18-14-18z"/><path d="M30 26v38"/></svg>
+      <p class="foot-script">Crafted for a life well lived</p>
+      <span class="orn orn-sm"><i></i><b></b><i></i></span>
+    </div>
+
+    <div class="foot-social fade-up" data-d="3">
+      <span class="fs-label">FOLLOW US</span>
+      <span class="fs-rule"></span>
+      <div class="fs-icons">
+        <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M14.1 21.9v-8.2h2.8l.4-3.2h-3.2V8.4c0-.9.3-1.6 1.6-1.6h1.7V4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2v2.4H8.1v3.2H11v8.2z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-credit">
+    <span>POWERED BY</span>
+    <a href="https://wa.me/201211179625" target="_blank" rel="noopener" class="credit-name">
+      <span class="cn-text">kreemaly</span>
+      <span class="cn-glow"></span>
+    </a>
+    <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+<script src="coupon-popup.js"></script>
+<script src="order-image.js"></script>
+<script src="script.js"></script>
+<script src="product.js"></script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="i18n.js"></script>
+<title>Search | Maison Meka</title>
+<meta name="description" content="Search the Maison Meka collection.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maison Meka">
+<meta property="og:title" content="Search | Maison Meka">
+<meta property="og:description" content="Search the Maison Meka collection.">
+<meta property="og:image" content="https://maison-meka-lemon.vercel.app/assets/og-image.jpg">
+<meta property="og:url" content="https://maison-meka-lemon.vercel.app/search.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Marcellus&family=Dancing+Script:wght@400;500;600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="search.css">
+<link rel="stylesheet" href="rtl.css">
+</head>
+<body class="search-page">
+
+<div class="sp-bg">
+  <img loading="lazy" decoding="async" src="assets/search-desktop.webp" alt="" class="bg-desktop">
+  <img loading="lazy" decoding="async" src="assets/search-mobile.webp"  alt="" class="bg-mobile">
+</div>
+
+<main class="sp-wrap">
+
+  <header class="sp-head">
+    <a href="index.html" class="sp-back sp-rise" aria-label="Back to home">
+      <svg viewBox="0 0 24 24"><line x1="20" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
+      <span>HOME</span>
+    </a>
+
+    <a href="wishlist.html" class="sp-wish sp-rise" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+      <span>WISHLIST</span>
+    </a>
+
+    <h1 class="sp-title sp-rise">SEARCH</h1>
+    <span class="orn orn-sm sp-orn sp-rise"><i></i><b></b><i></i></span>
+  </header>
+
+  <div class="sp-bar-row">
+    <form class="sp-search sp-rise" id="spForm" onsubmit="return false">
+      <span class="sp-mag">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="20.5" y1="20.5" x2="16" y2="16"/></svg>
+      </span>
+      <input type="search" id="spInput" placeholder="Search for products, categories, styles…" autocomplete="off">
+      <button class="sp-go" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="20.5" y1="20.5" x2="16" y2="16"/></svg>
+      </button>
+    </form>
+
+    <button class="sp-filters sp-rise" id="spFilters">
+      <span class="spf-ring">
+        <svg viewBox="0 0 24 24"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="9" cy="8" r="2.2"/><circle cx="15" cy="16" r="2.2"/></svg>
+      </span>
+      <span class="spf-label">Filters</span>
+    </button>
+  </div>
+
+  <div class="sp-meta sp-rise">
+    <p class="sp-count"><strong id="spCount">14</strong> Results Found</p>
+    <label class="sp-sort">
+      <span>Sort by</span>
+      <span class="sp-select">
+        <select id="spSort">
+          <option value="relevance">Relevance</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+          <option value="name">Name A–Z</option>
+        </select>
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
+    </label>
+  </div>
+
+  <div class="sp-grid" id="spGrid">
+
+    <article class="sp-card" data-price="18500" data-name="Floral Porcelain Vase">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/p-vase.webp" alt="Floral Porcelain Vase">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Floral Porcelain Vase</h3>
+        <p class="spc-meta">Hand-painted &nbsp;•&nbsp; H 42cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 18,500</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="24750" data-name="Brass Lampadaire">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/p-lamp.webp" alt="Brass Lampadaire">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Brass Lampadaire</h3>
+        <p class="spc-meta">Crystal &amp; Brass &nbsp;•&nbsp; H 68cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 24,750</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="7800" data-name="French Wall Plate">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/p-plate.webp" alt="French Wall Plate">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>French Wall Plate</h3>
+        <p class="spc-meta">Porcelain &nbsp;•&nbsp; Ø 32cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 7,800</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="16250" data-name="Ornate Jardinière">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/p-jardiniere.webp" alt="Ornate Jardinière">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Ornate Jardinière</h3>
+        <p class="spc-meta">Gilt Brass &nbsp;•&nbsp; W 38cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 16,250</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="22300" data-name="Bronze Candelabra">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/p-candelabra.webp" alt="Bronze Candelabra">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Bronze Candelabra</h3>
+        <p class="spc-meta">Five Arm &nbsp;•&nbsp; H 46cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 22,300</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="12400" data-name="Murano Glass Vase">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-murano.webp" alt="Murano Glass Vase">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Murano Glass Vase</h3>
+        <p class="spc-meta">Hand-blown &nbsp;•&nbsp; H 34cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 12,400</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="9600" data-name="Gilt Picture Frames">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-frames.webp" alt="Gilt Picture Frames">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Gilt Picture Frames</h3>
+        <p class="spc-meta">Set of Two &nbsp;•&nbsp; Baroque</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 9,600</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="14900" data-name="Antique Mantel Clock">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-antiques.webp" alt="Antique Mantel Clock">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Antique Mantel Clock</h3>
+        <p class="spc-meta">Gilt Bronze &nbsp;•&nbsp; H 40cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 14,900</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="11750" data-name="Blue Cachpot">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-cachpots.webp" alt="Blue Cachpot">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Blue Cachpot</h3>
+        <p class="spc-meta">Porcelain &nbsp;•&nbsp; Ø 28cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 11,750</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="19800" data-name="Golden Potiche">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-potiches.webp" alt="Golden Potiche">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Golden Potiche</h3>
+        <p class="spc-meta">With Lid &nbsp;•&nbsp; H 27cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 19,800</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="8450" data-name="Bonboniera Dish">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-bonboniera.webp" alt="Bonboniera Dish">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Bonboniera Dish</h3>
+        <p class="spc-meta">Lidded &nbsp;•&nbsp; Ø 24cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 8,450</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="27400" data-name="Carved Stool">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-stands.webp" alt="Carved Stool">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Carved Stool</h3>
+        <p class="spc-meta">Giltwood &nbsp;•&nbsp; H 48cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 27,400</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="21600" data-name="Centre Piece Bowl">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-centerpieces.webp" alt="Centre Piece Bowl">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Centre Piece Bowl</h3>
+        <p class="spc-meta">Footed &nbsp;•&nbsp; W 42cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 21,600</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sp-card" data-price="13300" data-name="Bronze Horse Décor">
+      <div class="spc-shot">
+        <img loading="lazy" decoding="async" src="assets/cat-decor.webp" alt="Bronze Horse Décor">
+        <button class="spc-fav" aria-label="Add to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+        </button>
+      </div>
+      <div class="spc-body">
+        <h3>Bronze Horse Décor</h3>
+        <p class="spc-meta">Sculpture &nbsp;•&nbsp; W 36cm</p>
+        <div class="spc-foot">
+          <span class="spc-price">EGP 13,300</span>
+          <button class="spc-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="sp-none" id="spNone">No pieces match that search — try another word.</p>
+
+  <footer class="sp-foot sp-rise">
+    <svg class="spf-leaf" viewBox="0 0 24 24"><path d="M21 4c0 9-5.5 14-11 14-2 0-4-1-4-1s2-9 9-11c-3 3-4.5 6-5 9"/><path d="M6 20c0-3 1-5 2-6.5"/></svg>
+    <span>EXPLORE MORE BEAUTIFUL PIECES</span>
+    <svg class="spf-leaf flip" viewBox="0 0 24 24"><path d="M21 4c0 9-5.5 14-11 14-2 0-4-1-4-1s2-9 9-11c-3 3-4.5 6-5 9"/><path d="M6 20c0-3 1-5 2-6.5"/></svg>
+  </footer>
+
+</main>
+
+<script src="products.js"></script>
+<script src="coupon-popup.js"></script>
+<script src="search.js"></script>
+</body>
+</html>

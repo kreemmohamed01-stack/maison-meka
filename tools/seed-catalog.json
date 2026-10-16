@@ -1,0 +1,343 @@
+{
+ "PREVIEW_FILL": true,
+ "CATEGORIES": [
+  {
+   "slug": "antiques",
+   "name": "Antiques & Vintage",
+   "img": "assets/cat-antiques.webp",
+   "desc": "Pieces with a past — clocks, garnitures and objects that carry the patina of another century."
+  },
+  {
+   "slug": "tableaux",
+   "name": "Tableaux",
+   "img": "assets/cat-frames.webp",
+   "desc": "Framed works and gilded mouldings that give a wall its quiet centre of gravity."
+  },
+  {
+   "slug": "murano",
+   "name": "Murano",
+   "img": "assets/cat-murano.webp",
+   "desc": "Hand-blown glass from the Venetian tradition — colour, light and movement held still."
+  },
+  {
+   "slug": "lampstands",
+   "name": "Lamp Stands & Lampdaire",
+   "img": "assets/cat-lampstands.webp",
+   "desc": "Brass, crystal and porcelain lamps that warm a room long after the sun has left it."
+  },
+  {
+   "slug": "vases",
+   "name": "Vases",
+   "img": "assets/cat-vases.webp",
+   "desc": "Sculptural vases chosen to bring natural beauty and timeless elegance into your home."
+  },
+  {
+   "slug": "cachpots",
+   "name": "Cachpots",
+   "img": "assets/cat-cachpots.webp",
+   "desc": "Painted porcelain planters that turn a single stem into a still life."
+  },
+  {
+   "slug": "potiches",
+   "name": "Potiches",
+   "img": "assets/cat-potiches.webp",
+   "desc": "Lidded ginger jars and potiches — the classic silhouette, in gold and in porcelain."
+  },
+  {
+   "slug": "wallplates",
+   "name": "Wall Plates",
+   "img": "assets/cat-wallplates.webp",
+   "desc": "Decorative plates to hang in pairs, in rows, or alone as a single painted moon."
+  },
+  {
+   "slug": "bonboniera",
+   "name": "Bonboniera",
+   "img": "assets/cat-bonboniera.webp",
+   "desc": "Lidded bonbonnières for the coffee table — a small ceremony every time they open."
+  },
+  {
+   "slug": "jardiniere",
+   "name": "Jardinière",
+   "img": "assets/cat-jardinere.webp",
+   "desc": "Footed jardinières with gilded handles, made to hold flowers, fruit or nothing at all."
+  },
+  {
+   "slug": "stands",
+   "name": "Stands & Stools",
+   "img": "assets/cat-stands.webp",
+   "desc": "Carved stands and upholstered stools that lift a piece — or a guest — just so."
+  },
+  {
+   "slug": "candleholders",
+   "name": "Candle Holders",
+   "img": "assets/cat-candleholders.webp",
+   "desc": "Candlesticks and candelabra in brass and bronze, for evenings that deserve the light."
+  },
+  {
+   "slug": "centerpieces",
+   "name": "Center Pieces",
+   "img": "assets/cat-centerpieces.webp",
+   "desc": "The piece the table is laid around — footed bowls and porcelain on gilded bases."
+  },
+  {
+   "slug": "decor",
+   "name": "Decor",
+   "img": "assets/cat-decor.webp",
+   "desc": "Sculpture, figures and objets that finish a shelf, a console or a corner."
+  }
+ ],
+ "ALL_CATEGORY": {
+  "slug": "all",
+  "name": "The Collection",
+  "img": "assets/cat-potiches.webp",
+  "desc": "Every piece in the house — curated with soul, chosen to last, and waiting for its room."
+ },
+ "PRODUCTS": [
+  {
+   "id": "murano-owls",
+   "name": "Murano Glass Owls",
+   "cats": [
+    "murano",
+    "decor"
+   ],
+   "price": 6800,
+   "badge": "New",
+   "material": "Glass",
+   "stock": true,
+   "added": 10,
+   "dims": "Set of two",
+   "imgs": [
+    "assets/products/murano-owls-2.webp",
+    "assets/products/murano-owls-3.webp",
+    "assets/products/murano-owls-1.webp"
+   ],
+   "desc": "A pair of hand-blown glass owls in amber, ink and speckled white. Each is shaped and coloured by hand, so no two carry exactly the same markings.",
+   "details": [
+    "Set of two hand-blown glass figures",
+    "Amber, black and speckled-white glass",
+    "Each piece is individually made and unique"
+   ],
+   "care": "Dust with a soft dry cloth. Wipe with a slightly damp cloth if needed and dry at once. Keep away from sharp changes in temperature."
+  },
+  {
+   "id": "golden-potiches",
+   "name": "Golden Lattice Potiches",
+   "cats": [
+    "potiches",
+    "vases"
+   ],
+   "price": 9400,
+   "badge": "Bestseller",
+   "material": "Ceramic",
+   "stock": true,
+   "low": true,
+   "added": 9,
+   "dims": "H 27 cm",
+   "imgs": [
+    "assets/products/golden-potiches-2.webp",
+    "assets/products/golden-potiches-3.webp",
+    "assets/products/golden-potiches-1.webp"
+   ],
+   "desc": "A pair of pierced ceramic potiches glazed in mirror gold, with lids. The open lattice throws a scatter of light across the surface they stand on.",
+   "details": [
+    "Set of two potiches with lids",
+    "Pierced lattice body, gold glaze",
+    "Height 27 cm"
+   ],
+   "care": "Dust with a soft brush to reach inside the lattice. Avoid abrasive cloths and cleaners, which can dull the gold glaze."
+  },
+  {
+   "id": "heritage-frames",
+   "name": "Heritage Jewellery Frames",
+   "cats": [
+    "tableaux",
+    "decor"
+   ],
+   "price": 7200,
+   "badge": "",
+   "material": "Wood",
+   "stock": true,
+   "added": 8,
+   "dims": "Set of two frames",
+   "imgs": [
+    "assets/products/heritage-frames-2.webp",
+    "assets/products/heritage-frames-3.webp",
+    "assets/products/heritage-frames-1.webp"
+   ],
+   "desc": "Traditional silver jewellery mounted on black and set in deep champagne-silver frames — two heirloom pieces presented as art.",
+   "details": [
+    "Set of two shadow-box frames",
+    "Champagne-silver moulded frames",
+    "Mounted traditional silver jewellery"
+   ],
+   "care": "Dust the frame with a dry cloth. Clean the glass with a cloth lightly sprayed with glass cleaner — never spray onto the frame directly."
+  },
+  {
+   "id": "gilded-fish",
+   "name": "Gilded Fish Sculptures",
+   "cats": [
+    "decor",
+    "stands"
+   ],
+   "price": 8600,
+   "badge": "New",
+   "material": "Metal",
+   "stock": true,
+   "added": 7,
+   "dims": "H 33 × W 23 cm · H 28 × W 20 cm",
+   "imgs": [
+    "assets/products/gilded-fish-2.webp",
+    "assets/products/gilded-fish-3.webp",
+    "assets/products/gilded-fish-1.webp"
+   ],
+   "desc": "Two antique-gold fish, worked all over in raised spirals, each poised on a slim rod above a black base. Sold as a pair in two sizes.",
+   "details": [
+    "Set of two sculptures on stands",
+    "Large: H 33 × W 23 cm",
+    "Small: H 28 × W 20 cm"
+   ],
+   "care": "Dust with a soft dry brush. Do not use water or metal polish on the gilded finish."
+  },
+  {
+   "id": "blue-porcelain-set",
+   "name": "Blue Floral Porcelain Set",
+   "cats": [
+    "centerpieces",
+    "vases"
+   ],
+   "price": 14500,
+   "badge": "",
+   "material": "Porcelain",
+   "stock": true,
+   "added": 6,
+   "dims": "Vase & footed bowl",
+   "imgs": [
+    "assets/products/blue-porcelain-set-2.webp",
+    "assets/products/blue-porcelain-set-3.webp",
+    "assets/products/blue-porcelain-set-1.webp"
+   ],
+   "desc": "A blue-and-white floral vase and a scalloped footed bowl, both mounted on ornate antique-bronze bases. Made to be shown together on a console or dining table.",
+   "details": [
+    "Vase and footed centre bowl",
+    "Hand-decorated blue floral porcelain",
+    "Antique-bronze ornamental bases"
+   ],
+   "care": "Wipe the porcelain with a damp cloth. Keep the bronze mounts dry and dust them with a soft brush."
+  },
+  {
+   "id": "floral-porcelain-vase",
+   "name": "Floral Porcelain Vase",
+   "cats": [
+    "vases"
+   ],
+   "price": 18500,
+   "badge": "Bestseller",
+   "material": "Porcelain",
+   "stock": true,
+   "added": 5,
+   "dims": "H 42 cm",
+   "imgs": [
+    "assets/cat-vases.webp"
+   ],
+   "desc": "A hand-painted porcelain ewer-vase in blue and amber florals, with a gently flared lip and a sculpted handle.",
+   "details": [
+    "Hand-painted porcelain",
+    "Height 42 cm"
+   ],
+   "care": "Wipe with a damp cloth. Not suitable for the dishwasher."
+  },
+  {
+   "id": "brass-lampadaire",
+   "name": "Brass Lampadaire",
+   "cats": [
+    "lampstands"
+   ],
+   "price": 24750,
+   "badge": "Bestseller",
+   "material": "Metal",
+   "stock": true,
+   "added": 4,
+   "dims": "H 168 cm",
+   "imgs": [
+    "assets/cat-lampstands.webp"
+   ],
+   "desc": "A turned brass lamp with a pleated cream shade — a warm, steady light for a reading corner or a console.",
+   "details": [
+    "Aged brass column",
+    "Pleated fabric shade",
+    "Height 168 cm"
+   ],
+   "care": "Dust the brass with a dry cloth. Unplug before cleaning."
+  },
+  {
+   "id": "french-wall-plate",
+   "name": "French Wall Plate",
+   "cats": [
+    "wallplates"
+   ],
+   "price": 7800,
+   "badge": "",
+   "material": "Porcelain",
+   "stock": true,
+   "added": 3,
+   "dims": "Ø 32 cm",
+   "imgs": [
+    "assets/cat-wallplates.webp"
+   ],
+   "desc": "A decorative porcelain plate in the French manner, painted with a ring of blue and gold florals.",
+   "details": [
+    "Painted porcelain",
+    "Diameter 32 cm",
+    "Ready to hang or display on a stand"
+   ],
+   "care": "Wipe with a soft damp cloth. Decorative use only."
+  },
+  {
+   "id": "ornate-jardiniere",
+   "name": "Ornate Jardinière",
+   "cats": [
+    "jardiniere",
+    "centerpieces"
+   ],
+   "price": 16250,
+   "badge": "",
+   "material": "Porcelain",
+   "stock": false,
+   "added": 2,
+   "dims": "W 38 cm",
+   "imgs": [
+    "assets/cat-jardinere.webp"
+   ],
+   "desc": "A painted porcelain jardinière with twin gilded handles — for flowers, fruit, or to stand empty as a sculpture.",
+   "details": [
+    "Painted porcelain bowl",
+    "Gilded handles",
+    "Width 38 cm"
+   ],
+   "care": "Wipe with a damp cloth. Use a liner when planting directly."
+  },
+  {
+   "id": "bronze-candelabra",
+   "name": "Bronze Candelabra",
+   "cats": [
+    "candleholders"
+   ],
+   "price": 22300,
+   "badge": "",
+   "material": "Metal",
+   "stock": true,
+   "added": 1,
+   "dims": "H 34 cm",
+   "imgs": [
+    "assets/cat-candleholders.webp"
+   ],
+   "desc": "A pair of turned candlesticks in warm bronze, tall enough to lift the flame above the table.",
+   "details": [
+    "Set of two",
+    "Cast bronze",
+    "Height 34 cm"
+   ],
+   "care": "Remove wax once cool with a soft cloth. Dust with a dry cloth."
+  }
+ ]
+}

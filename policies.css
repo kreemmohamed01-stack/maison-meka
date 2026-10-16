@@ -1,0 +1,158 @@
+/* ===================== Maison Meka — policy pages ===================== */
+/* Returns, shipping, FAQs, terms and privacy. Light and quiet, in the same
+   palette as the category page. Sits on top of style.css and shop.css. */
+
+.policy-page{
+  --pl-beige:#f4ede2;
+  --pl-sky:  #e3eef9;
+  --pl-blue: #2f5d9a;
+  --pl-navy: #1d2b4a;
+  --pl-red:  #b4443a;
+  --pl-line: rgba(29,43,74,.12);
+  background:#fff;
+  color:var(--pl-navy);
+}
+
+/* ---------- hero ---------- */
+.pl-hero{
+  background:linear-gradient(120deg, var(--pl-beige) 0%, #fff 55%, var(--pl-sky) 100%);
+  border-bottom:1px solid var(--pl-line);
+}
+.pl-hero-in{
+  max-width:1100px; margin:0 auto;
+  padding:calc(var(--hdr) + clamp(26px,4vw,56px)) var(--gutter) clamp(30px,4vw,52px);
+}
+.pl-crumbs{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:12px; color:rgba(29,43,74,.6); }
+.pl-crumbs a:hover{ color:var(--pl-blue); }
+.pl-crumbs i{ width:4px; height:4px; border-right:1px solid currentColor; border-top:1px solid currentColor; transform:rotate(45deg); }
+.pl-crumbs span{ color:var(--pl-navy); }
+.pl-kicker{ margin-top:18px; font-size:11px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:var(--pl-blue); }
+.pl-title{ font-family:var(--font-serif); font-weight:500; font-size:clamp(38px,5vw,64px); line-height:1.05; margin-top:8px; }
+.pl-intro{ max-width:620px; margin-top:14px; font-size:15px; line-height:1.75; color:rgba(29,43,74,.75); }
+.pl-updated{ margin-top:16px; font-size:12px; color:rgba(29,43,74,.55); }
+
+/* ---------- body: the policy list beside the article ---------- */
+.pl-body{
+  max-width:1100px; margin:0 auto;
+  padding:clamp(30px,4vw,56px) var(--gutter) clamp(56px,6vw,90px);
+  display:grid; grid-template-columns:220px minmax(0,1fr);
+  gap:clamp(24px,4vw,64px); align-items:start;
+}
+.pl-nav{ position:sticky; top:calc(var(--hdr) + 24px); }
+.pl-nav h2{ font-size:11px; font-weight:500; letter-spacing:2.4px; text-transform:uppercase; color:rgba(29,43,74,.55); margin-bottom:12px; }
+.pl-nav ul{ list-style:none; display:flex; flex-direction:column; gap:4px; }
+.pl-nav a{
+  display:block; padding:10px 14px; border-radius:8px;
+  font-size:14px; color:rgba(29,43,74,.8);
+  transition:background .25s, color .25s;
+}
+.pl-nav a:hover{ background:var(--pl-sky); color:var(--pl-blue); }
+.pl-nav a.on{ background:var(--pl-navy); color:#fff; }
+
+/* ---------- article ---------- */
+.pl-article{ max-width:720px; font-size:15px; line-height:1.8; color:rgba(29,43,74,.82); }
+.pl-article h2{
+  font-family:var(--font-serif); font-weight:500;
+  font-size:clamp(24px,2.4vw,30px); line-height:1.2; color:var(--pl-navy);
+  margin:40px 0 12px; scroll-margin-top:calc(var(--hdr) + 20px);
+}
+.pl-article h2:first-child{ margin-top:0; }
+.pl-article h3{ font-size:15.5px; font-weight:600; color:var(--pl-navy); margin:22px 0 6px; }
+.pl-article p + p{ margin-top:12px; }
+.pl-article ul, .pl-article ol{ margin:10px 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
+.pl-article li{ position:relative; padding-left:22px; }
+.pl-article ul li::before{ content:''; position:absolute; left:4px; top:.72em; width:6px; height:6px; border-radius:50%; background:var(--pl-blue); }
+.pl-article ol{ counter-reset:step; }
+.pl-article ol li{ counter-increment:step; padding-left:34px; }
+.pl-article ol li::before{
+  content:counter(step); position:absolute; left:0; top:.15em;
+  width:24px; height:24px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--pl-sky); color:var(--pl-blue); font-size:12px; font-weight:600;
+}
+.pl-article strong{ font-weight:600; color:var(--pl-navy); }
+.pl-article a{ color:var(--pl-blue); text-decoration:underline; text-underline-offset:3px; }
+
+/* the one rule that matters most, set apart */
+.pl-key{
+  display:flex; gap:16px; align-items:flex-start;
+  margin:0 0 30px; padding:20px 22px;
+  border-radius:12px;
+  background:#fbeeec; border:1px solid rgba(180,68,58,.25);
+}
+.pl-key-ic{
+  flex:none; width:42px; height:42px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--pl-red); color:#fff;
+}
+.pl-key-ic svg{ width:20px; height:20px; stroke-width:2; }
+.pl-key h3{ margin:0 0 4px; font-size:16px; color:var(--pl-red); }
+.pl-key p{ font-size:14.5px; line-height:1.7; color:var(--pl-navy); }
+
+/* a gentle note */
+.pl-note{
+  margin-top:20px; padding:16px 18px; border-radius:10px;
+  background:var(--pl-sky); color:var(--pl-navy); font-size:14px; line-height:1.7;
+}
+
+/* two-column "can / can't" comparison */
+.pl-split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+.pl-split > div{ padding:18px; border-radius:10px; border:1px solid var(--pl-line); }
+.pl-split h3{ margin:0 0 8px; display:flex; align-items:center; gap:8px; }
+.pl-split h3 svg{ width:18px; height:18px; stroke-width:2.2; }
+.pl-yes h3{ color:#3f7a4a; } .pl-no h3{ color:var(--pl-red); }
+.pl-split ul{ margin:0; }
+.pl-yes li::before{ background:#3f7a4a !important; }
+.pl-no li::before{ background:var(--pl-red) !important; }
+
+/* FAQ */
+.pl-faq{ border:1px solid var(--pl-line); border-radius:10px; overflow:hidden; margin-top:12px; }
+.pl-faq details + details{ border-top:1px solid var(--pl-line); }
+.pl-faq summary{
+  list-style:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:17px 20px; font-size:15px; font-weight:500; color:var(--pl-navy);
+}
+.pl-faq summary::-webkit-details-marker{ display:none; }
+.pl-faq summary::after{ content:'+'; font-size:22px; font-weight:300; line-height:1; color:var(--pl-blue); transition:transform .3s; }
+.pl-faq details[open] summary::after{ transform:rotate(45deg); }
+.pl-faq details > div{ padding:0 20px 18px; font-size:14.5px; }
+
+/* contact card at the foot of every policy */
+.pl-contact{
+  margin-top:44px; padding:24px;
+  border-radius:14px; color:#fff;
+  background:linear-gradient(135deg, var(--pl-navy) 0%, #2a4170 100%);
+  display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+}
+.pl-contact h3{ margin:0; font-family:var(--font-serif); font-size:22px; font-weight:500; color:#fff; }
+.pl-contact p{ margin-top:4px; font-size:13.5px; color:rgba(255,255,255,.8); }
+.pl-contact a{
+  display:inline-flex; align-items:center; gap:10px;
+  height:46px; padding:0 22px; border-radius:999px;
+  background:#fff; color:var(--pl-navy); text-decoration:none;
+  font-size:13.5px; font-weight:500;
+}
+.pl-contact a svg{ width:18px; height:18px; }
+
+/* ---------- phones ---------- */
+@media (max-width:900px){
+  .pl-body{ grid-template-columns:minmax(0,1fr); gap:22px; }
+  .pl-nav{ min-width:0; }
+  .pl-nav{ position:static; }
+  .pl-nav h2{ display:none; }
+  .pl-nav ul{ flex-direction:row; gap:6px; overflow-x:auto; scrollbar-width:none; margin:0 calc(var(--gutter) * -1); padding:0 var(--gutter); }
+  .pl-nav ul::-webkit-scrollbar{ display:none; }
+  .pl-nav a{ white-space:nowrap; background:var(--pl-beige); border-radius:999px; padding:9px 16px; font-size:13px; }
+}
+@media (max-width:640px){
+  .pl-hero-in{ padding-top:calc(var(--hdr) + 22px); }
+  .pl-title{ font-size:clamp(32px,9.5vw,42px); }
+  .pl-intro{ font-size:14px; }
+  .pl-article{ font-size:14.5px; }
+  .pl-key{ padding:16px; gap:12px; }
+  .pl-key-ic{ width:36px; height:36px; }
+  .pl-split{ grid-template-columns:1fr; }
+  .pl-contact{ padding:20px; }
+  .pl-contact a{ width:100%; justify-content:center; }
+}

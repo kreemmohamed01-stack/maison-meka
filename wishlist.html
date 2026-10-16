@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="i18n.js"></script>
+<title>Wishlist | Maison Meka</title>
+<meta name="description" content="Your saved pieces at Maison Meka.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maison Meka">
+<meta property="og:title" content="Wishlist | Maison Meka">
+<meta property="og:description" content="Your saved pieces at Maison Meka.">
+<meta property="og:image" content="https://maison-meka-lemon.vercel.app/assets/og-image.jpg">
+<meta property="og:url" content="https://maison-meka-lemon.vercel.app/wishlist.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Marcellus&family=Dancing+Script:wght@400;500;600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="wishlist.css">
+<link rel="stylesheet" href="rtl.css">
+</head>
+<body class="wl-page">
+
+<div class="wl-bg">
+  <img loading="lazy" decoding="async" src="assets/search-desktop.webp" alt="" class="bg-desktop">
+  <img loading="lazy" decoding="async" src="assets/search-mobile.webp"  alt="" class="bg-mobile">
+</div>
+
+<main class="wl-wrap">
+
+  <header class="wl-head">
+    <a href="index.html" class="wl-back wl-rise" aria-label="Back to home">
+      <svg viewBox="0 0 24 24"><line x1="20" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
+      <span>HOME</span>
+    </a>
+
+    <p class="wl-eyebrow wl-rise">KEPT ASIDE</p>
+    <h1 class="wl-title wl-rise">WISHLIST</h1>
+    <span class="orn orn-sm wl-orn wl-rise"><i></i><b></b><i></i></span>
+    <p class="wl-sub wl-rise">The pieces you have set your heart on, waiting quietly for their room.</p>
+  </header>
+
+  <!-- ===== the standing ledger: count, total, actions ===== -->
+  <section class="wl-ledger wl-rise" id="wlLedger">
+    <div class="wl-led-block">
+      <span class="wl-led-num" id="wlCount">0</span>
+      <span class="wl-led-label">Pieces Saved</span>
+    </div>
+    <span class="wl-led-div"></span>
+    <div class="wl-led-block">
+      <span class="wl-led-num" id="wlTotal">EGP 0</span>
+      <span class="wl-led-label">Collection Value</span>
+    </div>
+    <span class="wl-led-div"></span>
+    <div class="wl-led-actions">
+      <button class="wl-btn wl-btn-solid" id="wlAddAll">
+        <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+        <span>MOVE ALL TO CART</span>
+      </button>
+      <button class="wl-btn wl-btn-ghost" id="wlClear">
+        <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        <span>CLEAR</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== the saved pieces ===== -->
+  <div class="wl-grid" id="wlGrid"></div>
+
+  <!-- ===== nothing saved yet ===== -->
+  <section class="wl-empty" id="wlEmpty">
+    <span class="wl-empty-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+    </span>
+    <h2>Nothing kept aside yet</h2>
+    <p>Wander the collection and tap the heart on anything that stops you.</p>
+    <a href="search.html" class="wl-btn wl-btn-solid wl-empty-cta">
+      <span>BROWSE THE COLLECTION</span>
+      <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+    </a>
+  </section>
+
+  <footer class="wl-foot">
+    <svg class="wlf-leaf" viewBox="0 0 24 24"><path d="M12 21c0-6 3-11 9-13-1 7-4 11-9 13z"/><path d="M12 21C12 15 9 10 3 8c1 7 4 11 9 13z"/></svg>
+    <span>MAISON MEKA</span>
+    <svg class="wlf-leaf flip" viewBox="0 0 24 24"><path d="M12 21c0-6 3-11 9-13-1 7-4 11-9 13z"/><path d="M12 21C12 15 9 10 3 8c1 7 4 11 9 13z"/></svg>
+  </footer>
+
+</main>
+
+<!-- a small note slides up when something is moved or removed -->
+<div class="wl-toast" id="wlToast"><span id="wlToastText"></span></div>
+
+<script src="wishlist.js"></script>
+</body>
+</html>

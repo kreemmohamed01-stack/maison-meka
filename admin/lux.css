@@ -1,0 +1,202 @@
+/* ===================== Maison Meka — dashboard, in depth ===================== */
+/* A finishing layer over admin.css: depth, light and motion only. Nothing here
+   changes a size, a position or a layout — every rule adds shadows, gradients,
+   transitions or transforms on hover/entrance. lux.js adds the 3D tilt and the
+   entrances. Turned off entirely for people who ask for less motion. */
+
+:root{
+  --lux-gold: #c9a45c;
+  --lux-gold-t: rgba(201,164,92,.28);
+  --lux-ease: cubic-bezier(.2,.8,.2,1);
+  --lux-spring: cubic-bezier(.34,1.56,.64,1);
+  --lux-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 1px 2px rgba(42,40,35,.04),
+    0 8px 22px -6px rgba(42,40,35,.10),
+    0 22px 44px -18px rgba(42,40,35,.14);
+  --lux-shadow-hi:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 2px 4px rgba(42,40,35,.05),
+    0 18px 36px -10px rgba(42,40,35,.18),
+    0 40px 70px -28px rgba(61,90,53,.22);
+}
+
+/* ---------- a slow, warm light behind everything ---------- */
+body::before{
+  content:''; position:fixed; inset:-20vmax; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(38vmax 38vmax at 12% 18%, rgba(201,164,92,.13), transparent 60%),
+    radial-gradient(42vmax 42vmax at 88% 12%, rgba(61,90,53,.09), transparent 62%),
+    radial-gradient(46vmax 46vmax at 70% 92%, rgba(192,83,63,.06), transparent 60%);
+  animation:luxDrift 28s ease-in-out infinite alternate;
+}
+@keyframes luxDrift{
+  0%{ transform:translate3d(0,0,0) rotate(0deg); }
+  100%{ transform:translate3d(-3vmax,2vmax,0) rotate(6deg); }
+}
+
+/* ---------- surfaces ---------- */
+.card, .list, .login-card{
+  box-shadow:var(--lux-shadow);
+  transition:box-shadow .45s var(--lux-ease), transform .45s var(--lux-ease), border-color .3s;
+}
+.card:hover, .list:hover{ box-shadow:var(--lux-shadow-hi); border-color:#e0d7c6; }
+.card h2, .card h3, .ph h1, .hello h1{ text-shadow:0 1px 0 rgba(255,255,255,.9); }
+
+/* the tilted card (lux.js): leans toward the pointer and rises */
+.lux-tilt{
+  transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translate3d(0,var(--ty,0px),0);
+  transition:transform .28s var(--lux-ease), box-shadow .45s var(--lux-ease);
+  will-change:transform; position:relative; z-index:2;
+}
+.lux-tilt.lux-on{ box-shadow:var(--lux-shadow-hi); }
+/* a soft sheen that follows the pointer */
+.lux-glare{
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:3;
+  background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,.38), transparent 45%);
+  opacity:0; transition:opacity .35s;
+  mix-blend-mode:soft-light;
+}
+.lux-tilt.lux-on > .lux-glare{ opacity:1; }
+
+/* ---------- KPI tiles ---------- */
+.kpi{
+  box-shadow:0 1px 0 rgba(255,255,255,.75) inset, 0 10px 26px -12px rgba(42,40,35,.18);
+  background-image:linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
+}
+.kpi .ic{
+  box-shadow:0 6px 14px -4px rgba(42,40,35,.18), 0 1px 0 #fff inset;
+  animation:luxFloat 5.5s ease-in-out infinite;
+}
+.kpis > .kpi:nth-child(2) .ic{ animation-delay:-1.8s; }
+.kpis > .kpi:nth-child(3) .ic{ animation-delay:-3.6s; }
+@keyframes luxFloat{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(-5px) rotate(-4deg); } }
+.kpi b{ text-shadow:0 1px 0 rgba(255,255,255,.7); }
+
+/* ---------- buttons ---------- */
+.btn{
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 1px 2px rgba(42,40,35,.06), 0 4px 10px -4px rgba(42,40,35,.12);
+  transition:background .2s, border-color .2s, color .2s, transform .25s var(--lux-spring), box-shadow .3s var(--lux-ease);
+}
+.btn:hover{ transform:translateY(-2px); box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 10px 20px -8px rgba(42,40,35,.25); }
+.btn:active{ transform:translateY(1px) scale(.98); transition-duration:.08s; }
+.btn-green, .btn-green:hover{
+  background-image:linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.28) 50%, rgba(255,255,255,0) 65%),
+                   linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.08));
+  background-size:260% 100%, 100% 100%;
+  background-position:120% 0, 0 0;
+  background-repeat:no-repeat;
+  box-shadow:0 1px 0 rgba(255,255,255,.25) inset, 0 8px 18px -8px rgba(61,90,53,.65);
+  transition:background-position .9s var(--lux-ease), transform .25s var(--lux-spring), box-shadow .3s var(--lux-ease), background-color .2s;
+}
+.btn-green:hover{ background-position:-20% 0, 0 0; box-shadow:0 1px 0 rgba(255,255,255,.25) inset, 0 14px 26px -10px rgba(61,90,53,.75); }
+.btn-solid-red{ box-shadow:0 8px 18px -8px rgba(192,83,63,.6); }
+.icon-btn, .bell{ transition:background .2s, color .2s, transform .3s var(--lux-spring); }
+.icon-btn:hover, .bell:hover{ transform:translateY(-2px) scale(1.06); }
+.bell-dot{ box-shadow:0 0 0 2px var(--bg), 0 4px 10px rgba(192,83,63,.5); animation:luxPulse 2.4s ease-in-out infinite; }
+@keyframes luxPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.15); } }
+
+/* ---------- side menu ---------- */
+.side{ box-shadow:1px 0 0 rgba(255,255,255,.7) inset, 10px 0 40px -24px rgba(42,40,35,.25); }
+.nav-a, .side-link{ transition:background .25s, color .25s, transform .3s var(--lux-spring), box-shadow .3s; }
+.nav-a svg, .side-link svg{ transition:transform .4s var(--lux-spring); }
+.nav-a:hover, .side-link:hover{ transform:translateX(3px); }
+.nav-a:hover svg, .side-link:hover svg{ transform:scale(1.14) rotate(-6deg); }
+.nav-a.on{
+  background-image:linear-gradient(135deg, #eef3e7, #dfe8d3);
+  box-shadow:0 1px 0 #fff inset, 0 8px 18px -10px rgba(61,90,53,.55);
+}
+.nav-a.on svg{ filter:drop-shadow(0 2px 3px rgba(61,90,53,.35)); }
+.nav-a .nav-n{ box-shadow:0 4px 10px -2px rgba(192,83,63,.6); }
+
+/* ---------- top bar ---------- */
+.top{ box-shadow:0 10px 30px -22px rgba(42,40,35,.35); }
+.avatar{ box-shadow:0 6px 14px -6px rgba(42,40,35,.35), 0 0 0 3px rgba(255,255,255,.7); transition:transform .4s var(--lux-spring); }
+.avatar:hover{ transform:rotate(-8deg) scale(1.08); }
+.bell-pop:not([hidden]){ transform-origin:top right; animation:luxDrop .42s var(--lux-ease) both; }
+@keyframes luxDrop{
+  from{ opacity:0; transform:perspective(800px) rotateX(-18deg) translateY(-8px) scale(.96); }
+  to{ opacity:1; transform:none; }
+}
+
+/* ---------- list rows: a gold edge slides in ---------- */
+.li{ transition:background .25s; }
+.li.click{ box-shadow:inset 0 0 0 var(--lux-gold); transition:box-shadow .35s var(--lux-ease), background-color .25s; }
+.li.click:hover{ box-shadow:inset 3px 0 0 var(--lux-gold); }
+.li-img{ box-shadow:0 6px 14px -8px rgba(42,40,35,.4); transition:transform .4s var(--lux-spring), box-shadow .4s; }
+.li.click:hover .li-img{ transform:scale(1.07) rotate(-2deg); box-shadow:0 10px 20px -8px rgba(42,40,35,.45); }
+
+/* ---------- small pieces ---------- */
+.tag, .st, .chip{ box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 6px -2px rgba(42,40,35,.12); }
+.utabs button, .tabs button, .seg button, .range button{ transition:background .25s, color .25s, box-shadow .3s, transform .3s var(--lux-spring); }
+.utabs button.on, .seg button.on{ box-shadow:0 8px 16px -10px rgba(61,90,53,.6); }
+.fld input, .fld select, .fld textarea, .rte-body, .search input, .sel{ transition:border-color .2s, box-shadow .3s var(--lux-ease); }
+.fld input:focus, .fld select:focus, .fld textarea:focus, .rte-body:focus{
+  box-shadow:0 0 0 3px rgba(61,90,53,.12), 0 10px 22px -14px rgba(61,90,53,.55);
+}
+.sw{ transition:box-shadow .3s; }
+.img-add{ transition:border-color .25s, background .25s, color .25s; }
+.cover{ box-shadow:var(--lux-shadow); }
+.img-tile{ box-shadow:0 8px 18px -10px rgba(42,40,35,.35); }
+.fit-sq{ box-shadow:var(--lux-shadow-hi); }
+
+/* ---------- the modal floats in ---------- */
+.modal:not([hidden]){ animation:luxFade .3s ease both; }
+.modal:not([hidden]) .modal-card{ animation:luxRise .55s var(--lux-ease) both; transform-origin:50% 100%; }
+.modal-card{ box-shadow:0 1px 0 #fff inset, 0 40px 90px -20px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.5); }
+@keyframes luxFade{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes luxRise{
+  from{ opacity:0; transform:perspective(1200px) rotateX(14deg) translateY(46px) scale(.94); }
+  to{ opacity:1; transform:none; }
+}
+
+/* ---------- the note at the bottom flips up ---------- */
+.toast{ transform:translate(-50%, 24px) perspective(600px) rotateX(-55deg); box-shadow:0 18px 40px -12px rgba(0,0,0,.4); transition:opacity .3s, transform .55s var(--lux-spring); }
+.toast.show{ transform:translate(-50%, 0) perspective(600px) rotateX(0); }
+
+/* ---------- sign in ---------- */
+.login-card{ animation:luxRise .8s var(--lux-ease) both; }
+.brand-lg b{ background:linear-gradient(100deg, var(--ink) 30%, var(--lux-gold) 50%, var(--ink) 70%); background-size:250% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:luxSheen 5s ease-in-out infinite; }
+@keyframes luxSheen{ 0%,100%{ background-position:100% 0; } 50%{ background-position:0 0; } }
+
+/* ---------- less motion, when asked ---------- */
+@media (prefers-reduced-motion:reduce){
+  body::before, .kpi .ic, .bell-dot, .brand-lg b, .login-card,
+  .modal:not([hidden]), .modal:not([hidden]) .modal-card, .bell-pop:not([hidden]){ animation:none !important; }
+  .btn:hover, .icon-btn:hover, .bell:hover, .nav-a:hover, .side-link:hover, .avatar:hover,
+  .li.click:hover .li-img, .lux-tilt{ transform:none !important; }
+}
+
+/* ===================== more depth: numbers, sections, every card ===================== */
+/* numbers stand off the tile, layer on layer */
+.kpi b{
+  display:block; transform-origin:0 100%;
+  text-shadow:0 1px 0 rgba(255,255,255,.8), 0 2px 0 rgba(42,40,35,.08), 0 3px 0 rgba(42,40,35,.06), 0 6px 10px rgba(42,40,35,.14);
+  transition:transform .45s var(--lux-spring);
+}
+.kpi:hover b{ transform:translateZ(30px) scale(1.04); }
+.lux-tilt.kpi{ transform-style:preserve-3d; }
+.lux-counting{ font-variant-numeric:tabular-nums; }
+
+/* cards that hold fields or drag lists don't tilt, but still rise on hover */
+.card:not(:has(.imgs, .sortable, .fit-sq, .crop-stage, .chart)):not(.lux-tilt):hover{ transform:translateY(-3px); position:relative; z-index:2; }
+
+/* list rows step forward */
+.list:not(.sortable) .li.click{ transition:box-shadow .35s var(--lux-ease), background-color .25s, transform .35s var(--lux-ease); }
+.list:not(.sortable) .li.click:hover{ transform:perspective(900px) translateZ(12px); position:relative; z-index:1; }
+
+/* editor sections: a numbered 3D badge and a gold rule */
+.ed-sec-n{
+  background-image:linear-gradient(145deg, #5d7f52, var(--green) 55%, var(--green-2));
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset, 0 -2px 0 rgba(0,0,0,.18) inset, 0 8px 16px -6px rgba(61,90,53,.7);
+  transition:transform .5s var(--lux-spring);
+}
+.ed-sec:hover .ed-sec-n{ transform:perspective(400px) rotateY(180deg) scale(1.08); }
+.ed-sec-h{ position:relative; padding-bottom:10px; }
+.ed-sec-h::after{ content:''; position:absolute; left:42px; right:0; bottom:0; height:1px; background:linear-gradient(90deg, var(--lux-gold-t), transparent 70%); }
+.img-tile .mk-main{ transition:transform .35s var(--lux-spring), background .2s, color .2s; }
+.img-tile .mk-main:hover{ transform:scale(1.15) rotate(72deg); }
+
+@media (prefers-reduced-motion:reduce){
+  .kpi:hover b, .card:hover, .list .li.click:hover, .ed-sec:hover .ed-sec-n, .img-tile .mk-main:hover{ transform:none !important; }
+}

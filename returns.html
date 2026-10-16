@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="i18n.js"></script>
+<title>Returns &amp; Exchanges | Maison Meka</title>
+<meta name="description" content="Maison Meka returns and exchanges: returns are accepted only at delivery, while the courier is present.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maison Meka">
+<meta property="og:title" content="Returns &amp; Exchanges | Maison Meka">
+<meta property="og:description" content="Maison Meka returns and exchanges: returns are accepted only at delivery, while the courier is present.">
+<meta property="og:image" content="https://maison-meka-lemon.vercel.app/assets/og-image.jpg">
+<meta property="og:url" content="https://maison-meka-lemon.vercel.app/returns.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Marcellus&family=Dancing+Script:wght@400;500;600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="shop.css">
+<link rel="stylesheet" href="policies.css">
+<link rel="stylesheet" href="rtl.css">
+</head>
+<body class="shop-page policy-page">
+
+<!-- Instagram brand gradient, referenced by every .ig-real icon -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FEDA75"/>
+      <stop offset="25%"  stop-color="#FA7E1E"/>
+      <stop offset="50%"  stop-color="#D62976"/>
+      <stop offset="75%"  stop-color="#962FBF"/>
+      <stop offset="100%" stop-color="#4F5BD5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="index.html" class="logo">
+      <img src="assets/logo-white.webp" alt="Maison Meka" class="logo-img">
+    </a>
+
+    <div class="icon-group">
+      <a href="search.html" class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      </a>
+      <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+      </a>
+      <button class="icon-btn cart-btn" id="cartBtn" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+        <span class="cart-badge" style="display:none"></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ===== SLIDE-IN MENU ===== -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<nav class="side-menu" id="sideMenu">
+  <button class="menu-close" id="menuClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+  </button>
+
+  <!-- the house mark sits at the head of the drawer -->
+  <div class="sm-brand">
+    <img loading="lazy" decoding="async" src="assets/logo-original.webp" alt="Maison Meka" class="sm-logo">
+    <span class="orn orn-sm sm-orn"><i></i><b></b><i></i></span>
+  </div>
+
+  <div class="sm-scroll">
+    <ul class="sm-nav">
+      <li><a href="index.html">HOME</a></li>
+      <li><a href="category.html">SHOP</a></li>
+      <li><a href="wishlist.html">WISHLIST</a></li>
+      <!-- the fourth row opens the fourteen houses of the collection -->
+      <li class="sm-cats-row">
+        <button class="sm-heading" id="smCatsToggle" aria-expanded="false" aria-controls="smCats">
+          <span class="sm-heading-label">CATEGORIES</span>
+          <span class="sm-plus" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="sm-cats-fold" id="smCatsFold">
+    <ul class="sm-cats" id="smCats">
+      <li><a href="category.html?c=antiques">Antiques &amp; Vintage</a></li>
+      <li><a href="category.html?c=tableaux">Tableaux</a></li>
+      <li><a href="category.html?c=murano">Murano</a></li>
+      <li><a href="category.html?c=lampstands">Lamp Stands &amp; Lampdaire</a></li>
+      <li><a href="category.html?c=vases">Vases</a></li>
+      <li><a href="category.html?c=cachpots">Cachpots</a></li>
+      <li><a href="category.html?c=potiches">Potiches</a></li>
+      <li><a href="category.html?c=wallplates">Wall Plates</a></li>
+      <li><a href="category.html?c=bonboniera">Bonboniera</a></li>
+      <li><a href="category.html?c=jardiniere">Jardinière</a></li>
+      <li><a href="category.html?c=stands">Stands &amp; Stools</a></li>
+      <li><a href="category.html?c=candleholders">Candle Holders</a></li>
+      <li><a href="category.html?c=centerpieces">Center Pieces</a></li>
+      <li><a href="category.html?c=decor">Decor</a></li>
+    </ul>
+    </div>
+
+    <ul class="sm-nav sm-nav-minor">
+      <li><a href="about.html">ABOUT US</a></li>
+      <li><a href="index.html#contact">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <!-- foot: language, then the two houses we keep -->
+  <div class="sm-foot">
+    <button class="sm-lang" id="smLang" aria-label="Change language">
+      <span class="sm-lang-globe">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8c2.4 2.5 3.7 5.8 3.7 9.2s-1.3 6.7-3.7 9.2c-2.4-2.5-3.7-5.8-3.7-9.2S9.6 5.3 12 2.8z"/></svg>
+      </span>
+      <span class="sm-lang-opts" data-no-i18n>
+        <span class="sm-lang-opt is-on" data-lang="en">EN</span>
+        <span class="sm-lang-sep">/</span>
+        <span class="sm-lang-opt" data-lang="ar">عربي</span>
+      </span>
+    </button>
+
+    <div class="sm-social">
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg class="ig-real" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" fill="url(#igGrad)" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg class="fb-real" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z" fill="#1877F2" stroke="none"/><path d="M16.67 15.56l.53-3.49h-3.33V9.82c0-.96.47-1.89 1.96-1.89h1.51V4.96s-1.37-.24-2.68-.24c-2.74 0-4.53 1.67-4.53 4.69v2.66H7.08v3.49h3.05V24a12.1 12.1 0 003.74 0v-8.44z" fill="#fff" stroke="none"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="sm-credit">
+    <span>POWERED BY</span>
+    <a href="https://wa.me/201211179625" target="_blank" rel="noopener" class="credit-name">
+      <span class="cn-text">kreemaly</span>
+      <span class="cn-glow"></span>
+    </a>
+  </div>
+</nav>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag">
+
+  <header class="cd-head">
+    <div class="cd-title-row">
+      <h2 class="cd-title">YOUR BAG</h2>
+      <button class="cd-close" id="cartClose" aria-label="Close bag">
+        <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <span class="orn orn-sm cd-orn"><i></i><b></b><i></i></span>
+    <p class="cd-count"><span id="cdCount">0</span> pieces kept aside</p>
+  </header>
+
+  <div class="cd-items" id="cdItems"></div>
+
+  <div class="cd-empty" id="cdEmpty">
+    <span class="cd-empty-mark">
+      <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+    </span>
+    <h3>Your bag is empty</h3>
+    <p>Every piece begins with a first glance.</p>
+    <a href="search.html" class="cd-empty-cta">BROWSE THE COLLECTION</a>
+  </div>
+
+  <footer class="cd-foot" id="cdFoot">
+    <div class="cd-line">
+      <span>Subtotal</span>
+      <span id="cdSubtotal">EGP 0</span>
+    </div>
+    <div class="cd-line cd-line-soft">
+      <span>Shipping</span>
+      <span>Calculated at order</span>
+    </div>
+    <span class="cd-rule"></span>
+    <div class="cd-line cd-line-total">
+      <span>Total</span>
+      <span id="cdTotal">EGP 0</span>
+    </div>
+
+    <!-- orders are taken on Instagram, so the drawer hands you straight over -->
+    <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="cd-order" id="cdOrder">
+      <span class="cdo-sheen"></span>
+      <span class="cdo-ig">
+        <svg viewBox="0 0 24 24"><rect x="2.2" y="2.2" width="19.6" height="19.6" rx="5.6"/><circle cx="12" cy="12" r="4.6"/><circle cx="17.9" cy="6.1" r="1.3" fill="currentColor" stroke="none"/></svg>
+      </span>
+      <span class="cdo-label">ORDER FROM INSTAGRAM</span>
+      <span class="cdo-arrow">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+    </a>
+    <p class="cd-note">We complete every order personally, by direct message.</p>
+  </footer>
+
+</aside>
+
+<main>
+  <section class="pl-hero">
+    <div class="pl-hero-in">
+      <nav class="pl-crumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><i></i><span>Returns &amp; Exchanges</span>
+      </nav>
+      <p class="pl-kicker">Customer Care</p>
+      <h1 class="pl-title">Returns &amp; Exchanges</h1>
+      <p class="pl-intro">Every Maison Meka piece is checked by hand before it leaves us. To keep things simple and fair for everyone, our returns work on one clear rule — inspect your order at the door.</p>
+    </div>
+  </section>
+
+  <section class="pl-body">
+    <aside class="pl-nav" aria-label="Policies">
+      <h2>Help &amp; Info</h2>
+      <ul>
+          <li><a href="returns.html" class="on">Returns &amp; Exchanges</a></li>
+          <li><a href="shipping.html">Shipping &amp; Delivery</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+      </ul>
+    </aside>
+    <article class="pl-article">
+
+        <div class="pl-key">
+          <span class="pl-key-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><circle cx="12" cy="16.5" r=".6" fill="currentColor"/></svg></span>
+          <div>
+            <h3>Returns are accepted only at the moment of delivery</h3>
+            <p>Please open and inspect your order <strong>while the courier is still with you</strong>. If anything is not right, hand it back to the courier on the spot. Once the courier has left and the order has been accepted, <strong>it can no longer be returned or exchanged</strong>.</p>
+          </div>
+        </div>
+        <h2>How returns work</h2>
+        <p>Because many of our pieces are delicate, one-of-a-kind or sourced in very small numbers, we handle returns at the doorstep rather than after delivery. This protects you from receiving a piece that has been handled and re-shipped, and it lets us resolve any issue immediately.</p>
+        <ol>
+          <li><strong>Wait for the courier to hand you the parcel</strong> — do not sign or pay before you have looked.</li>
+          <li><strong>Open the package in front of the courier</strong> and check the piece carefully: the item itself, its condition, its finish and any lid, base or accessory that comes with it.</li>
+          <li><strong>If everything is right</strong>, accept the order and enjoy your piece.</li>
+          <li><strong>If something is wrong</strong> — it is damaged, broken, incomplete or not the piece you ordered — refuse it and return it to the courier right away.</li>
+          <li><strong>Message us on Instagram</strong> with your name and order details so we can arrange a replacement or a solution with you.</li>
+        </ol>
+
+        <h2>When a return is accepted</h2>
+        <div class="pl-split">
+          <div class="pl-yes">
+            <h3><svg viewBox="0 0 24 24"><polyline points="5 12.5 10 17.5 19 7"/></svg> Accepted</h3>
+            <ul>
+              <li>Returned to the courier during delivery</li>
+              <li>The piece arrived damaged or broken</li>
+              <li>The piece is not the one you ordered</li>
+              <li>Parts of the order are missing</li>
+            </ul>
+          </div>
+          <div class="pl-no">
+            <h3><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg> Not accepted</h3>
+            <ul>
+              <li>Any request after the courier has left</li>
+              <li>A change of mind after accepting the order</li>
+              <li>Damage that happens after delivery</li>
+              <li>Natural variations of handmade or vintage pieces</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2>Exchanges</h2>
+        <p>Exchanges follow the same rule as returns: they are only possible if the piece is handed back to the courier at delivery. If you would like a different piece instead, let us know by message and we will do our best to arrange it, subject to availability.</p>
+
+        <h2>Handmade, vintage and antique pieces</h2>
+        <p>Many of our pieces are hand-painted, hand-blown or carry the marks of age. Small differences in colour, glaze, pattern or texture compared with photographs are part of their character and are not considered defects. Screen settings can also make colours look slightly different.</p>
+
+        <h2>Refused orders</h2>
+        <p>If an order is refused at the door without a valid reason, delivery charges may still apply, and we may ask for payment in advance on future orders.</p>
+
+        <div class="pl-note">In short: <strong>check it while the courier is there.</strong> That one minute at the door is what makes every return quick and easy.</div>
+
+        <div class="pl-contact">
+          <div>
+            <h3>Still have a question?</h3>
+            <p>Message us — we answer every order and enquiry personally.</p>
+          </div>
+          <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg> Message us on Instagram</a>
+        </div>
+    </article>
+  </section>
+
+<template data-ar-for=".pl-intro">كل قطعة من ميزون ميكا تُفحص باليد قبل أن تخرج إليك. ولنُبقي الأمور بسيطة وعادلة للجميع، يعمل الاسترجاع بقاعدة واحدة واضحة — افحص طلبك عند الباب.</template>
+<template data-ar-for=".pl-article">
+<div class="pl-key">
+  <span class="pl-key-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><circle cx="12" cy="16.5" r=".6" fill="currentColor"/></svg></span>
+  <div>
+    <h3>الاسترجاع مقبول فقط وقت الاستلام</h3>
+    <p>من فضلك افتح طلبك وافحصه <strong>والمندوب ما زال معك</strong>. إذا كان هناك أي شيء غير سليم، أعد القطعة للمندوب في الحال. بعد مغادرة المندوب واستلام الطلب، <strong>لا يمكن استرجاعه أو استبداله</strong>.</p>
+  </div>
+</div>
+<h2>كيف يتم الاسترجاع</h2>
+<p>لأن كثيراً من قطعنا رقيقة أو فريدة أو متوفرة بأعداد قليلة جداً، نتعامل مع الاسترجاع عند الباب وليس بعد التسليم. هذا يحميك من استلام قطعة سبق تداولها وإعادة شحنها، ويتيح لنا حل أي مشكلة فوراً.</p>
+<ol>
+  <li><strong>انتظر حتى يسلّمك المندوب الطرد</strong> — لا توقّع ولا تدفع قبل أن تنظر.</li>
+  <li><strong>افتح الطرد أمام المندوب</strong> وافحص القطعة جيداً: القطعة نفسها وحالتها ولمستها وأي غطاء أو قاعدة أو ملحق معها.</li>
+  <li><strong>إذا كان كل شيء سليماً</strong>، استلم الطلب واستمتع بقطعتك.</li>
+  <li><strong>إذا كان هناك خطأ</strong> — مكسورة أو تالفة أو ناقصة أو ليست القطعة التي طلبتها — ارفضها وأعدها للمندوب في الحال.</li>
+  <li><strong>راسلنا على إنستجرام</strong> باسمك وتفاصيل طلبك لنرتب معك بديلاً أو حلاً.</li>
+</ol>
+<h2>متى يُقبل الاسترجاع</h2>
+<div class="pl-split">
+  <div class="pl-yes"><h3><svg viewBox="0 0 24 24"><polyline points="5 12.5 10 17.5 19 7"/></svg> مقبول</h3><ul>
+    <li>الإعادة للمندوب وقت التسليم</li><li>وصول القطعة مكسورة أو تالفة</li><li>القطعة ليست التي طلبتها</li><li>نقص في أجزاء الطلب</li></ul></div>
+  <div class="pl-no"><h3><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg> غير مقبول</h3><ul>
+    <li>أي طلب بعد مغادرة المندوب</li><li>تغيير الرأي بعد استلام الطلب</li><li>تلف يحدث بعد التسليم</li><li>الاختلافات الطبيعية في القطع اليدوية والأنتيك</li></ul></div>
+</div>
+<h2>الاستبدال</h2>
+<p>الاستبدال يتبع نفس قاعدة الاسترجاع: ممكن فقط إذا أُعيدت القطعة للمندوب وقت التسليم. إذا رغبت في قطعة أخرى بدلاً منها، أخبرنا برسالة وسنبذل جهدنا لترتيب ذلك حسب التوفر.</p>
+<h2>القطع اليدوية والقديمة والأنتيك</h2>
+<p>كثير من قطعنا مرسومة يدوياً أو منفوخة يدوياً أو تحمل آثار الزمن. الاختلافات البسيطة في اللون أو الطلاء أو النقش أو الملمس مقارنة بالصور جزء من طابعها ولا تُعد عيوباً. كما قد تُظهر الشاشات الألوان بشكل مختلف قليلاً.</p>
+<h2>الطلبات المرفوضة</h2>
+<p>إذا رُفض الطلب عند الباب دون سبب مقبول، قد تُحتسب مصاريف التوصيل، وقد نطلب الدفع مقدماً في الطلبات القادمة.</p>
+<div class="pl-note">باختصار: <strong>افحص الطلب والمندوب موجود.</strong> تلك الدقيقة عند الباب هي ما يجعل أي استرجاع سريعاً وسهلاً.</div>
+
+<div class="pl-contact">
+  <div><h3>لديك سؤال آخر؟</h3><p>راسلنا — نرد على كل طلب واستفسار بأنفسنا.</p></div>
+  <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg> راسلنا على إنستجرام</a>
+</div></template>
+</main>
+
+<footer class="site-footer">
+  <div class="foot-bg"><img loading="lazy" decoding="async" src="assets/footer-bg.webp" alt=""></div>
+
+  <div class="foot-top">
+    <div class="foot-brand">
+      <img loading="lazy" decoding="async" src="assets/logo-circle.webp" alt="Maison Meka" class="foot-logo fade-up" data-d="1">
+      <h3 class="foot-tagline fade-up" data-d="2">CURATED WITH SOUL,<br><em>MADE TO LAST.</em></h3>
+      <span class="orn orn-sm fade-up" data-d="3"><i></i><b></b><i></i></span>
+      <p class="foot-blurb fade-up" data-d="4">
+        Timeless pieces, thoughtfully designed<br>
+        to bring beauty, warmth, and harmony<br>
+        into your space.
+      </p>
+    </div>
+
+    <nav class="foot-col fade-up" data-d="2">
+      <h4>DISCOVER</h4>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="category.html">Shop</a>
+      <a href="index.html#collections">Collections</a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener">Custom Orders</a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener">Contact Us</a>
+    </nav>
+
+    <nav class="foot-col fade-up" data-d="3">
+      <h4>HELP &amp; INFO</h4>
+      <a href="faq.html">FAQs</a>
+      <a href="shipping.html">Shipping &amp; Delivery</a>
+      <a href="returns.html">Returns &amp; Exchanges</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </nav>
+
+  </div>
+
+  <div class="foot-bottom">
+
+    <div class="foot-mark fade-up" data-d="2">
+      <svg class="foot-tulip" viewBox="0 0 60 70"><path d="M30 8C22 8 16 16 16 26c0 10 6 18 14 26 8-8 14-16 14-26 0-10-6-18-14-18z"/><path d="M30 26v38"/></svg>
+      <p class="foot-script">Crafted for a life well lived</p>
+      <span class="orn orn-sm"><i></i><b></b><i></i></span>
+    </div>
+
+    <div class="foot-social fade-up" data-d="3">
+      <span class="fs-label">FOLLOW US</span>
+      <span class="fs-rule"></span>
+      <div class="fs-icons">
+        <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M14.1 21.9v-8.2h2.8l.4-3.2h-3.2V8.4c0-.9.3-1.6 1.6-1.6h1.7V4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2v2.4H8.1v3.2H11v8.2z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-credit">
+    <span>POWERED BY</span>
+    <a href="https://wa.me/201211179625" target="_blank" rel="noopener" class="credit-name">
+      <span class="cn-text">kreemaly</span>
+      <span class="cn-glow"></span>
+    </a>
+    <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+<script src="coupon-popup.js"></script>
+<script src="order-image.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

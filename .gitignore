@@ -1,0 +1,27 @@
+# secrets and local data — never published
+.env*
+data/
+assets/uploads/
+node_modules/
+.vercel/
+public/
+
+# editor / assistant folders
+.claude/
+.agents/
+skills-lock.json
+
+# design sources and originals kept on this machine only (the site does not use them)
+/*.png
+/*.jpg
+/*.jpeg
+/*.mp4
+sec 2/
+sec 3/
+sec 4/
+sec 5/
+hero/
+footer/
+review/
+assets/insta.mp4
+*.tmp

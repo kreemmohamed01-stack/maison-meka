@@ -1,0 +1,191 @@
+/* ===================== Maison Meka — shop pages ===================== */
+/* The category page and the product page. Both sit on top of style.css,
+   which already brings the header, the side menu, the bag and the footer. */
+
+.shop-page{
+  --esp:      #2a2017;
+  --esp-2:    #3b2d20;
+  --gold:     #cdb887;
+  --gold-d:   #a98a52;
+  --paper:    #f5f1e8;
+  --paper-2:  #ede6d8;
+  --card:     #e9e1d2;
+  --line:     rgba(35,32,28,.12);
+  --line-2:   rgba(35,32,28,.2);
+  --on-dark:  #f3ebdd;
+  --on-dark-2:rgba(243,235,221,.7);
+  --gutter:   clamp(16px, 3.6vw, 60px);
+  background:var(--paper);
+}
+
+/* on these pages the scrolled bar sits over light paper, not a photograph,
+   so the glass is deepened enough to keep the cream icons and logo legible */
+.shop-page .site-header.scrolled{
+  background:rgba(36,27,18,.86);
+  backdrop-filter:blur(18px) saturate(140%);
+}
+
+/* the badge gives a small jump when something lands in the bag */
+.cart-badge.bump{ animation:badgeBump .6s var(--ease-lux); }
+@keyframes badgeBump{
+  0%{ transform:scale(1); } 35%{ transform:scale(1.55); } 100%{ transform:scale(1); }
+}
+
+/* the shared rise for anything drawn by script */
+.sh-rise{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .9s var(--ease-lux), transform 1s var(--ease-lux);
+}
+.sh-rise.in{ opacity:1; transform:none; }
+
+/* intro pieces of each hero, released in order by the page script */
+.ch-in{
+  opacity:0; transform:translate3d(0,18px,0);
+  transition:opacity .9s var(--ease-lux), transform 1s var(--ease-lux);
+}
+.ch-in.in{ opacity:1; transform:none; }
+
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* ===================== the rotating house stamp ===================== */
+.stamp{
+  position:relative; width:var(--s,108px); height:var(--s,108px);
+  color:rgba(236,224,198,.82);
+  pointer-events:none;
+}
+.stamp::before{
+  content:''; position:absolute; inset:0; border-radius:50%;
+  border:1px solid rgba(205,184,135,.42);
+}
+.stamp::after{
+  content:''; position:absolute; inset:24%; border-radius:50%;
+  border:1px solid rgba(205,184,135,.3);
+}
+.stamp-ring{ position:absolute; inset:0; animation:stampSpin 26s linear infinite; }
+.stamp-ring text{
+  fill:currentColor; stroke:none;
+  font-family:var(--font-sans); font-size:7.4px; font-weight:400; letter-spacing:1.6px;
+}
+.stamp-core{
+  position:absolute; inset:0; display:grid; place-items:center;
+  font-family:var(--font-display); font-size:calc(var(--s,108px) * .24);
+  color:#e6d3a4; letter-spacing:0;
+}
+@keyframes stampSpin{ to{ transform:rotate(360deg); } }
+
+/* ===================== crumbs ===================== */
+.crumbs{
+  display:flex; align-items:center; flex-wrap:wrap; gap:10px;
+  font-family:var(--font-sans); font-size:11px; font-weight:300;
+  letter-spacing:1.6px;
+  color:rgba(243,235,221,.72);
+}
+.crumbs a{ transition:color .3s; }
+.crumbs a:hover{ color:#fff; }
+.crumbs i{
+  width:4px; height:4px; border-right:1px solid currentColor; border-top:1px solid currentColor;
+  transform:rotate(45deg); opacity:.7;
+}
+.crumbs span{ color:var(--on-dark); }
+
+
+/* the fixed header's own height, so content can start just below it */
+
+/* the category page lives in category.css */
+
+/* =====================================================================
+   PRODUCT PAGE (layout lives in product.css)
+   ===================================================================== */
+
+/* the product page header is white with a black mark — see product.css */
+
+/* ---------- lightbox ---------- */
+.lb{
+  position:fixed; inset:0; z-index:150;
+  background:rgba(16,12,8,.96);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition:opacity .45s var(--ease-soft);
+  touch-action:pan-y;
+}
+.lb.open{ opacity:1; pointer-events:auto; }
+.lb img{
+  max-width:min(92vw, 1400px); max-height:86vh; object-fit:contain;
+  border-radius:2px;
+  transform:scale(.96); transition:transform .6s var(--ease-lux), opacity .3s;
+}
+.lb.open img{ transform:none; }
+.lb-close, .lb-nav{
+  position:absolute; z-index:2;
+  width:48px; height:48px; border-radius:50%;
+  display:grid; place-items:center; color:#fff;
+  border:1px solid rgba(255,255,255,.3);
+  transition:background .3s, color .3s;
+}
+.lb-close svg, .lb-nav svg{ width:17px; height:17px; }
+.lb-close:hover, .lb-nav:hover{ background:#fff; color:var(--ink); }
+.lb-close{ top:22px; right:22px; }
+.lb-nav{ top:50%; margin-top:-24px; }
+.lb-nav.prev{ left:22px; } .lb-nav.prev svg{ transform:rotate(180deg); }
+.lb-nav.next{ right:22px; }
+.lb-count{ position:absolute; bottom:26px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.75); font-size:11px; letter-spacing:3px; }
+.lb.single .lb-nav, .lb.single .lb-count{ display:none; }
+
+/* =====================================================================
+   RESPONSIVE
+   ===================================================================== */
+@media (max-width:900px){
+  .lb-nav{ display:none; }
+}
+@media (max-width:640px){
+  .shop-page{ --gutter:16px; }
+  .mm-toast{ left:16px; right:16px; max-width:none; transform:translateY(20px); bottom:18px; padding:10px 10px 10px 16px; font-size:12.5px; justify-content:space-between; }
+  .mm-toast.show{ transform:none; }
+  .lb-close{ top:14px; right:14px; width:42px; height:42px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .sh-rise, .ch-in{ transition-duration:.01ms !important; }
+  .stamp-ring{ animation:none; }
+}
+
+/* ===================== header: white bar, black mark ===================== */
+/* on the shop pages (category + product) — elsewhere the header floats white over photographs */
+.shop-page{ --hdr:82px; }
+.shop-page .site-header,
+.shop-page .site-header.scrolled{
+  background:#fff;
+  backdrop-filter:none;
+  padding-top:8px; padding-bottom:8px;
+  border-bottom:1px solid rgba(35,32,28,.08);
+  box-shadow:0 4px 20px rgba(35,32,28,.05);
+}
+.shop-page .site-header::before{ display:none; }
+.shop-page .logo-img,
+.shop-page .site-header.scrolled .logo-img{
+  height:64px;
+  filter:brightness(0);
+}
+.shop-page .logo{ transform:translateY(-3px); }
+.shop-page .icon-group, .shop-page .menu-toggle,
+.shop-page .site-header.scrolled .icon-group,
+.shop-page .site-header.scrolled .menu-toggle{ transform:translateY(4px); }
+.shop-page .logo::after{ display:none; }
+.shop-page .menu-toggle span{ background:var(--ink); filter:none; }
+.shop-page .icon-btn{ color:var(--ink); filter:none; }
+.shop-page .icon-btn:hover,
+.shop-page .site-header.scrolled .icon-btn:hover{ color:var(--pp-green); }
+.shop-page .cart-badge{ background:var(--ink); color:#fff; }
+
+@media (max-width:640px){
+  .shop-page{ --hdr:70px; }
+  .shop-page .site-header,
+  .shop-page .site-header.scrolled{ padding:6px 18px; }
+  .shop-page .logo-img,
+  .shop-page .site-header.scrolled .logo-img{ height:54px; }
+  .shop-page .logo,
+  .shop-page .site-header.scrolled .logo{ transform:translateY(-2px); }
+  .shop-page .icon-group, .shop-page .menu-toggle,
+  .shop-page .site-header.scrolled .icon-group,
+  .shop-page .site-header.scrolled .menu-toggle{ transform:translateY(4px); }
+}
+

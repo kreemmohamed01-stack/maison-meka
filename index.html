@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="i18n.js"></script>
+<script>
+/* the intro film plays once per visit, before the home page appears */
+(function(){ try { if (!sessionStorage.getItem('mm-intro')) document.documentElement.classList.add('intro-on'); } catch (e) {} })();
+</script>
+<title>Maison Meka | Home Art</title>
+<meta name="description" content="Maison Meka — curated home art: Murano glass, porcelain, potiches, lamps and timeless decor, chosen to bring beauty into your home.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maison Meka">
+<meta property="og:title" content="Maison Meka | Home Art">
+<meta property="og:description" content="Maison Meka — curated home art: Murano glass, porcelain, potiches, lamps and timeless decor, chosen to bring beauty into your home.">
+<meta property="og:image" content="https://maison-meka-lemon.vercel.app/assets/og-image.jpg">
+<meta property="og:url" content="https://maison-meka-lemon.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Italiana&family=Marcellus&family=Dancing+Script:wght@400;500;600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="rtl.css">
+</head>
+<body>
+<!-- ===== intro film ===== -->
+<div class="intro" id="intro" aria-hidden="true">
+  <video id="introVideo" data-src="assets/intro.mp4" playsinline preload="auto"></video>
+  <button class="intro-sound" id="introSound" type="button" hidden>
+    <svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 010 6"/><path d="M18 6.5a8 8 0 010 11"/></svg>
+    <span>Tap for sound</span>
+  </button>
+  <button class="intro-skip" id="introSkip" type="button">Skip</button>
+</div>
+<script>
+(function () {
+  var root = document.documentElement, box = document.getElementById('intro');
+  if (!root.classList.contains('intro-on')) { box.parentNode.removeChild(box); return; }
+  var v = document.getElementById('introVideo');
+  /* the film is fetched only when it is going to play */
+  v.src = v.getAttribute('data-src');
+  var done = false;
+  /* the film ends on the finished logo, then the site fades in */
+  function finish() {
+    if (done) return; done = true;
+    try { sessionStorage.setItem('mm-intro', '1'); } catch (e) {}
+    box.classList.add('out');
+    window.mmIntroDone = true;
+    window.dispatchEvent(new Event('mm-intro-done'));
+    setTimeout(function () { root.classList.remove('intro-on'); if (box.parentNode) box.parentNode.removeChild(box); }, 900);
+  }
+  /* with sound when the browser allows it; otherwise it plays silently and
+     offers a button to turn the sound on */
+  var snd = document.getElementById('introSound');
+  v.muted = false; v.volume = 1;
+  var p = v.play();
+  if (p && p.catch) p.catch(function () {
+    v.muted = true;
+    var q = v.play(); if (q && q.catch) q.catch(finish);
+    snd.hidden = false;
+  });
+  snd.addEventListener('click', function (e) { e.stopPropagation(); v.muted = false; v.play(); snd.hidden = true; });
+  box.addEventListener('click', function (e) { if (e.target === v && v.muted) { v.muted = false; snd.hidden = true; } });
+  document.getElementById('introSkip').addEventListener('click', finish);
+  v.addEventListener('ended', finish);
+  v.addEventListener('error', finish);
+  setTimeout(finish, 12000);
+})();
+</script>
+
+
+<!-- Instagram brand gradient, referenced by every .ig-real icon -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FEDA75"/>
+      <stop offset="25%"  stop-color="#FA7E1E"/>
+      <stop offset="50%"  stop-color="#D62976"/>
+      <stop offset="75%"  stop-color="#962FBF"/>
+      <stop offset="100%" stop-color="#4F5BD5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="#" class="logo">
+      <img src="assets/logo-white.webp" alt="Maison Meka" class="logo-img">
+    </a>
+
+    <div class="icon-group">
+      <a href="search.html" class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      </a>
+      <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+      </a>
+      <button class="icon-btn cart-btn" id="cartBtn" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+        <span class="cart-badge" style="display:none"></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ===== SLIDE-IN MENU ===== -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<nav class="side-menu" id="sideMenu">
+  <button class="menu-close" id="menuClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+  </button>
+
+  <!-- the house mark sits at the head of the drawer -->
+  <div class="sm-brand">
+    <img loading="lazy" decoding="async" src="assets/logo-original.webp" alt="Maison Meka" class="sm-logo">
+    <span class="orn orn-sm sm-orn"><i></i><b></b><i></i></span>
+  </div>
+
+  <div class="sm-scroll">
+    <ul class="sm-nav">
+      <li><a href="index.html">HOME</a></li>
+      <li><a href="category.html">SHOP</a></li>
+      <li><a href="wishlist.html">WISHLIST</a></li>
+      <!-- the fourth row opens the fourteen houses of the collection -->
+      <li class="sm-cats-row">
+        <button class="sm-heading" id="smCatsToggle" aria-expanded="false" aria-controls="smCats">
+          <span class="sm-heading-label">CATEGORIES</span>
+          <span class="sm-plus" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="sm-cats-fold" id="smCatsFold">
+    <ul class="sm-cats" id="smCats">
+      <li><a href="category.html?c=antiques">Antiques &amp; Vintage</a></li>
+      <li><a href="category.html?c=tableaux">Tableaux</a></li>
+      <li><a href="category.html?c=murano">Murano</a></li>
+      <li><a href="category.html?c=lampstands">Lamp Stands &amp; Lampdaire</a></li>
+      <li><a href="category.html?c=vases">Vases</a></li>
+      <li><a href="category.html?c=cachpots">Cachpots</a></li>
+      <li><a href="category.html?c=potiches">Potiches</a></li>
+      <li><a href="category.html?c=wallplates">Wall Plates</a></li>
+      <li><a href="category.html?c=bonboniera">Bonboniera</a></li>
+      <li><a href="category.html?c=jardiniere">Jardinière</a></li>
+      <li><a href="category.html?c=stands">Stands &amp; Stools</a></li>
+      <li><a href="category.html?c=candleholders">Candle Holders</a></li>
+      <li><a href="category.html?c=centerpieces">Center Pieces</a></li>
+      <li><a href="category.html?c=decor">Decor</a></li>
+    </ul>
+    </div>
+
+    <ul class="sm-nav sm-nav-minor">
+      <li><a href="about.html">ABOUT US</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <!-- foot: language, then the two houses we keep -->
+  <div class="sm-foot">
+    <button class="sm-lang" id="smLang" aria-label="Change language">
+      <span class="sm-lang-globe">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8c2.4 2.5 3.7 5.8 3.7 9.2s-1.3 6.7-3.7 9.2c-2.4-2.5-3.7-5.8-3.7-9.2S9.6 5.3 12 2.8z"/></svg>
+      </span>
+      <span class="sm-lang-opts" data-no-i18n>
+        <span class="sm-lang-opt is-on" data-lang="en">EN</span>
+        <span class="sm-lang-sep">/</span>
+        <span class="sm-lang-opt" data-lang="ar">عربي</span>
+      </span>
+    </button>
+
+    <div class="sm-social">
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg class="ig-real" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" fill="url(#igGrad)" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg class="fb-real" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z" fill="#1877F2" stroke="none"/><path d="M16.67 15.56l.53-3.49h-3.33V9.82c0-.96.47-1.89 1.96-1.89h1.51V4.96s-1.37-.24-2.68-.24c-2.74 0-4.53 1.67-4.53 4.69v2.66H7.08v3.49h3.05V24a12.1 12.1 0 003.74 0v-8.44z" fill="#fff" stroke="none"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="sm-credit">
+    <span>POWERED BY</span>
+    <a href="https://wa.me/201211179625" target="_blank" rel="noopener" class="credit-name">
+      <span class="cn-text">kreemaly</span>
+      <span class="cn-glow"></span>
+    </a>
+  </div>
+</nav>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag">
+
+  <header class="cd-head">
+    <div class="cd-title-row">
+      <h2 class="cd-title">YOUR BAG</h2>
+      <button class="cd-close" id="cartClose" aria-label="Close bag">
+        <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <span class="orn orn-sm cd-orn"><i></i><b></b><i></i></span>
+    <p class="cd-count"><span id="cdCount">0</span> pieces kept aside</p>
+  </header>
+
+  <div class="cd-items" id="cdItems"></div>
+
+  <div class="cd-empty" id="cdEmpty">
+    <span class="cd-empty-mark">
+      <svg viewBox="0 0 24 24"><path d="M5.5 8h13l-1.2 12.2a1.5 1.5 0 01-1.5 1.3H8.2a1.5 1.5 0 01-1.5-1.3z"/><path d="M8.8 8V6.2a3.2 3.2 0 016.4 0V8"/></svg>
+    </span>
+    <h3>Your bag is empty</h3>
+    <p>Every piece begins with a first glance.</p>
+    <a href="search.html" class="cd-empty-cta">BROWSE THE COLLECTION</a>
+  </div>
+
+  <footer class="cd-foot" id="cdFoot">
+    <div class="cd-line">
+      <span>Subtotal</span>
+      <span id="cdSubtotal">EGP 0</span>
+    </div>
+    <div class="cd-line cd-line-soft">
+      <span>Shipping</span>
+      <span>Calculated at order</span>
+    </div>
+    <span class="cd-rule"></span>
+    <div class="cd-line cd-line-total">
+      <span>Total</span>
+      <span id="cdTotal">EGP 0</span>
+    </div>
+
+    <!-- orders are taken on Instagram, so the drawer hands you straight over -->
+    <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="cd-order" id="cdOrder">
+      <span class="cdo-sheen"></span>
+      <span class="cdo-ig">
+        <svg viewBox="0 0 24 24"><rect x="2.2" y="2.2" width="19.6" height="19.6" rx="5.6"/><circle cx="12" cy="12" r="4.6"/><circle cx="17.9" cy="6.1" r="1.3" fill="currentColor" stroke="none"/></svg>
+      </span>
+      <span class="cdo-label">ORDER FROM INSTAGRAM</span>
+      <span class="cdo-arrow">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+    </a>
+    <p class="cd-note">We complete every order personally, by direct message.</p>
+  </footer>
+
+</aside>
+<!-- ===== 01 · HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img loading="lazy" decoding="async" src="assets/hero-ref-desktop.webp" alt="" class="bg-desktop">
+    <img loading="lazy" decoding="async" src="assets/hero-mobile-new2.webp" alt="" class="bg-mobile">
+    <div class="hero-veil"></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal" data-d="1">CURATED</p>
+
+    <h1 class="hero-title">
+      <span class="line reveal" data-d="2">HOME ART</span>
+    </h1>
+
+    <p class="hero-script reveal" data-d="3">Elegance in every detail.</p>
+
+    <span class="hero-rule reveal" data-d="4"></span>
+
+    <p class="hero-desc reveal" data-d="5">
+      Timeless pieces chosen to bring character, beauty,<br>
+      and elegance into your space.
+    </p>
+
+    <a href="category.html" class="btn-shop reveal" data-d="6">
+      <span class="bs-fill"></span>
+      <span class="bs-label">SHOP THE COLLECTION</span>
+      <span class="bs-arrow">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </span>
+    </a>
+  </div>
+
+  <div class="hero-social reveal" data-d="6">
+    <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg class="ig-real" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" fill="url(#igGrad)" stroke="none"/></svg>
+    </a>
+    <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg class="fb-real" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z" fill="#1877F2" stroke="none"/><path d="M16.67 15.56l.53-3.49h-3.33V9.82c0-.96.47-1.89 1.96-1.89h1.51V4.96s-1.37-.24-2.68-.24c-2.74 0-4.53 1.67-4.53 4.69v2.66H7.08v3.49h3.05V24a12.1 12.1 0 003.74 0v-8.44z" fill="#fff" stroke="none"/></svg>
+    </a>
+  </div>
+
+  <a href="#collections" class="scroll-cue reveal" data-d="6">
+    <span>SCROLL TO DISCOVER</span>
+    <span class="cue-ring">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="4" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg>
+    </span>
+  </a>
+</section>
+
+<!-- ===== 02 · BEST SELLERS ===== -->
+<section class="bs" id="best">
+  <div class="bs-top">
+    <div class="bs-art" aria-hidden="true">
+      <div class="bs-shape">
+        <picture>
+          <source media="(max-width:760px)" srcset="assets/best-bg-mobile.webp">
+          <img src="assets/best-bg.webp" alt="" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <svg class="bs-arc" viewBox="0 0 400 400" preserveAspectRatio="none"><path d="M10 0 C 60 140, 180 250, 400 300"/></svg>
+    </div>
+
+    <div class="bs-copy">
+      <p class="bs-kicker fade-up" data-d="1">OUR FAVORITES</p>
+      <h2 class="bs-title fade-up" data-d="2">Best Sellers</h2>
+      <p class="bs-desc fade-up" data-d="3">The most loved pieces, chosen by our community to bring beauty and warmth into every home.</p>
+      <a href="category.html" class="bs-btn fade-up" data-d="4">
+        <span>Shop Best Sellers</span>
+        <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </a>
+    </div>
+
+    <div class="bs-note" aria-hidden="true">
+      <span class="bs-note-tx">Most<br>Loved</span>
+      <svg class="bs-note-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+      <svg class="bs-note-arrow" viewBox="0 0 60 120"><path d="M8 4 C 44 18, 52 60, 34 112"/><polyline points="24 100 34 113 44 101"/></svg>
+    </div>
+  </div>
+
+  <div class="bs-car">
+    <button class="bs-nav prev" id="bsPrev" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><line x1="20" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
+    </button>
+    <div class="bs-track" id="bsTrack"></div>
+    <button class="bs-nav next" id="bsNext" aria-label="Next">
+      <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+    </button>
+  </div>
+  <div class="bs-dots" id="bsDots"></div>
+</section>
+
+
+<!-- ===== TRUST STRIP ===== -->
+<section class="features">
+  <div class="feature fade-up" data-d="1">
+    <span class="feature-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 3.2l3.4 3.4h4.4v4.4L23 14.4l-3.2 3.4v4.4h-4.4"/><path d="M12 3.2L8.6 6.6H4.2v4.4L1 14.4l3.2 3.4v4.4h4.4L12 25.6"/></svg>
+    </span>
+    <h3>PREMIUM QUALITY</h3>
+    <p>Carefully selected materials for lasting beauty.</p>
+  </div>
+  <div class="feature fade-up" data-d="2">
+    <span class="feature-icon">
+      <svg viewBox="0 0 24 24"><path d="M2 7h11v8H2zM13 10h4.2l2.8 2.8V15H13z"/><circle cx="6" cy="17.4" r="1.6"/><circle cx="16.6" cy="17.4" r="1.6"/></svg>
+    </span>
+    <h3>FAST &amp; RELIABLE DELIVERY</h3>
+    <p>Quick delivery to your doorstep.</p>
+  </div>
+  <div class="feature fade-up" data-d="3">
+    <span class="feature-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2.8l7.6 4.3v8.8L12 20.2l-7.6-4.3V7.1z"/><path d="M9.8 11.8l1.7 1.7 3.4-3.4"/></svg>
+    </span>
+    <h3>SECURE PACKAGING</h3>
+    <p>Every piece wrapped to arrive flawless.</p>
+  </div>
+  <div class="feature fade-up" data-d="4">
+    <span class="feature-icon">
+      <svg viewBox="0 0 24 24"><path d="M4 13.5v-1.2a8 8 0 0116 0v1.2"/><rect x="2.4" y="13" width="4" height="6.2" rx="1.7"/><rect x="17.6" y="13" width="4" height="6.2" rx="1.7"/><path d="M19.6 19.2v.7a2.7 2.7 0 01-2.7 2.7H13.4"/></svg>
+    </span>
+    <h3>CUSTOMER SUPPORT</h3>
+    <p>We're here to help 24/7.</p>
+  </div>
+</section>
+
+<!-- ===== 02 · CATEGORIES ===== -->
+<section class="collections" id="collections">
+  <div class="collections-bg">
+    <img loading="lazy" decoding="async" src="assets/cat-bg-desktop.webp" alt="" class="bg-desktop">
+    <img loading="lazy" decoding="async" src="assets/cat-bg-mobile.webp"  alt="" class="bg-mobile">
+    <div class="collections-veil"></div>
+  </div>
+
+  <div class="collections-intro">
+    <p class="kicker fade-up" data-d="1">EXPLORE OUR COLLECTION</p>
+    <h2 class="collections-title fade-up" data-d="2">Shop by Category</h2>
+    <p class="collections-desc fade-up" data-d="3">
+      Curated pieces to elevate every corner of your home
+    </p>
+    <span class="orn orn-sm fade-up" data-d="4"><i></i><b></b><i></i></span>
+  </div>
+
+  <div class="cat-grid">
+    <a href="category.html?c=antiques" class="cat-card">
+      <span class="cat-head"><span class="cat-num">01</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-antiques.webp" alt="Antiques &amp; Vintage"></span>
+      <span class="cat-label"><span class="cat-name">Antiques &amp;<br>Vintage</span></span>
+    </a>
+    <a href="category.html?c=tableaux" class="cat-card">
+      <span class="cat-head"><span class="cat-num">02</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-tableaux.webp" alt="Tableaux"></span>
+      <span class="cat-label"><span class="cat-name">Tableaux</span></span>
+    </a>
+    <a href="category.html?c=murano" class="cat-card">
+      <span class="cat-head"><span class="cat-num">03</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-murano.webp" alt="Murano"></span>
+      <span class="cat-label"><span class="cat-name">Murano</span></span>
+    </a>
+    <a href="category.html?c=lampstands" class="cat-card">
+      <span class="cat-head"><span class="cat-num">04</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-lampstands.webp" alt="Lamp Stands &amp; Lampdaire"></span>
+      <span class="cat-label"><span class="cat-name">Lamp Stands<br>&amp; Lampdaire</span></span>
+    </a>
+    <a href="category.html?c=vases" class="cat-card">
+      <span class="cat-head"><span class="cat-num">05</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-vases.webp" alt="Vases"></span>
+      <span class="cat-label"><span class="cat-name">Vases</span></span>
+    </a>
+    <a href="category.html?c=cachpots" class="cat-card">
+      <span class="cat-head"><span class="cat-num">06</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-cachpots.webp" alt="Cachpots"></span>
+      <span class="cat-label"><span class="cat-name">Cachpots</span></span>
+    </a>
+    <a href="category.html?c=potiches" class="cat-card">
+      <span class="cat-head"><span class="cat-num">07</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-potiches.webp" alt="Potiches"></span>
+      <span class="cat-label"><span class="cat-name">Potiches</span></span>
+    </a>
+    <a href="category.html?c=wallplates" class="cat-card">
+      <span class="cat-head"><span class="cat-num">08</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-wallplates.webp" alt="Wall Plates"></span>
+      <span class="cat-label"><span class="cat-name">Wall Plates</span></span>
+    </a>
+    <a href="category.html?c=bonboniera" class="cat-card">
+      <span class="cat-head"><span class="cat-num">09</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-bonboniera.webp" alt="Bonboniera"></span>
+      <span class="cat-label"><span class="cat-name">Bonboniera</span></span>
+    </a>
+    <a href="category.html?c=jardiniere" class="cat-card">
+      <span class="cat-head"><span class="cat-num">10</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-jardinere.webp" alt="Jardinière"></span>
+      <span class="cat-label"><span class="cat-name">Jardinière</span></span>
+    </a>
+    <a href="category.html?c=stands" class="cat-card">
+      <span class="cat-head"><span class="cat-num">11</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-stands.webp" alt="Stands &amp; Stools"></span>
+      <span class="cat-label"><span class="cat-name">Stands &amp;<br>Stools</span></span>
+    </a>
+    <a href="category.html?c=candleholders" class="cat-card">
+      <span class="cat-head"><span class="cat-num">12</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-candleholders.webp" alt="Candle Holders"></span>
+      <span class="cat-label"><span class="cat-name">Candle<br>Holders</span></span>
+    </a>
+    <a href="category.html?c=centerpieces" class="cat-card cat-wide">
+      <span class="cat-head"><span class="cat-num">13</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-centerpieces.webp" alt="Center Pieces"></span>
+      <span class="cat-label"><span class="cat-name">Center Pieces</span></span>
+    </a>
+    <a href="category.html?c=decor" class="cat-card cat-wide">
+      <span class="cat-head"><span class="cat-num">14</span></span>
+      <span class="cat-shot"><img loading="lazy" decoding="async" src="assets/c-decor.webp" alt="Decor"></span>
+      <span class="cat-label"><span class="cat-name">Decor</span></span>
+    </a>
+  </div>
+
+  <div class="cat-foot fade-up" data-d="1">
+    <span class="cf-rule"></span>
+    <span class="cf-text">TIMELESS OBJECTS</span>
+    <svg class="cf-mark" viewBox="0 0 60 70"><path d="M30 8C22 8 16 16 16 26c0 10 6 18 14 26 8-8 14-16 14-26 0-10-6-18-14-18z"/><path d="M30 26v38"/></svg>
+    <span class="cf-text">BEAUTIFULLY CURATED FOR YOU</span>
+    <span class="cf-rule"></span>
+  </div>
+</section>
+
+
+<!-- ===== REVIEWS ===== -->
+<section class="reviews" id="reviews">
+  <div class="rev-bg"><img loading="lazy" decoding="async" src="assets/review-bg.webp" alt=""></div>
+
+  <div class="rev-intro">
+    <p class="rev-script fade-up" data-d="1">Real Homes, Real Stories</p>
+    <h2 class="rev-title fade-up" data-d="2">LOVED BY<br>OUR CLIENTS</h2>
+    <span class="orn orn-sm fade-up" data-d="3"><i></i><b></b><i></i></span>
+    <p class="rev-desc fade-up" data-d="4">
+      Every piece we create becomes a part of<br>
+      beautiful homes and even more beautiful memories.
+    </p>
+  </div>
+
+  <div class="rev-stage">
+    <div class="rev-track" id="revTrack">
+      <figure class="rev-card"><img loading="lazy" decoding="async" src="assets/rev1.webp" alt="Client review"></figure>
+      <figure class="rev-card"><img loading="lazy" decoding="async" src="assets/rev2.webp" alt="Client review"></figure>
+      <figure class="rev-card is-active"><img loading="lazy" decoding="async" src="assets/rev3.webp" alt="Client review"></figure>
+      <figure class="rev-card"><img loading="lazy" decoding="async" src="assets/rev4.webp" alt="Client review"></figure>
+      <figure class="rev-card"><img loading="lazy" decoding="async" src="assets/rev5.webp" alt="Client review"></figure>
+      <figure class="rev-card"><img loading="lazy" decoding="async" src="assets/rev6.webp" alt="Client review"></figure>
+      <figure class="rev-card"><img loading="lazy" decoding="async" src="assets/rev7.webp" alt="Client review"></figure>
+    </div>
+
+    <div class="rev-dots" id="revDots"></div>
+  </div>
+</section>
+<!-- ===== 03 · BEST SELLERS ===== -->
+
+
+<!-- ===== 05 · INSPIRE YOUR SPACE ===== -->
+<section class="inspire" id="inspire">
+  <div class="inspire-gallery">
+    <div class="ig-head">
+      <span class="orn fade-up" data-d="1"><i></i><b></b><i></i></span>
+      <h3 class="ig-title fade-up" data-d="2">INSPIRE YOUR SPACE</h3>
+      <p class="ig-sub fade-up" data-d="3">Straight from our Instagram — the pieces our clients are loving now</p>
+    </div>
+
+    <div class="ig-grid">
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="ig-tile"><img loading="lazy" decoding="async" src="assets/g1.webp" alt="Murano owls"><span class="ig-tag"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></span></a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="ig-tile"><img loading="lazy" decoding="async" src="assets/g2.webp" alt="Golden potiches"><span class="ig-tag"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></span></a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="ig-tile"><img loading="lazy" decoding="async" src="assets/g3.webp" alt="Framed pieces"><span class="ig-tag"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></span></a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="ig-tile"><img loading="lazy" decoding="async" src="assets/g4.webp" alt="Golden fish objects"><span class="ig-tag"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></span></a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="ig-tile"><img loading="lazy" decoding="async" src="assets/g5.webp" alt="Blue floral centrepieces"><span class="ig-tag"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg></span></a>
+    </div>
+
+    <div class="ig-foot">
+      <div class="ig-foot-copy fade-up" data-d="1">
+        <h4>BRING ELEGANCE<br><em>TO EVERY CORNER</em></h4>
+        <p>Join our community and discover<br>how beauty lives in the details.</p>
+      </div>
+
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="ig-follow fade-up" data-d="2">
+        <span>FOLLOW US</span>
+        <svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+
+      <img loading="lazy" decoding="async" src="assets/logo.webp" alt="Maison Meka" class="ig-foot-logo fade-up" data-d="3">
+    </div>
+  </div>
+</section>
+<!-- ===== 04 · INSTAGRAM ===== -->
+<section class="insta" id="insta">
+  <div class="insta-bg"><picture><source media="(max-width:760px)" srcset="assets/sec4-bg-mobile.webp"><img loading="lazy" decoding="async" src="assets/sec4-bg-lap.webp" alt=""></picture></div>
+
+  <div class="insta-inner">
+    <div class="insta-copy">
+      <span class="insta-crest fade-up" data-d="1"><i></i><b>M</b><i></i></span>
+      <p class="kicker fade-up" data-d="2">FOLLOW OUR JOURNEY</p>
+      <h2 class="insta-title fade-up" data-d="3">ON<br>INSTAGRAM</h2>
+      <span class="orn orn-line fade-up" data-d="4"><i></i><b></b></span>
+      <p class="insta-desc fade-up" data-d="5">
+        Discover more of our latest pieces,<br>
+        behind the scenes, and styling inspiration.<br>
+        Join our community.
+      </p>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="insta-handle fade-up" data-d="6">
+        <svg class="ig-real" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" fill="url(#igGrad)" stroke="none"/></svg>
+        <span>@maisonmeka2</span>
+      </a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" class="btn-box fade-up" data-d="7">
+        <span>FOLLOW &amp; GET INSPIRED</span>
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+      </a>
+    </div>
+
+    <div class="insta-phone fade-up" data-d="4">
+      <video data-src="assets/insta-opt.mp4" muted loop playsinline preload="none"></video>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="foot-bg"><img loading="lazy" decoding="async" src="assets/footer-bg.webp" alt=""></div>
+
+  <div class="foot-top">
+    <div class="foot-brand">
+      <img loading="lazy" decoding="async" src="assets/logo-circle.webp" alt="Maison Meka" class="foot-logo fade-up" data-d="1">
+      <h3 class="foot-tagline fade-up" data-d="2">CURATED WITH SOUL,<br><em>MADE TO LAST.</em></h3>
+      <span class="orn orn-sm fade-up" data-d="3"><i></i><b></b><i></i></span>
+      <p class="foot-blurb fade-up" data-d="4">
+        Timeless pieces, thoughtfully designed<br>
+        to bring beauty, warmth, and harmony<br>
+        into your space.
+      </p>
+    </div>
+
+    <nav class="foot-col fade-up" data-d="2">
+      <h4>DISCOVER</h4>
+      <a href="#hero">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="category.html">Shop</a>
+      <a href="#collections">Collections</a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener">Custom Orders</a>
+      <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener">Contact Us</a>
+    </nav>
+
+    <nav class="foot-col fade-up" data-d="3">
+      <h4>HELP &amp; INFO</h4>
+      <a href="faq.html">FAQs</a>
+      <a href="shipping.html">Shipping &amp; Delivery</a>
+      <a href="returns.html">Returns &amp; Exchanges</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </nav>
+
+  </div>
+
+  <div class="foot-bottom">
+
+    <div class="foot-mark fade-up" data-d="2">
+      <svg class="foot-tulip" viewBox="0 0 60 70"><path d="M30 8C22 8 16 16 16 26c0 10 6 18 14 26 8-8 14-16 14-26 0-10-6-18-14-18z"/><path d="M30 26v38"/></svg>
+      <p class="foot-script">Crafted for a life well lived</p>
+      <span class="orn orn-sm"><i></i><b></b><i></i></span>
+    </div>
+
+    <div class="foot-social fade-up" data-d="3">
+      <span class="fs-label">FOLLOW US</span>
+      <span class="fs-rule"></span>
+      <div class="fs-icons">
+        <a href="https://www.facebook.com/share/1k3PEEDo3X/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M14.1 21.9v-8.2h2.8l.4-3.2h-3.2V8.4c0-.9.3-1.6 1.6-1.6h1.7V4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2v2.4H8.1v3.2H11v8.2z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/maisonmeka2" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-credit">
+    <span>POWERED BY</span>
+    <a href="https://wa.me/201211179625" target="_blank" rel="noopener" class="credit-name">
+      <span class="cn-text">kreemaly</span>
+      <span class="cn-glow"></span>
+    </a>
+    <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+<script src="coupon-popup.js"></script>
+<script src="order-image.js"></script>
+<script src="script.js"></script>
+<script src="home.js"></script>
+</body>
+</html>

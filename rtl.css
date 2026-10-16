@@ -1,0 +1,117 @@
+/* ===================== Maison Meka — Arabic (right to left) ===================== */
+/* Applies only when the visitor has switched to Arabic (i18n.js sets
+   <html lang="ar" dir="rtl">). The layout mirrors itself, the Arabic faces
+   take over, and the Latin letter-spacing — which breaks Arabic joining —
+   is removed. */
+
+html[lang="ar"]{
+  --font-display:'Amiri', 'Cormorant Garamond', serif;
+  --font-serif:  'Amiri', 'Cormorant Garamond', serif;
+  --font-alt:    'Amiri', 'Cormorant Garamond', serif;
+  --font-sans:   'Tajawal', 'Jost', sans-serif;
+}
+/* Arabic letters must touch: no tracking, no indents meant for Latin caps */
+html[lang="ar"] body, html[lang="ar"] body *{ letter-spacing:0 !important; text-indent:0 !important; }
+html[lang="ar"] body{ font-family:var(--font-sans); }
+/* the logo, prices and codes stay as they are */
+html[lang="ar"] .logo-img, html[lang="ar"] .sm-logo{ direction:ltr; }
+
+/* ---------- drawers come in from the other side ---------- */
+html[dir="rtl"] .side-menu{ left:auto; right:0; transform:translateX(101%); box-shadow:-24px 0 60px rgba(35,32,28,.12); }
+html[dir="rtl"] .side-menu.open{ transform:none; }
+html[dir="rtl"] .menu-close{ right:auto; left:26px; }
+html[dir="rtl"] .cart-drawer{ right:auto; left:0; transform:translateX(-101%); box-shadow:24px 0 60px rgba(35,32,28,.14); }
+html[dir="rtl"] .cart-drawer.open{ transform:none; }
+html[dir="rtl"] .sm-cats-fold > .sm-cats{ padding:4px 15px 6px 0; border-left:none; border-right:1px solid rgba(169,138,82,.32); margin-left:0; margin-right:3px; }
+html[dir="rtl"] .sm-scroll{ padding-right:0; padding-left:6px; }
+
+/* ---------- arrows point the reading way ---------- */
+html[dir="rtl"] .bs-arrow svg,
+html[dir="rtl"] .btn-line svg:last-child,
+html[dir="rtl"] .cdo-arrow svg,
+html[dir="rtl"] .pc-quick svg,
+html[dir="rtl"] .link-line svg,
+html[dir="rtl"] .pp-viewall svg,
+html[dir="rtl"] .btn-cream svg,
+html[dir="rtl"] .btn-ink svg,
+html[dir="rtl"] .ig-follow svg:last-child,
+html[dir="rtl"] .btn-box svg:last-child,
+html[dir="rtl"] .insta-handle svg:last-child,
+html[dir="rtl"] .pl-contact a svg:last-child,
+html[dir="rtl"] .cats-nav svg,
+html[dir="rtl"] .pp-crumbs i, html[dir="rtl"] .cx-crumbs i, html[dir="rtl"] .pl-crumbs i, html[dir="rtl"] .crumbs i{ transform:scaleX(-1); }
+html[dir="rtl"] .cats-nav.prev svg{ transform:none; }
+html[dir="rtl"] .pp-crumbs i, html[dir="rtl"] .cx-crumbs i, html[dir="rtl"] .pl-crumbs i, html[dir="rtl"] .crumbs i{ transform:rotate(-135deg); }
+html[dir="rtl"] .cats-nav.prev{ left:auto; right:12px; }
+html[dir="rtl"] .cats-nav.next{ right:auto; left:12px; }
+html[dir="rtl"] .cats-nav.next svg{ transform:rotate(180deg); }
+
+/* ---------- text that was set to the left ---------- */
+html[dir="rtl"] .hero-content{ text-align:right; align-items:flex-start; }
+html[dir="rtl"] .sm-heading, html[dir="rtl"] .flt-opt, html[dir="rtl"] .acc-head,
+html[dir="rtl"] .pp-acc-head, html[dir="rtl"] .pl-faq summary{ text-align:right; }
+html[dir="rtl"] .flt-opt em{ margin-left:0; margin-right:auto; }
+html[dir="rtl"] .tb-count{ margin-right:0; margin-left:auto; }
+html[dir="rtl"] .pp-specs, html[dir="rtl"] .pp-trust{ text-align:right; }
+
+/* lists with markers on the start side */
+html[dir="rtl"] .pp-acc-body li, html[dir="rtl"] .acc-body li, html[dir="rtl"] .pl-article li{ padding-left:0; padding-right:18px; }
+html[dir="rtl"] .pp-acc-body li::before, html[dir="rtl"] .acc-body li::before, html[dir="rtl"] .pl-article ul li::before{ left:auto; right:2px; }
+html[dir="rtl"] .pl-article ol li{ padding-right:34px; }
+html[dir="rtl"] .pl-article ol li::before{ left:auto; right:0; }
+
+/* card badges and hearts swap corners */
+html[dir="rtl"] .pc-badges{ left:auto; right:8px; align-items:flex-end; }
+html[dir="rtl"] .pc-fav{ right:auto; left:8px; }
+html[dir="rtl"] .rc-fav{ right:auto; left:9px; }
+html[dir="rtl"] .pp-fav, html[dir="rtl"] .pp-zoom{ right:auto; left:14px; }
+
+/* prices keep their digits in reading order */
+html[dir="rtl"] .pc-price, html[dir="rtl"] .pp-price, html[dir="rtl"] .rc-body span,
+html[dir="rtl"] .prod-price, html[dir="rtl"] .cdi-price, html[dir="rtl"] .spc-price{ unicode-bidi:plaintext; }
+html[dir="rtl"] .pp-price s, html[dir="rtl"] .pc-price s{ margin-left:0; margin-right:8px; }
+
+/* the filter sheet's grab handle and the price slider read the same way */
+html[dir="rtl"] .price-rail{ direction:ltr; }
+html[dir="rtl"] .price-vals{ direction:ltr; }
+
+/* Arabic display type sits a little larger to match the Latin optical size */
+html[lang="ar"] .hero-title{ line-height:1.25; }
+html[lang="ar"] .cx-title, html[lang="ar"] .pp-title, html[lang="ar"] .pl-title{ line-height:1.3; }
+html[lang="ar"] .hero-script{ font-family:'Amiri', serif; font-style:normal; }
+
+/* on a phone the hero copy stays in the clear wall on the left of the
+   photograph, as in English — right-aligned within that space */
+@media (max-width:640px){
+  html[dir="rtl"] .hero-content{ width:66%; margin:0 auto 0 0; padding:0 0 0 22px; }
+}
+
+/* search page: back link and wishlist swap corners */
+html[dir="rtl"] .sp-back{ left:auto; right:0; }
+html[dir="rtl"] .sp-wish{ right:auto; left:0; }
+html[dir="rtl"] .sp-back svg{ transform:scaleX(-1); }
+html[dir="rtl"] .wl-back{ left:auto; right:0; }
+html[dir="rtl"] .wl-back svg{ transform:scaleX(-1); }
+
+/* best sellers: the photograph and its curve move to the left side */
+html[dir="rtl"] .bs-art{ right:auto; left:0; transform:scaleX(-1); }
+html[dir="rtl"] .bs-art img{ transform:scaleX(-1); }
+html[dir="rtl"] .bs-copy{ padding-left:0; padding-right:clamp(20px,5vw,90px); }
+html[dir="rtl"] .bs-note{ left:auto; right:53%; }
+html[dir="rtl"] .bs-note-tx{ font-family:'Amiri', serif; transform:rotate(10deg); transform-origin:right bottom; }
+html[dir="rtl"] .bs-note-heart{ left:auto; right:88%; }
+html[dir="rtl"] .bs-note-arrow{ left:auto; right:104%; transform:scaleX(-1); }
+html[dir="rtl"] .bs-btn svg, html[dir="rtl"] .bs-nav svg{ transform:scaleX(-1); }
+html[dir="rtl"] .bs-nav.prev{ left:auto; right:clamp(8px,2.6vw,50px); }
+html[dir="rtl"] .bs-nav.next{ right:auto; left:clamp(8px,2.6vw,50px); }
+html[dir="rtl"] .bsc-badge{ left:auto; right:14px; }
+html[dir="rtl"] .bsc-fav{ right:auto; left:16px; }
+@media (max-width:760px){
+  html[dir="rtl"] .bs-copy{ padding:6px 20px 0 0; }
+  html[dir="rtl"] .bs-note{ left:auto; right:50%; }
+  html[dir="rtl"] .bs-copy{ max-width:54%; }
+  html[dir="rtl"] .bs-btn{ padding:0 18px; }
+  html[dir="rtl"] .bs-nav.prev{ right:6px; } html[dir="rtl"] .bs-nav.next{ left:6px; }
+  html[dir="rtl"] .bsc-badge{ right:9px; } html[dir="rtl"] .bsc-fav{ left:8px; }
+}
+html[dir="rtl"] .side-menu{ padding-left:34px; padding-right:58px; }

@@ -1,0 +1,405 @@
+/* ===================== WISHLIST PAGE ===================== */
+:root{
+  --wl-ink:    #3f3a2e;
+  --wl-soft:   #7c7462;
+  --wl-green:  #8a9070;
+  --wl-green-d:#6b7355;
+  --wl-gold:   #bfa06a;
+  --wl-gold-d: #a98a52;
+  --wl-rose:   #c05c4a;
+}
+
+.wl-page{
+  background:#f6f1e7;
+  min-height:100vh;
+}
+
+/* everything glides in from the side, one piece at a time — the same
+   entrance the search page uses, so the two read as one house */
+.wl-rise{
+  opacity:0; transform:translate3d(0,18px,0);
+  transition:opacity 1.15s var(--ease-lux), transform 1.25s var(--ease-lux),
+             filter .9s var(--ease-lux);
+}
+.wl-rise.in{ opacity:1; transform:none; }
+
+/* --- the backdrop --- */
+.wl-bg{ position:fixed; inset:0; z-index:0; }
+.wl-bg img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover; object-position:center;
+}
+.wl-bg .bg-mobile{ display:none; }
+/* the photograph is bright, so a warm scrim keeps the cards and the
+   serif copy legible over it without dulling the room */
+.wl-bg::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(246,241,231,.72) 0%, rgba(246,241,231,.86) 38%, rgba(246,241,231,.94) 100%);
+}
+
+.wl-wrap{
+  position:relative; z-index:1;
+  max-width:1360px; margin:0 auto;
+  padding:clamp(26px,3.6vw,58px) clamp(18px,3.4vw,54px) clamp(34px,4vw,64px);
+}
+
+/* --- head --- */
+.wl-head{
+  position:relative;
+  display:flex; flex-direction:column; align-items:center;
+  margin-bottom:clamp(22px,2.8vw,40px);
+}
+.wl-back{
+  position:absolute; left:0; top:4px;
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-sans);
+  font-size:clamp(9px,.74vw,11px); letter-spacing:3.6px; font-weight:300;
+  text-transform:uppercase; text-indent:3.6px;
+  color:var(--wl-soft);
+  transition:color .4s var(--ease-soft), gap .5s var(--ease-lux);
+}
+.wl-back svg{ width:15px; height:15px; }
+.wl-back:hover{ color:var(--wl-green-d); gap:12px; }
+
+.wl-eyebrow{
+  font-family:var(--font-sans);
+  font-size:clamp(8.5px,.7vw,10.5px);
+  letter-spacing:5.5px; text-indent:5.5px; font-weight:300;
+  text-transform:uppercase;
+  color:var(--wl-soft);
+  margin-bottom:clamp(8px,1vw,14px);
+}
+.wl-title{
+  font-family:var(--font-display); font-weight:400;
+  font-size:clamp(34px,4.4vw,66px);
+  letter-spacing:clamp(11px,1.9vw,30px);
+  color:var(--wl-gold-d);
+  text-indent:clamp(11px,1.9vw,30px);   /* balances the trailing letter-space */
+  line-height:1.05;
+}
+.wl-orn{ margin-top:10px; }
+.wl-orn i{
+  width:clamp(70px,10vw,190px); height:1px;
+  background:linear-gradient(90deg,transparent,rgba(191,160,106,.85));
+}
+.wl-orn i:last-child{ background:linear-gradient(90deg,rgba(191,160,106,.85),transparent); }
+.wl-orn b{ width:6px; height:6px; background:var(--wl-gold); transform:rotate(45deg); }
+
+.wl-sub{
+  font-family:var(--font-serif); font-style:italic; font-weight:400;
+  font-size:clamp(15px,1.32vw,22px); line-height:1.55;
+  color:var(--wl-soft);
+  text-align:center; max-width:46ch;
+  margin-top:clamp(10px,1.2vw,16px);
+}
+
+/* --- the standing ledger --- */
+.wl-ledger{
+  display:flex; align-items:center; justify-content:center;
+  gap:clamp(16px,2.4vw,42px);
+  flex-wrap:wrap;
+  background:rgba(255,253,248,.9);
+  border:1px solid rgba(191,160,106,.28);
+  border-radius:999px;
+  padding:clamp(13px,1.35vw,20px) clamp(20px,2.6vw,44px);
+  box-shadow:0 10px 30px rgba(90,78,50,.10);
+  margin-bottom:clamp(22px,2.8vw,42px);
+}
+.wl-led-block{ display:flex; flex-direction:column; align-items:center; gap:4px; }
+.wl-led-num{
+  font-family:var(--font-alt); font-weight:400;
+  font-size:clamp(19px,1.9vw,30px);
+  letter-spacing:.6px;
+  color:var(--wl-green-d);
+  line-height:1;
+}
+.wl-led-label{
+  font-family:var(--font-sans);
+  font-size:clamp(8px,.68vw,10px); letter-spacing:2.6px; text-indent:2.6px;
+  font-weight:300; text-transform:uppercase;
+  color:var(--wl-soft);
+}
+.wl-led-div{
+  width:1px; height:clamp(28px,2.6vw,42px);
+  background:linear-gradient(180deg,transparent,rgba(191,160,106,.5),transparent);
+}
+.wl-led-actions{ display:flex; align-items:center; gap:clamp(8px,1vw,14px); }
+
+/* --- buttons --- */
+.wl-btn{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:clamp(10px,.95vw,14px) clamp(16px,1.7vw,26px);
+  border-radius:999px;
+  font-family:var(--font-sans);
+  font-size:clamp(8.5px,.72vw,10.5px); letter-spacing:2.4px; text-indent:2.4px;
+  font-weight:400; text-transform:uppercase;
+  white-space:nowrap;
+  transition:background .45s var(--ease-soft), color .4s var(--ease-soft),
+             border-color .4s, transform .55s var(--ease-lux),
+             box-shadow .5s var(--ease-soft), opacity .4s;
+}
+.wl-btn svg{ width:14px; height:14px; flex:none; }
+.wl-btn-solid{
+  background:var(--wl-green); color:#fffdf8;
+  border:1px solid var(--wl-green);
+}
+.wl-btn-solid:hover{
+  background:var(--wl-green-d); border-color:var(--wl-green-d);
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(107,115,85,.34);
+}
+.wl-btn-ghost{
+  background:transparent; color:var(--wl-soft);
+  border:1px solid rgba(138,144,112,.45);
+}
+.wl-btn-ghost:hover{
+  color:var(--wl-rose); border-color:rgba(192,92,74,.5);
+  transform:translateY(-2px);
+}
+.wl-btn[disabled]{ opacity:.34; pointer-events:none; }
+
+/* --- the saved pieces --- */
+.wl-grid{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:clamp(12px,1.4vw,24px);
+}
+.wl-card{
+  position:relative;
+  display:flex; flex-direction:column;
+  background:rgba(255,253,248,.95);
+  border:1px solid rgba(191,160,106,.22);
+  border-radius:clamp(9px,1vw,16px);
+  overflow:hidden;
+  box-shadow:0 10px 26px rgba(90,78,50,.09);
+  opacity:0; transform:translate3d(0,22px,0);
+  transition:opacity 1.05s var(--ease-lux), transform 1.15s var(--ease-lux),
+             filter .9s var(--ease-lux),
+             box-shadow .6s var(--ease-lux), border-color .5s;
+}
+.wl-card.in{ opacity:1; transform:none; }
+.wl-card.in:hover{
+  transform:translateY(-7px);
+  border-color:rgba(191,160,106,.55);
+  box-shadow:0 26px 50px rgba(90,78,50,.2);
+}
+/* a piece being taken off the list folds away rather than blinking out */
+.wl-card.leaving{
+  opacity:0; transform:scale(.94);
+  transition:opacity .5s var(--ease-soft), transform .55s var(--ease-lux),
+             filter .5s var(--ease-soft);
+}
+
+.wlc-shot{
+  position:relative;
+  aspect-ratio:4/3;
+  overflow:hidden;
+  background:#efe8da;
+}
+.wlc-shot img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform 1.05s var(--ease-lux);
+}
+.wl-card.in:hover .wlc-shot img{ transform:scale(1.07); }
+
+/* the heart is already filled here — pressing it lets the piece go */
+.wlc-drop{
+  position:absolute; top:clamp(9px,.85vw,14px); right:clamp(9px,.85vw,14px);
+  width:clamp(28px,2.5vw,36px); height:clamp(28px,2.5vw,36px);
+  border-radius:50%;
+  background:rgba(255,253,248,.94);
+  color:var(--wl-rose);
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(6px,.62vw,9px);
+  box-shadow:0 4px 12px rgba(90,78,50,.16);
+  transition:transform .5s var(--ease-lux), background .4s, color .4s;
+}
+.wlc-drop svg{ fill:currentColor; }
+.wlc-drop:hover{ transform:scale(1.14); background:#fff; }
+
+/* a quiet gold rule marks the piece as one of the kept ones */
+.wlc-tag{
+  position:absolute; left:0; top:clamp(12px,1.2vw,18px);
+  display:inline-flex; align-items:center; gap:7px;
+  padding:5px clamp(10px,1vw,14px) 5px clamp(9px,.9vw,13px);
+  background:rgba(191,160,106,.92);
+  color:#fffdf8;
+  border-radius:0 999px 999px 0;
+  font-family:var(--font-sans);
+  font-size:clamp(7px,.6vw,9px); letter-spacing:2px; text-indent:2px;
+  font-weight:400; text-transform:uppercase;
+  box-shadow:0 4px 12px rgba(90,78,50,.2);
+}
+
+.wlc-body{
+  display:flex; flex-direction:column; flex:1;
+  padding:clamp(12px,1.15vw,18px) clamp(13px,1.2vw,20px) clamp(13px,1.25vw,20px);
+}
+.wlc-body h3{
+  font-family:var(--font-alt); font-weight:400;
+  font-size:clamp(15px,1.32vw,22px); color:var(--wl-ink);
+  letter-spacing:.4px; line-height:1.3;
+}
+.wlc-meta{
+  font-family:var(--font-sans);
+  font-size:clamp(9.5px,.78vw,12px); color:var(--wl-soft); font-weight:300;
+  letter-spacing:1.1px;
+  margin-top:6px;
+}
+.wlc-price{
+  font-family:var(--font-sans);
+  font-size:clamp(12px,1.02vw,17px); color:var(--wl-green-d); font-weight:400;
+  letter-spacing:.8px;
+  margin-top:clamp(9px,1vw,14px);
+}
+/* the row of actions is pushed to the base so every card ends level */
+.wlc-foot{
+  display:flex; align-items:center; gap:8px;
+  margin-top:auto; padding-top:clamp(10px,1.1vw,16px);
+}
+.wlc-add{
+  flex:1;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:clamp(9px,.85vw,13px) clamp(10px,1vw,16px);
+  border:1px solid rgba(138,144,112,.5); border-radius:999px;
+  background:transparent; color:var(--wl-green-d);
+  font-family:var(--font-sans);
+  font-size:clamp(8px,.66vw,10px); letter-spacing:2.2px; text-indent:2.2px;
+  font-weight:400; text-transform:uppercase;
+  white-space:nowrap;
+  transition:background .45s var(--ease-soft), color .4s, border-color .4s,
+             transform .5s var(--ease-lux);
+}
+.wlc-add svg{ width:13px; height:13px; flex:none; }
+.wlc-add:hover{
+  background:var(--wl-green); border-color:var(--wl-green); color:#fffdf8;
+  transform:translateY(-2px);
+}
+.wlc-add.added{
+  background:var(--wl-green-d); border-color:var(--wl-green-d); color:#fffdf8;
+}
+
+/* --- nothing saved yet --- */
+.wl-empty{
+  display:none;
+  flex-direction:column; align-items:center; text-align:center;
+  padding:clamp(44px,6vw,96px) 20px;
+}
+.wl-empty.show{ display:flex; }
+.wl-empty-mark{
+  width:clamp(52px,5vw,76px); height:clamp(52px,5vw,76px);
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(13px,1.3vw,20px);
+  border:1px solid rgba(191,160,106,.42);
+  border-radius:50%;
+  color:rgba(191,160,106,.75);
+  margin-bottom:clamp(16px,1.8vw,26px);
+}
+.wl-empty h2{
+  font-family:var(--font-display); font-weight:400;
+  font-size:clamp(24px,2.6vw,40px);
+  letter-spacing:clamp(2px,.5vw,6px); text-indent:clamp(2px,.5vw,6px);
+  color:var(--wl-gold-d);
+}
+.wl-empty p{
+  font-family:var(--font-serif); font-style:italic; font-weight:400;
+  font-size:clamp(15px,1.3vw,21px); line-height:1.55;
+  color:var(--wl-soft);
+  max-width:40ch;
+  margin:clamp(10px,1.1vw,16px) 0 clamp(20px,2.2vw,32px);
+}
+.wl-empty-cta svg{ width:15px; height:15px; }
+
+/* --- foot --- */
+.wl-foot{
+  display:flex; align-items:center; justify-content:center; gap:clamp(10px,1.2vw,18px);
+  margin-top:clamp(26px,3vw,50px);
+  font-family:var(--font-sans);
+  font-size:clamp(9px,.74vw,11px); letter-spacing:4.4px; font-weight:300;
+  text-transform:uppercase; text-indent:4.4px;
+  color:var(--wl-green-d);
+}
+.wlf-leaf{ width:clamp(16px,1.5vw,22px); height:clamp(16px,1.5vw,22px); color:var(--wl-green); }
+.wlf-leaf.flip{ transform:scaleX(-1); }
+
+/* --- the note that slides up on an action --- */
+.wl-toast{
+  position:fixed; left:50%; bottom:26px; z-index:80;
+  transform:translate(-50%,26px);
+  background:rgba(63,58,46,.95);
+  color:#f7f2e6;
+  padding:12px clamp(20px,2vw,30px);
+  border-radius:999px;
+  font-family:var(--font-sans);
+  font-size:clamp(9px,.74vw,11px); letter-spacing:2.4px; text-indent:2.4px;
+  font-weight:300; text-transform:uppercase;
+  white-space:nowrap;
+  box-shadow:0 14px 34px rgba(50,42,26,.3);
+  opacity:0; pointer-events:none;
+  transition:opacity .45s var(--ease-soft), transform .55s var(--ease-lux);
+}
+.wl-toast.show{ opacity:1; transform:translate(-50%,0); }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:1100px){
+  .wl-grid{ grid-template-columns:repeat(3,1fr); }
+}
+
+@media (max-width:760px){
+  .wl-bg .bg-desktop{ display:none; }
+  .wl-bg .bg-mobile{ display:block; }
+
+  .wl-wrap{ padding:22px 16px 34px; }
+
+  .wl-back{ position:static; align-self:flex-start; margin-bottom:14px; }
+  .wl-title{
+    font-size:clamp(28px,9.4vw,42px);
+    letter-spacing:clamp(8px,3.3vw,16px); text-indent:clamp(8px,3.3vw,16px);
+  }
+  .wl-orn i{ width:clamp(48px,17vw,90px); }
+  .wl-sub{ font-size:clamp(14px,3.9vw,17px); max-width:34ch; }
+
+  /* the ledger folds into a card: figures on one row, actions beneath */
+  .wl-ledger{
+    border-radius:clamp(12px,3vw,18px);
+    padding:16px 18px;
+    gap:14px;
+    justify-content:space-between;
+  }
+  .wl-led-block{ flex:1; }
+  .wl-led-num{ font-size:clamp(17px,5vw,23px); }
+  .wl-led-label{ font-size:clamp(6.5px,1.9vw,8.5px); letter-spacing:1.6px; text-indent:1.6px; }
+  .wl-led-actions{ order:3; width:100%; gap:8px; }
+  .wl-btn{ flex:1; justify-content:center; padding:12px 14px; }
+  .wl-btn span{ font-size:clamp(7.5px,2.2vw,9.5px); letter-spacing:1.6px; text-indent:1.6px; }
+  .wl-btn svg{ width:13px; height:13px; }
+
+  /* two generous cards per row — a wishlist is browsed slowly, so the
+     pieces stay large rather than shrinking to a search-style contact sheet */
+  .wl-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .wl-card{ border-radius:9px; }
+  .wlc-body{ padding:10px 10px 12px; }
+  .wlc-body h3{ font-size:clamp(12.5px,3.6vw,16px); line-height:1.25; }
+  .wlc-meta{ font-size:clamp(8px,2.3vw,10px); letter-spacing:.5px; margin-top:4px; }
+  .wlc-price{ font-size:clamp(10.5px,3vw,13px); margin-top:7px; }
+  .wlc-foot{ padding-top:9px; }
+  .wlc-add{
+    padding:9px 8px; gap:6px;
+    font-size:clamp(6.5px,1.95vw,8.5px); letter-spacing:1.2px; text-indent:1.2px;
+  }
+  .wlc-add svg{ width:11px; height:11px; }
+  .wlc-drop{
+    width:clamp(24px,6.6vw,30px); height:clamp(24px,6.6vw,30px);
+    padding:clamp(5px,1.6vw,7px); top:7px; right:7px;
+  }
+  .wlc-tag{ font-size:6.5px; letter-spacing:1.2px; text-indent:1.2px; padding:4px 9px 4px 8px; }
+
+  .wl-foot{ letter-spacing:2.6px; text-indent:2.6px; font-size:8.5px; gap:9px; }
+  .wl-toast{ font-size:9px; letter-spacing:1.6px; text-indent:1.6px; padding:11px 20px; bottom:18px; }
+}
+
+@media (max-width:380px){
+  .wl-led-div{ display:none; }
+  .wlc-add span{ display:none; }
+  .wlc-add{ padding:9px; }
+}
