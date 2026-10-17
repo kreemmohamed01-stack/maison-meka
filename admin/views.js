@@ -406,24 +406,6 @@ const ProductEditor = (id, tab) => {
           <button class="img-add" id="addImgs">${I.plus}<span>Add Images</span></button>
         </div>
       </div>
-      ${P.imgs[0] ? `
-      <div class="card" style="margin-bottom:18px">
-        <div class="card-h"><h2>Card Framing</h2><span class="hint">How the main photo sits in the square on every product card</span></div>
-        <div class="fit-wrap">
-          <div class="fit-prev">
-            <div class="mm-sq fit-sq" id="fitSq" style="${fitStyle(P.fit)}"><img class="mm-sq-img" src="${site(P.imgs[0])}" alt="" draggable="false"></div>
-            <small class="hint">Drag the photo to move it inside the square</small>
-          </div>
-          <div class="form-stack fit-tools">
-            <label class="fld"><span>Zoom <b id="fitZv">${Math.round(fitOf(P.fit).z * 100)}%</b></span><input type="range" id="fitZ" min="1" max="3" step="0.01" value="${fitOf(P.fit).z}"></label>
-            <div class="fld"><span>Background</span>
-              <div class="fit-bgs" id="fitBg">${FIT_BGS.map(c => `<button data-bg="${c}" style="background:${c}" class="${(fitOf(P.fit).bg || FIT_BGS[0]) === c ? 'on' : ''}" title="${c}"></button>`).join('')}<input type="color" id="fitBgC" value="${fitOf(P.fit).bg || FIT_BGS[0]}" title="Any colour"></div>
-            </div>
-            <div class="fit-btns"><button class="btn" id="fitWhole">Show Whole Photo</button><button class="btn" id="fitFill">Fill the Square</button></div>
-            <p class="hint">At 100% the whole photo shows with nothing cut. Zoom in and drag to frame it your way — what you see here is exactly what shows on the website’s cards.</p>
-          </div>
-        </div>
-      </div>` : ''}
       <div class="grid g2">
         <div class="card"><h3>Product Video <span class="muted">(optional)</span></h3>
           <div class="imgs">${P.video ? `<div class="img-tile"><video src="${site(P.video)}" muted playsinline></video><button class="x" id="rmVideo">${I.x}</button></div>` : ''}

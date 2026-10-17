@@ -223,12 +223,8 @@ const MM = (() => {
   /* the whole photo shows by default; zoom, position and background are set
      per product in the dashboard (Images & Media → Card framing) and read the
      same way there, so the dashboard preview is exactly what shows here */
-  const fitStyle = (p) => {
-    const f = p.fit || {};
-    const num = (v, lo, hi, d) => { const n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : d; };
-    const bg = /^#[0-9a-f]{3,8}$/i.test(f.bg || '') ? f.bg : '';
-    return `--sq-z:${num(f.z, 1, 3, 1)};--sq-x:${num(f.x, -100, 100, 0)}%;--sq-y:${num(f.y, -100, 100, 0)}%` + (bg ? `;--sq-bg:${bg}` : '');
-  };
+  /* every card photo fills its square — the old per-product framing is ignored */
+  const fitStyle = () => '';
   const squareImg = (p, cls = '') =>
     `<img class="mm-sq-img${cls ? ' ' + cls : ''}" src="${esc(thumb(p))}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
 

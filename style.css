@@ -2281,9 +2281,7 @@ html[lang="ar"] .cp-code{ letter-spacing:.12em !important; direction:ltr; }
 .mm-sq > a{ position:absolute; inset:0; display:block; }
 .mm-sq-img{
   position:absolute; inset:0; width:100%; height:100%; max-width:none;
-  object-fit:contain; object-position:50% 50%;
-  transform:translate(var(--sq-x, 0%), var(--sq-y, 0%)) scale(var(--sq-z, 1));
-  transform-origin:50% 50%;
+  object-fit:cover; object-position:50% 50%;
 }
 
 
