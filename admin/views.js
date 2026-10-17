@@ -328,6 +328,9 @@ const withThumbs = async (p) => {
     try { keep[u] = await uploadThumb(site(u)); } catch (e) { console.error('thumb', u, e); }
   }
   p.sm = keep;
+  const og = p.og || {}, keepOg = {};
+  (p.imgs || []).forEach(u => { if (og[u]) keepOg[u] = og[u]; });
+  p.og = keepOg;
   return p;
 };
 
@@ -352,6 +355,7 @@ const ProductEditor = (id, tab) => {
   const P = isNew ? NEW_PRODUCT() : { ...NEW_PRODUCT(), ...strip(clone(orig)) };
   P.ar = { ...NEW_PRODUCT().ar, ...(P.ar || {}) };
   P.sm = { ...(P.sm || {}) };              // photo → its small copy for the cards
+  P.og = { ...(P.og || {}) };              // cropped photo → the photo as first uploaded
   let slugTouched = !isNew;
   /* every part of the product on one page, photos first */
   const SECTIONS = [['media', 'Photos & Media'], ['basic', 'Basic Info'], ['pricing', 'Pricing & Offers'], ['variants', 'Variations'], ['inventory', 'Inventory & Shipping'], ['arabic', 'Arabic · العربية'], ['seo', 'Details & SEO']];
@@ -597,6 +601,8 @@ const ProductEditor = (id, tab) => {
           toast('Uploading…');
           const full = await upload(out.blob, out.ext);
           P.imgs.push(full);
+          /* keep the uncut photo too, so the crop can be redone or undone later */
+          if (out.cropped) { try { const o = await shrinkImage(f, PHOTO_MAX, 0.86); P.og[full] = await upload(o.blob, o.ext); } catch (e) { console.error(e); } }
           try { P.sm[full] = await uploadThumb(out.blob); } catch (e) { console.error(e); }
           touch();
         }
@@ -604,8 +610,20 @@ const ProductEditor = (id, tab) => {
         return;
       }
       const rm = t.closest('[data-rm]'); if (rm) { const before = P.imgs[0]; P.imgs.splice(Number(rm.dataset.rm), 1); mainChanged(before); touch(); return draw(); }
-      const cr = t.closest('[data-crop]');
-      if (cr) { const i = Number(cr.dataset.crop); const p = await recrop(P.imgs[i], { title: 'Crop image', ratio: '4:5' }); if (p) { const before = P.imgs[0]; P.imgs[i] = p; try { P.sm[p] = await uploadThumb(site(p)); } catch (e) { console.error(e); } mainChanged(before); touch(); draw(); } return; }
+      /* the crop button, or a tap anywhere on the photo, opens its crop —
+         always from the uncut photo, so nothing is lost by cropping twice */
+      const cr = t.closest('[data-crop]') || t.closest('#imgs .img-tile');
+      if (cr) {
+        const i = Number(cr.dataset.crop ?? cr.dataset.id), cur = P.imgs[i], src = P.og[cur] || cur;
+        const out = await cropImage(src, { title: 'Crop image', original: !!P.og[cur] });
+        if (!out) return;
+        let p = src;
+        if (!out.reset) { toast('Uploading…'); p = await upload(out.blob, out.ext); P.og[p] = src; }
+        const before = P.imgs[0]; P.imgs[i] = p;
+        if (!P.sm[p]) { try { P.sm[p] = await uploadThumb(site(p)); } catch (e) { console.error(e); } }
+        mainChanged(before); touch(); draw(); toast(out.reset ? 'Back to the original photo' : 'Image updated');
+        return;
+      }
       if (t.closest('#addVideo')) {
         const [f] = await pickFiles('video/mp4,video/webm,video/quicktime');
         if (!f) return;

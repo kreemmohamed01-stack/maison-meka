@@ -187,6 +187,7 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
     <p class="hint" style="margin-top:8px">Drag the photo to position it · drag the edges or corners to crop · use the slider or pinch to zoom.</p>
     <div class="modal-f">
       ${isFile ? '<button class="btn" data-orig>Use without cropping</button>' : ''}
+      ${opts.original ? '<button class="btn" data-reset>Reset to original</button>' : ''}
       <button class="btn" data-x>Cancel</button>
       <button class="btn btn-green" data-ok>Use this crop</button>
     </div>`, true);
@@ -276,6 +277,8 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
     const r = e.target.closest('[data-r]');
     if (r) { ratio = ratios.find(x => x.k === r.dataset.r); $$('[data-r]', c).forEach(b => b.classList.toggle('on', b === r)); z = 1; zoom.value = 1; layout(); return; }
     if (e.target.closest('[data-x]')) { modal.close(); return; }
+    /* back to the photo exactly as it was first uploaded */
+    if (e.target.closest('[data-reset]')) { modal.onClose = null; modal.close(); resolve({ reset: true }); return; }
     if (e.target.closest('[data-orig]')) {
       modal.onClose = null; modal.close();
       /* the whole photo, as it is — only made lighter */
@@ -295,7 +298,7 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
       encodeCanvas(cv, 0.86, isPng).then((blob) => {
         modal.onClose = null; modal.close();
         if (isFile) URL.revokeObjectURL(url);
-        resolve({ blob, ext: extOf(blob) });
+        resolve({ blob, ext: extOf(blob), cropped: true });
       });
     }
   });
@@ -377,6 +380,8 @@ const sortable = (container, itemSel, { handle, onEnd } = {}) => {
       item.style.transform = `translate(${x - ox - r.left}px, ${y - oy - r.top}px)`;
     };
     const move = (ev) => {
+      /* a tap that wobbles a little is still a tap, not a drag */
+      if (!moved && Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) < 6) return;
       moved = true;
       const x = ev.clientX, y = ev.clientY;
       item.style.pointerEvents = 'none';
