@@ -14,3 +14,10 @@ review/
 /*.png
 .env*
 .vercel/
+/*.jpg
+/*.jpeg
+/*.mp4
+assets/insta.mp4
+.claude/
+.agents/
+*.tmp
