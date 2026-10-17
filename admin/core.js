@@ -171,7 +171,8 @@ const RATIOS = [
 ];
 const cropImage = (source, opts = {}) => new Promise((resolve) => {
   const ratios = opts.ratios ? RATIOS.filter(r => r.k === 'Free' || opts.ratios.includes(r.k)) : RATIOS;
-  let ratio = ratios.find(r => r.k === (opts.ratio || '4:5')) || ratios[0];
+  /* opens on the whole photo — nothing is cut until you pull an edge or pick a shape */
+  let ratio = ratios.find(r => r.k === 'Free') || ratios[0];
   const isFile = source instanceof Blob;
   const url = isFile ? URL.createObjectURL(source) : site(source);
   const isPng = isFile ? source.type === 'image/png' : /\.png(\?|$)/i.test(source);
