@@ -167,10 +167,10 @@ const openMenu = (anchor, items) => {
 /* Pan and zoom the photo inside a frame of the chosen shape; what is inside
    the frame becomes the image used on the website. */
 const RATIOS = [
-  { k:'1:1', v:1 }, { k:'4:5', v:4/5 }, { k:'3:4', v:3/4 }, { k:'4:3', v:4/3 }, { k:'16:9', v:16/9 }, { k:'Original', v:0 }
+  { k:'1:1', v:1 }, { k:'4:5', v:4/5 }, { k:'3:4', v:3/4 }, { k:'4:3', v:4/3 }, { k:'16:9', v:16/9 }, { k:'Original', v:0 }, { k:'Free', v:0 }
 ];
 const cropImage = (source, opts = {}) => new Promise((resolve) => {
-  const ratios = opts.ratios ? RATIOS.filter(r => opts.ratios.includes(r.k)) : RATIOS;
+  const ratios = opts.ratios ? RATIOS.filter(r => r.k === 'Free' || opts.ratios.includes(r.k)) : RATIOS;
   let ratio = ratios.find(r => r.k === (opts.ratio || '4:5')) || ratios[0];
   const isFile = source instanceof Blob;
   const url = isFile ? URL.createObjectURL(source) : site(source);
@@ -178,12 +178,12 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
 
   const c = modal.open(`
     <div class="modal-h"><h2>${esc(opts.title || 'Crop image')}</h2><button class="icon-btn" data-x>${I.x}</button></div>
-    <div class="crop-stage" id="cropStage"><div class="crop-frame" id="cropFrame"><img id="cropImg" alt=""></div></div>
+    <div class="crop-stage" id="cropStage"><div class="crop-box" id="cropBox"><div class="crop-frame" id="cropFrame"><img id="cropImg" alt=""></div>${['n','s','e','w','nw','ne','sw','se'].map(d => `<i class="crop-h h-${d}" data-h="${d}"></i>`).join('')}</div></div>
     <div class="crop-tools">
       <div class="ratios">${ratios.map(r => `<button data-r="${r.k}" class="${r === ratio ? 'on' : ''}">${r.k}</button>`).join('')}</div>
       <input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" aria-label="Zoom">
     </div>
-    <p class="hint" style="margin-top:8px">Drag the photo to position it · use the slider or pinch to zoom.</p>
+    <p class="hint" style="margin-top:8px">Drag the photo to position it · drag the edges or corners to crop · use the slider or pinch to zoom.</p>
     <div class="modal-f">
       ${isFile ? '<button class="btn" data-orig>Use without cropping</button>' : ''}
       <button class="btn" data-x>Cancel</button>
@@ -191,8 +191,8 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
     </div>`, true);
   modal.onClose = () => resolve(null);
 
-  const stage = $('#cropStage', c), frame = $('#cropFrame', c), img = $('#cropImg', c), zoom = $('#cropZoom', c);
-  let iw = 0, ih = 0, fw = 0, fh = 0, base = 1, z = 1, tx = 0, ty = 0;
+  const stage = $('#cropStage', c), box = $('#cropBox', c), frame = $('#cropFrame', c), img = $('#cropImg', c), zoom = $('#cropZoom', c);
+  let iw = 0, ih = 0, fw = 0, fh = 0, fx = 0, fy = 0, base = 1, z = 1, tx = 0, ty = 0;
 
   const clamp = () => {
     const s = base * z;
@@ -200,11 +200,13 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
     ty = Math.min(0, Math.max(fh - ih * s, ty));
   };
   const paint = () => { clamp(); img.style.transform = `translate(${tx}px,${ty}px) scale(${base * z})`; };
+  const place = () => Object.assign(box.style, { left: fx + 'px', top: fy + 'px', width: fw + 'px', height: fh + 'px' });
   const layout = () => {
     const r = ratio.v || iw / ih;
     const sw = stage.clientWidth * 0.9, sh = stage.clientHeight * 0.9;
     fw = Math.min(sw, sh * r); fh = fw / r;
-    frame.style.width = fw + 'px'; frame.style.height = fh + 'px';
+    fx = (stage.clientWidth - fw) / 2; fy = (stage.clientHeight - fh) / 2;
+    place();
     base = Math.max(fw / iw, fh / ih);
     tx = (fw - iw * base * z) / 2; ty = (fh - ih * base * z) / 2;
     paint();
@@ -237,6 +239,34 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
     last = { x: e.clientX, y: e.clientY };
     paint();
   });
+  /* the edges and corners: pull them in to cut the photo, like on a phone —
+     the photo stays where it is and only the frame changes */
+  const setRatio = (k) => { ratio = ratios.find(x => x.k === k); $('[data-r]', c).forEach(b => b.classList.toggle('on', b.dataset.r === k)); };
+  $('[data-h]', c).forEach(h => {
+    let st = null;
+    h.addEventListener('pointerdown', (e) => {
+      e.stopPropagation(); h.setPointerCapture(e.pointerId);
+      const s = base * z;
+      st = { x: e.clientX, y: e.clientY, L: fx, T: fy, R: fx + fw, B: fy + fh,
+             iL: fx + tx, iT: fy + ty, iR: fx + tx + iw * s, iB: fy + ty + ih * s };
+      if (ratio.k !== 'Free') setRatio('Free');
+    });
+    h.addEventListener('pointermove', (e) => {
+      if (!st) return;
+      const d = h.dataset.h, dx = e.clientX - st.x, dy = e.clientY - st.y, MIN = 40;
+      let { L, T, R, B } = st;
+      if (d.includes('w')) L = Math.min(R - MIN, Math.max(st.iL, 0, L + dx));
+      if (d.includes('e')) R = Math.max(L + MIN, Math.min(st.iR, stage.clientWidth, R + dx));
+      if (d.includes('n')) T = Math.min(B - MIN, Math.max(st.iT, 0, T + dy));
+      if (d.includes('s')) B = Math.max(T + MIN, Math.min(st.iB, stage.clientHeight, B + dy));
+      fx = L; fy = T; fw = R - L; fh = B - T;
+      tx = st.iL - fx; ty = st.iT - fy;
+      place(); paint();
+    });
+    const end = () => { st = null; };
+    h.addEventListener('pointerup', end); h.addEventListener('pointercancel', end);
+  });
+
   const up = (e) => { pts.delete(e.pointerId); pinch = null; if (pts.size === 1) last = [...pts.values()][0]; };
   frame.addEventListener('pointerup', up); frame.addEventListener('pointercancel', up);
 

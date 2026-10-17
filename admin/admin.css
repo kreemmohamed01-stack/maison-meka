@@ -367,8 +367,9 @@ svg{ width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.6; 
 .modal-f{ display:flex; justify-content:flex-end; gap:10px; margin-top:20px; flex-wrap:wrap; }
 
 /* cropper */
-.crop-stage{ position:relative; width:100%; background:#1f1c18; border-radius:12px; overflow:hidden; display:grid; place-items:center; height:min(60vh, 460px); touch-action:none; }
-.crop-frame{ position:relative; overflow:hidden; box-shadow:0 0 0 2000px rgba(0,0,0,.55); outline:2px solid #fff; cursor:grab; touch-action:none; }
+.crop-stage{ position:relative; width:100%; background:#1f1c18; border-radius:12px; overflow:hidden; height:min(60vh, 460px); touch-action:none; }
+.crop-box{ position:absolute; }
+.crop-frame{ position:absolute; inset:0; overflow:hidden; box-shadow:0 0 0 2000px rgba(0,0,0,.55); outline:2px solid #fff; cursor:grab; touch-action:none; }
 .crop-frame:active{ cursor:grabbing; }
 .crop-frame img{ position:absolute; left:0; top:0; max-width:none; user-select:none; pointer-events:none; transform-origin:0 0; }
 .crop-frame::after{ content:''; position:absolute; inset:0; pointer-events:none; background:
@@ -376,6 +377,20 @@ svg{ width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.6; 
   linear-gradient(to bottom, transparent 33.2%, rgba(255,255,255,.35) 33.3%, transparent 33.6%, transparent 66.5%, rgba(255,255,255,.35) 66.6%, transparent 66.9%); }
 .crop-tools{ display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; }
 .crop-tools input[type=range]{ flex:1; min-width:140px; accent-color:var(--green); }
+.crop-h{ position:absolute; z-index:2; touch-action:none; }
+.crop-h::before{ content:''; position:absolute; background:#fff; border-radius:3px; box-shadow:0 1px 4px rgba(0,0,0,.4); }
+.h-n, .h-s{ left:24px; right:24px; height:24px; cursor:ns-resize; }
+.h-n{ top:-12px; } .h-s{ bottom:-12px; }
+.h-e, .h-w{ top:24px; bottom:24px; width:24px; cursor:ew-resize; }
+.h-e{ right:-12px; } .h-w{ left:-12px; }
+.h-n::before, .h-s::before{ left:50%; top:50%; width:34px; height:5px; transform:translate(-50%,-50%); }
+.h-e::before, .h-w::before{ left:50%; top:50%; width:5px; height:34px; transform:translate(-50%,-50%); }
+.h-nw, .h-ne, .h-sw, .h-se{ width:28px; height:28px; }
+.h-nw{ left:-10px; top:-10px; cursor:nwse-resize; } .h-se{ right:-10px; bottom:-10px; cursor:nwse-resize; }
+.h-ne{ right:-10px; top:-10px; cursor:nesw-resize; } .h-sw{ left:-10px; bottom:-10px; cursor:nesw-resize; }
+.h-nw::before, .h-ne::before, .h-sw::before, .h-se::before{ width:16px; height:16px; background:transparent; box-shadow:none; border:0 solid #fff; border-radius:0; }
+.h-nw::before{ left:8px; top:8px; border-width:4px 0 0 4px; } .h-ne::before{ right:8px; top:8px; border-width:4px 4px 0 0; }
+.h-sw::before{ left:8px; bottom:8px; border-width:0 0 4px 4px; } .h-se::before{ right:8px; bottom:8px; border-width:0 4px 4px 0; }
 .ratios{ display:flex; gap:6px; flex-wrap:wrap; }
 .ratios button{ height:32px; padding:0 12px; border-radius:8px; border:1px solid var(--line-2); font-size:12.5px; }
 .ratios button.on{ background:var(--green); color:#fff; border-color:var(--green); }
