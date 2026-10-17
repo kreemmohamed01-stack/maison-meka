@@ -241,8 +241,8 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
   });
   /* the edges and corners: pull them in to cut the photo, like on a phone —
      the photo stays where it is and only the frame changes */
-  const setRatio = (k) => { ratio = ratios.find(x => x.k === k); $('[data-r]', c).forEach(b => b.classList.toggle('on', b.dataset.r === k)); };
-  $('[data-h]', c).forEach(h => {
+  const setRatio = (k) => { ratio = ratios.find(x => x.k === k); $$('[data-r]', c).forEach(b => b.classList.toggle('on', b.dataset.r === k)); };
+  $$('[data-h]', c).forEach(h => {
     let st = null;
     h.addEventListener('pointerdown', (e) => {
       e.stopPropagation(); h.setPointerCapture(e.pointerId);
