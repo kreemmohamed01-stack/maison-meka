@@ -212,6 +212,7 @@ const cropImage = (source, opts = {}) => new Promise((resolve) => {
     paint();
   };
   img.onload = () => { iw = img.naturalWidth; ih = img.naturalHeight; img.style.width = iw + 'px'; img.style.height = ih + 'px'; layout(); };
+  if (!isFile) img.crossOrigin = 'anonymous';   // photos on another server — so the crop can be saved
   img.src = url;
 
   const setZoom = (nz, cx = fw / 2, cy = fh / 2) => {
