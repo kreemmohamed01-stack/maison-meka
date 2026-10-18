@@ -225,7 +225,10 @@ const MM = (() => {
      same way there, so the dashboard preview is exactly what shows here */
   /* every card photo fills its square — the old per-product framing is ignored */
   const fitStyle = () => '';
+  /* the photo is shown whole, just as it was cropped in the dashboard; a soft,
+     blown-up copy of it fills whatever room is left in the square */
   const squareImg = (p, cls = '') =>
+    `<img class="mm-sq-bg" src="${esc(thumb(p))}" alt="" aria-hidden="true" loading="lazy" decoding="async">` +
     `<img class="mm-sq-img${cls ? ' ' + cls : ''}" src="${esc(thumb(p))}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
 
   /* ---------- one product card, used by the grid and by "you may also like" ---------- */
