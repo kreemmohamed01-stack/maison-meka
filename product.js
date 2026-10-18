@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   /* a hidden or removed product is not shown — the visitor goes to the shop */
   if (!p) { location.replace('category.html'); return; }
   const cat = MM.homeCat(p);
-  const imgs = p.imgs;
+  /* the photos on show — all of them, or only the chosen colour's */
+  let imgs = p.imgs, smalls = p.thumbs || p.imgs;
   const two = (n) => String(n).padStart(2, '0');
 
   /* ===================== details ===================== */
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     const k = b.dataset.k;
     pick[k] = (k === 'color' ? p.colors : p.sizes)[Number(b.dataset.i)];
     drawVariants(); paintPrice();
+    if (k === 'color') showColorPhotos();
   });
   drawVariants();
   paintPrice();
@@ -128,10 +130,12 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   const gal = $('gal');
   const thumbs = $('galThumbs');
   const dots = $('galDots');
-  /* the photos, then the product video when one has been added */
-  const media = imgs.map((src, i) => ({ type: 'img', src, small: (p.thumbs && p.thumbs[i]) || src }));
-  if (p.video) media.push({ type: 'video', src: p.video });
   const PLAY = '<span class="pp-play"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>';
+  let media = [], slides = [], cur = 0;
+  const drawGallery = () => {
+  /* the photos, then the product video when one has been added */
+  media = imgs.map((src, i) => ({ type: 'img', src, small: smalls[i] || src }));
+  if (p.video) media.push({ type: 'video', src: p.video });
   $('galSlides').innerHTML = media.map((m, i) =>
     `<div class="pp-slide${i === 0 ? ' on' : ''}">${m.type === 'video'
       ? `<video class="pp-slide-img pp-video" src="${MM.esc(m.src)}" controls playsinline preload="metadata"></video>`
@@ -140,10 +144,22 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     `<button class="pp-thumb${i === 0 ? ' on' : ''}" data-i="${i}" aria-label="${m.type === 'video' ? 'Video' : 'Photo ' + (i + 1)}">${m.type === 'video'
       ? `<video src="${MM.esc(m.src)}#t=0.5" muted playsinline preload="metadata"></video>${PLAY}` : `<img src="${MM.esc(m.small)}" alt="" loading="lazy" decoding="async">`}</button>`).join('');
   dots.innerHTML = media.map((_, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('');
-  if (media.length < 2) { thumbs.hidden = true; dots.hidden = true; }
-
-  let cur = 0;
-  const slides = [...gal.querySelectorAll('.pp-slide')];
+  thumbs.hidden = dots.hidden = media.length < 2;
+  slides = [...gal.querySelectorAll('.pp-slide')];
+  cur = 0;
+  $('lb').classList.toggle('single', imgs.length < 2);
+  };
+  /* a colour with its own photos shows just those; otherwise every photo */
+  const showColorPhotos = () => {
+    const own = (pick.color && pick.color.imgs) || [];
+    const next = own.length ? own.map(i => p.imgs[i]) : p.imgs;
+    if (next.join() === imgs.join()) return;
+    imgs = next;
+    smalls = own.length ? own.map(i => (p.thumbs || p.imgs)[i]) : (p.thumbs || p.imgs);
+    drawGallery();
+    $('barImg').src = smalls[0] || imgs[0];
+  };
+  drawGallery();
   const show = (i) => {
     cur = (i + media.length) % media.length;
     slides.forEach((s, k) => s.classList.toggle('on', k === cur));
@@ -175,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   /* ---------- full-screen viewer ---------- */
   const lb = $('lb');
   let li = 0;
-  if (imgs.length < 2) lb.classList.add('single');
   const lbShow = (i) => {
     li = (i + imgs.length) % imgs.length;
     $('lbImg').src = imgs[li];
@@ -274,7 +289,8 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   });
 
   /* ===================== the sticky bar on phones ===================== */
-  $('barImg').src = (p.thumbs && p.thumbs[0]) || imgs[0];
+  showColorPhotos();
+  $('barImg').src = smalls[0] || imgs[0];
   $('barName').textContent = p.name;
   const bar = $('pdBar');
   const buy = $('pdBuy');

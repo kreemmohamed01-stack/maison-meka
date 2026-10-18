@@ -472,7 +472,12 @@ const ProductEditor = (id, tab) => {
           <td><input class="in" type="number" min="0" data-v="stock" value="${esc(v.stock ?? 0)}"></td>
           <td><input class="in" type="number" min="0" data-v="price" value="${esc(v.price ?? P.price)}"></td>
           <td><button class="icon-btn" data-del title="Remove">${I.trash}</button></td>
-        </tr>`).join('');
+        </tr>${kind === 'colors' ? `
+        <tr class="vimgs-row"><td></td><td colspan="5">
+          ${P.imgs.length ? `<p class="vimgs-t">Photos of this color <small>(tap to choose — none chosen shows all photos)</small></p>
+          <div class="vimgs">${P.imgs.map((src, j) => `<button type="button" class="vimg${(v.imgs || []).includes(src) ? ' on' : ''}" data-cimg="${i}" data-j="${j}"><img src="${site((P.sm || {})[src] || src)}" alt=""></button>`).join('')}</div>`
+          : '<p class="vimgs-t muted">Add product photos first, then choose which ones show this color.</p>'}
+        </td></tr>` : ''}`).join('');
       const table = (kind, title, addLabel) => `
         <div class="card" style="margin-bottom:18px"><h3>${title}</h3>
           ${(P[kind] || []).length ? `<table class="vtable"><thead><tr><th></th><th>Name</th><th>Arabic</th><th>Stock</th><th>Price (EGP)</th><th></th></tr></thead><tbody>${rows(kind)}</tbody></table>` : '<p class="muted">None yet.</p>'}
@@ -609,6 +614,7 @@ const ProductEditor = (id, tab) => {
         let p = src;
         if (!out.reset) { toast('Uploading…'); p = await upload(out.blob, out.ext); P.og[p] = src; }
         const before = P.imgs[0]; P.imgs[i] = p;
+        (P.colors || []).forEach(v => { if (v.imgs) v.imgs = v.imgs.map(u => u === cur ? p : u); });
         if (!P.sm[p]) { try { P.sm[p] = await uploadThumb(site(p)); } catch (e) { console.error(e); } }
         mainChanged(before); touch(); draw(); toast(out.reset ? 'Back to the original photo' : 'Image updated');
         return;
@@ -625,6 +631,12 @@ const ProductEditor = (id, tab) => {
       const dt = t.closest('#dType button'); if (dt) { P.discount.type = dt.dataset.v; touch(); return draw(); }
       const add = t.closest('[data-add]');
       if (add) { P[add.dataset.add].push({ name: '', ar: '', hex: '#d8cbb5', stock: 0, price: P.price }); touch(); return draw(); }
+      const ci = t.closest('[data-cimg]');
+      if (ci) {
+        const v = P.colors[Number(ci.dataset.cimg)], src = P.imgs[Number(ci.dataset.j)];
+        v.imgs = (v.imgs || []).includes(src) ? v.imgs.filter(u => u !== src) : [...(v.imgs || []), src];
+        ci.classList.toggle('on'); touch(); return;
+      }
       const del = t.closest('[data-del]');
       if (del) { const tr = del.closest('tr'); P[tr.dataset.kind].splice(Number(tr.dataset.i), 1); touch(); return draw(); }
     };
