@@ -2277,16 +2277,10 @@ html[lang="ar"] .cp-code{ letter-spacing:.12em !important; direction:ltr; }
    Zoom (--sq-z), position (--sq-x / --sq-y, share of the square) and the
    background come from the dashboard's Card framing; the dashboard preview
    uses these exact rules, so what is set there is what shows here. */
-.mm-sq{ position:relative; display:block; aspect-ratio:1 / 1; overflow:hidden; background:var(--sq-bg, #f6f2ea); }
-.mm-sq > a{ position:absolute; inset:0; display:block; }
-.mm-sq-img{
-  position:absolute; inset:0; width:100%; height:100%; max-width:none;
-  object-fit:contain; object-position:50% 50%;
-}
-.mm-sq-bg{
-  position:absolute; inset:-12%; width:124%; height:124%; max-width:none;
-  object-fit:cover; filter:blur(22px) saturate(1.1); opacity:.85; pointer-events:none;
-}
+/* the card takes the shape of the photo as cropped — nothing cut, nothing added */
+.mm-sq{ position:relative; display:block; overflow:hidden; background:var(--sq-bg, #f6f2ea); }
+.mm-sq > a{ display:block; }
+.mm-sq-img{ display:block; width:100%; height:auto; max-width:none; }
 
 
 /* ===================== the piece flies into the bag ===================== */
