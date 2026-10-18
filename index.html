@@ -6,7 +6,12 @@
 <script src="i18n.js"></script>
 <script>
 /* the intro film plays once per visit, before the home page appears */
-(function(){ try { if (!sessionStorage.getItem('mm-intro')) document.documentElement.classList.add('intro-on'); } catch (e) {} })();
+/* coming back to home from another page of the site never replays it */
+(function(){ try {
+  var inside = false; try { inside = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+  if (!inside && !sessionStorage.getItem('mm-intro')) document.documentElement.classList.add('intro-on');
+  sessionStorage.setItem('mm-intro', '1');
+} catch (e) {} })();
 </script>
 <title>Maison Meka | Home Art</title>
 <meta name="description" content="Maison Meka — curated home art: Murano glass, porcelain, potiches, lamps and timeless decor, chosen to bring beauty into your home.">
