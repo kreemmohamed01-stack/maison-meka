@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   $('pdCrumbName').textContent = p.name;
   $('pdBadge').textContent = p.badge || '';
   $('pdDesc').innerHTML    = MM.safeHTML(p.desc);
+  $('pdSize').textContent  = p.size || '';
+  $('pdSizeRow').hidden    = !p.size;
   $('pdDims').textContent  = p.dims || '—';
   $('pdMat').textContent   = p.material || '—';
   if (cat) {

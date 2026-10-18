@@ -309,10 +309,10 @@ const NEW_PRODUCT = () => ({
   name: '', slug: '', active: true, cats: [], tags: [], price: 0, salePrice: 0,
   discount: { on: false, type: 'percentage', value: 0, start: '', end: '' }, couponAllowed: true,
   labels: { featured: false, bestseller: false, newArrival: true, onSale: false, limited: false },
-  material: '', dims: '', imgs: [], sm: {}, video: '', banner: '', desc: '', shortDesc: '', details: [], care: '',
+  material: '', size: '', dims: '', imgs: [], sm: {}, video: '', banner: '', desc: '', shortDesc: '', details: [], care: '',
   trackInventory: true, stock: 0, lowAlert: 5, sku: '', barcode: '', weight: '', length: '', width: '', height: '',
   shippingClass: 'standard', colors: [], sizes: [], seo: { title: '', description: '' },
-  ar: { name: '', shortDesc: '', desc: '', details: [], care: '', dims: '' }
+  ar: { name: '', shortDesc: '', desc: '', details: [], care: '', dims: '', size: '' }
 });
 
 /* a product's main photo, as its small copy — for lists and alerts */
@@ -358,7 +358,7 @@ const ProductEditor = (id, tab) => {
   P.og = { ...(P.og || {}) };              // cropped photo → the photo as first uploaded
   let slugTouched = !isNew;
   /* every part of the product on one page, photos first */
-  const SECTIONS = [['media', 'Photos & Media'], ['basic', 'Basic Info'], ['pricing', 'Pricing & Offers'], ['variants', 'Variations'], ['inventory', 'Inventory & Shipping'], ['arabic', 'Arabic · العربية'], ['seo', 'Details & SEO']];
+  const SECTIONS = [['media', 'Photos & Media'], ['basic', 'Basic Info'], ['pricing', 'Pricing & Offers'], ['variants', 'Variations'], ['inventory', 'Inventory'], ['seo', 'SEO']];
 
   view.innerHTML = `
     <a class="back" href="#/products">${I.back} Products</a>
@@ -387,6 +387,19 @@ const ProductEditor = (id, tab) => {
           <div class="card form-stack">
             <h3 style="margin:0">Basic Information</h3>
             ${fld('Product Name', 'name', { req: true, ph: 'e.g. Luna Ceramic Vase' })}
+          </div>
+          <div class="card form-stack" style="border:1.5px solid var(--accent, #b08d57)">
+            <h3 style="margin:0">Product Details</h3>
+            <p class="hint" style="margin:0">Shown side by side on the product page.</p>
+            <div class="grid g2" style="gap:4px 18px">
+              ${fld('Size', 'size', { ph: 'e.g. Large, 30 cm, Set of 2' })}
+              ${fld('Dimensions', 'dims', { ph: 'e.g. H 27 cm' })}
+            </div>
+            ${fld('Material', 'material', { ph: 'Glass, Ceramic, Porcelain, Metal, Wood…', hint: 'Used by the Material filter on the category page.' })}
+            <label class="fld"><span>Details (one per line)</span><textarea data-k="details" data-lines>${esc((P.details || []).join('\n'))}</textarea></label>
+            <label class="fld"><span>Care Instructions</span><textarea data-k="care">${esc(P.care || '')}</textarea></label>
+          </div>
+          <div class="card form-stack">
             ${fld('Slug (URL)', 'slug', { hint: 'The link of the product page: product.html?id=<b>' + esc(P.slug || 'your-product') + '</b>' })}
             <div class="fld"><span>Description</span>${rteHTML('pDesc', P.desc)}</div>
             ${fld('Short Description', 'shortDesc', { ph: 'One line that sums the piece up' })}
@@ -473,7 +486,7 @@ const ProductEditor = (id, tab) => {
       const hasVars = (P.colors || []).length || (P.sizes || []).length;
       const total = [...(P.colors || []), ...(P.sizes || [])].reduce((s, v) => s + (Number(v.stock) || 0), 0);
       return `
-      <div class="grid g2">
+      <div class="grid">
         <div class="card form-stack"><h3 style="margin:0">Inventory Settings</h3>
           ${toggle('Track Inventory', 'trackInventory', 'Turn off for pieces that are always available')}
           ${hasVars ? `<label class="fld"><span>Current Stock</span><input value="${total}" disabled><small class="hint">The sum of the variant stock — edit it in Variations.</small></label>` : fld('Current Stock', 'stock', { num: true, type: 'number', min: 0 })}
@@ -481,35 +494,11 @@ const ProductEditor = (id, tab) => {
           ${fld('SKU', 'sku')}
           ${fld('Barcode (optional)', 'barcode')}
         </div>
-        <div class="card form-stack"><h3 style="margin:0">Shipping</h3>
-          ${fld('Weight (kg)', 'weight', { num: true, type: 'number', min: 0 })}
-          <div class="fld"><span>Dimensions (cm) — L × W × H</span><div class="row">${['length', 'width', 'height'].map(k => `<input class="in" type="number" min="0" data-k="${k}" data-num value="${esc(P[k] ?? '')}" placeholder="${k[0].toUpperCase()}">`).join('')}</div></div>
-          <label class="fld"><span>Shipping Class</span><select data-k="shippingClass">${[['standard', 'Standard'], ['fragile', 'Fragile Items'], ['oversized', 'Oversized']].map(([k, l]) => `<option value="${k}" ${P.shippingClass === k ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
-        </div>
       </div>`;
     },
 
-    arabic: () => `
-      <div class="card form-stack" dir="rtl" style="margin-bottom:18px">
-        <h3 style="margin:0">النسخة العربية</h3>
-        <p class="hint">يظهر هذا النص عندما يحوّل الزائر الموقع إلى العربية. أي خانة فارغة تظهر بالإنجليزية.</p>
-        ${fld('اسم المنتج', 'ar.name', { ph: P.name })}
-        ${fld('وصف قصير', 'ar.shortDesc')}
-        <div class="fld"><span>الوصف</span>${rteHTML('pDescAr', P.ar.desc)}</div>
-        ${fld('المقاسات كما تظهر على الموقع', 'ar.dims', { ph: P.dims })}
-        <label class="fld"><span>التفاصيل (كل سطر نقطة)</span><textarea data-k="ar.details" data-lines>${esc((P.ar.details || []).join(String.fromCharCode(10)))}</textarea></label>
-        <label class="fld"><span>إرشادات العناية</span><textarea data-k="ar.care">${esc(P.ar.care || '')}</textarea></label>
-      </div>
-      <p class="hint">Colour and size names in Arabic are set in Variations, above.</p>`,
-
     seo: () => `
-      <div class="grid g2">
-        <div class="card form-stack"><h3 style="margin:0">Product Details (on the website)</h3>
-          ${fld('Material', 'material', { ph: 'Glass, Ceramic, Porcelain, Metal, Wood…', hint: 'Used by the Material filter on the category page.' })}
-          ${fld('Dimensions shown on the website', 'dims', { ph: 'e.g. H 27 cm' })}
-          <label class="fld"><span>Details (one per line)</span><textarea data-k="details" data-lines>${esc((P.details || []).join('\n'))}</textarea></label>
-          <label class="fld"><span>Care Instructions</span><textarea data-k="care">${esc(P.care || '')}</textarea></label>
-        </div>
+      <div class="grid">
         <div class="card form-stack"><h3 style="margin:0">Search Engines (SEO)</h3>
           ${fld('SEO Title', 'seo.title', { ph: P.name ? P.name + ' | Maison Meka' : '' })}
           <label class="fld"><span>Meta Description</span><textarea data-k="seo.description" placeholder="A sentence or two that appears under the title in Google">${esc((P.seo || {}).description || '')}</textarea></label>

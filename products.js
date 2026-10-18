@@ -36,7 +36,7 @@ const MM_READY = fetch(MM_API + '/api/catalog')
       const pick = (ar, en) => has(ar) ? ar : en;
       PRODUCTS.forEach(p => {
         const a = p.ar || {};
-        ['name', 'desc', 'shortDesc', 'details', 'care', 'dims'].forEach(k => { p[k] = pick(a[k], p[k]); });
+        ['name', 'desc', 'shortDesc', 'details', 'care', 'dims', 'size'].forEach(k => { p[k] = pick(a[k], p[k]); });
         [...(p.colors || []), ...(p.sizes || [])].forEach(v => { v.label = pick(v.ar, v.name); });
       });
       CATEGORIES_ALL.forEach(c => { const a = c.ar || {}; c.name = pick(a.name, c.name); c.desc = pick(a.desc, c.desc); });
