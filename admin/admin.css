@@ -337,9 +337,10 @@ svg{ width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.6; 
 .rte-body{ min-height:120px; padding:12px 14px; line-height:1.65; font-size:13.5px; outline:none; }
 .rte-body ul, .rte-body ol{ padding-left:20px; }
 
-.imgs{ display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:12px; }
-.img-tile{ cursor:pointer; position:relative; aspect-ratio:1; border-radius:11px; overflow:hidden; background:var(--panel); border:1px solid var(--line); touch-action:none; }
-.img-tile img, .img-tile video{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
+.imgs{ display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:12px; align-items:start; }
+.img-tile{ cursor:pointer; position:relative; border-radius:11px; overflow:hidden; background:var(--panel); border:1px solid var(--line); touch-action:none; }
+/* the tile takes the shape of the photo as cropped — exactly as the site's cards show it */
+.img-tile img, .img-tile video{ display:block; width:100%; height:auto; pointer-events:none; }
 .img-tile .x, .x{ position:absolute; top:7px; right:7px; width:26px; height:26px; padding:6px; border-radius:50%; background:#fff; color:var(--red); box-shadow:0 2px 8px rgba(0,0,0,.15); z-index:2; }
 .img-tile .crop{ position:absolute; bottom:7px; right:7px; width:30px; height:30px; padding:7px; border-radius:50%; background:#fff; color:var(--ink); box-shadow:0 2px 8px rgba(0,0,0,.15); z-index:2; }
 .img-tile .cv{ position:absolute; left:7px; top:7px; z-index:2; }
