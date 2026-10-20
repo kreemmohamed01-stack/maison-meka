@@ -265,13 +265,8 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
       const pos = new Map(cat.productOrder.map((id, i) => [id, i]));
       own = [...own].sort((a, b) => (pos.has(a.id) ? pos.get(a.id) : 1e6) - (pos.has(b.id) ? pos.get(b.id) : 1e6));
     }
-    // while the catalogue is still filling in, the rest of it follows the
-    // category's own pieces so every page has a full grid to judge
-    if (PREVIEW_FILL && state.cat !== 'all') {
-      list = [...own, ...list.filter(p => !inCat(p, state.cat))];
-    } else {
-      list = own;
-    }
+    // a category shows only its own pieces
+    list = own;
 
     const cmp = {
       new:  (a, b) => b.added - a.added,
@@ -279,12 +274,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
       high: (a, b) => b.price - a.price,
       name: (a, b) => a.name.localeCompare(b.name)
     }[state.sort];
-    if (cmp) {
-      // sorting keeps the category's own pieces at the head of the list
-      const mine = list.filter(p => inCat(p, state.cat)).sort(cmp);
-      const rest = list.filter(p => !inCat(p, state.cat)).sort(cmp);
-      list = [...mine, ...rest];
-    }
+    if (cmp) list = [...list].sort(cmp);
     return list;
   };
 
