@@ -35,11 +35,6 @@
 <!-- ===== intro film ===== -->
 <div class="intro" id="intro" aria-hidden="true">
   <video id="introVideo" data-src="assets/intro.mp4" playsinline preload="auto"></video>
-  <button class="intro-sound" id="introSound" type="button" hidden>
-    <svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 010 6"/><path d="M18 6.5a8 8 0 010 11"/></svg>
-    <span>Tap for sound</span>
-  </button>
-  <button class="intro-skip" id="introSkip" type="button">Skip</button>
 </div>
 <script>
 (function () {
@@ -58,19 +53,13 @@
     window.dispatchEvent(new Event('mm-intro-done'));
     setTimeout(function () { root.classList.remove('intro-on'); if (box.parentNode) box.parentNode.removeChild(box); }, 900);
   }
-  /* with sound when the browser allows it; otherwise it plays silently and
-     offers a button to turn the sound on */
-  var snd = document.getElementById('introSound');
+  /* with sound when the browser allows it; otherwise it plays silently */
   v.muted = false; v.volume = 1;
   var p = v.play();
   if (p && p.catch) p.catch(function () {
     v.muted = true;
     var q = v.play(); if (q && q.catch) q.catch(finish);
-    snd.hidden = false;
   });
-  snd.addEventListener('click', function (e) { e.stopPropagation(); v.muted = false; v.play(); snd.hidden = true; });
-  box.addEventListener('click', function (e) { if (e.target === v && v.muted) { v.muted = false; snd.hidden = true; } });
-  document.getElementById('introSkip').addEventListener('click', finish);
   v.addEventListener('ended', finish);
   v.addEventListener('error', finish);
   setTimeout(finish, 12000);
