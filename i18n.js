@@ -75,7 +75,7 @@
     // categories (fallback text before the data arrives)
     'Antiques & Vintage':'تحف وأنتيكات', 'Tableaux':'لوحات', 'Murano':'مورانو', 'Lamp Stands & Lampdaire':'أباجورات ولامبادير',
     'Vases':'فازات', 'Cachpots':'كاشبوهات', 'Potiches':'بوتيشات', 'Wall Plates':'أطباق حائط', 'Bonboniera':'بونبونيرات',
-    'Jardinière':'جاردينيرات', 'Stands & Stools':'ستاندات وكراسي', 'Candle Holders':'شمعدانات', 'Center Pieces':'سنترات', 'Decor':'ديكور', 'Tea Set, Plates & Trays':'أطقم شاي وأطباق وصواني',
+    'Jardinière':'جاردينيرات', 'Stands & Stools':'ستاندات وكراسي', 'Candle Holders':'شمعدانات', 'Center Pieces':'سنترات', 'Decor':'ديكور', 'Tea Set, Plates & Trays':'أطقم شاي وأطباق وصواني', 'Discover the collection':'اكتشف المجموعة', 'Tea sets, serving plates and trays for the table and the tea hour.':'أطقم شاي وأطباق تقديم وصواني للمائدة ولوقت الشاي.',
     // shop page
     'The Collection':'المجموعة', 'Maison Meka · Home Art':'ميزون ميكا · فن المنزل', 'Shop the Edit':'تسوّق التشكيلة',
     'Pieces':'قطعة', 'Piece':'قطعة', 'All Pieces':'كل القطع', 'Filter By':'تصفية حسب', 'Category':'القسم', 'Price':'السعر',

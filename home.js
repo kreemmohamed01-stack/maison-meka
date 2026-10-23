@@ -53,8 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const rem = cats.length % 4;
       const fullAt = rem === 3 ? cats.length - 1 : -1;
       const wideFrom = rem === 2 ? cats.length - 2 : rem === 3 ? cats.length - 3 : cats.length;
-      grid.innerHTML = cats.map((c, i) => `
-        <a href="category.html?c=${encodeURIComponent(c.slug)}" class="cat-card${i === fullAt ? ' cat-full' : i >= wideFrom ? ' cat-wide' : ''}">
+      grid.innerHTML = cats.map((c, i) => i === fullAt ? `
+        <a href="category.html?c=${encodeURIComponent(c.slug)}" class="cat-card cat-full">
+          <span class="cat-feat">
+            <span class="cat-feat-kicker">No. ${String(i + 1).padStart(2, '0')}</span>
+            <span class="cat-feat-title">${MM.esc(c.name)}</span>
+            <span class="cat-feat-rule"></span>
+            ${c.desc ? `<span class="cat-feat-desc">${MM.esc(c.desc)}</span>` : ''}
+            <span class="cat-feat-cta"><span>Discover the collection</span><i aria-hidden="true">→</i></span>
+          </span>
+          <span class="cat-shot"><img src="${MM.esc(c.card || c.img)}" alt="${MM.esc(c.name)}"></span>
+        </a>` : `
+        <a href="category.html?c=${encodeURIComponent(c.slug)}" class="cat-card${i >= wideFrom ? ' cat-wide' : ''}">
           <span class="cat-head"><span class="cat-num">${String(i + 1).padStart(2, '0')}</span></span>
           <span class="cat-shot"><img src="${MM.esc(c.card || c.img)}" alt="${MM.esc(c.name)}"></span>
           <span class="cat-label"><span class="cat-name">${MM.esc(c.name)}</span></span>
