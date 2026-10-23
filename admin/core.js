@@ -154,6 +154,13 @@ const openMenu = (anchor, items) => {
   m.className = 'menu';
   m.innerHTML = items.map((it, i) => `<button data-i="${i}" class="${it.danger ? 'danger' : ''}">${it.icon || ''}${esc(it.label)}</button>`).join('');
   anchor.closest('.menu-wrap').appendChild(m);
+  /* fixed to the viewport so the list box never clips it; opens upward when
+     there is no room below */
+  const r = anchor.getBoundingClientRect();
+  m.style.position = 'fixed';
+  m.style.right = Math.max(8, innerWidth - r.right) + 'px';
+  m.style.top = (r.bottom + 6 + m.offsetHeight > innerHeight - 8 ? Math.max(8, r.top - 6 - m.offsetHeight) : r.bottom + 6) + 'px';
+  addEventListener('scroll', () => m.remove(), { once: true, capture: true });
   m.addEventListener('click', (e) => {
     const b = e.target.closest('[data-i]');
     if (!b) return;
