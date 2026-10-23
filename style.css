@@ -1154,6 +1154,7 @@ body > svg[aria-hidden="true"]{ position:absolute; width:0; height:0; pointer-ev
 .cat-card:hover .cat-shot img{ transform:scale(1.08); }
 /* the two wide cards close the grid, as on the reference sheet */
 .cat-wide{ grid-column:span 2; }
+.cat-full{ grid-column:1 / -1; aspect-ratio:32/9; }
 
 /* the closing rule under the grid */
 .cat-foot{

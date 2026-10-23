@@ -49,9 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = $('.cat-grid');
     const cats = CATEGORIES_ALL.filter(c => c.featured);
     if (grid && cats.length) {
-      const wideFrom = cats.length % 4 === 2 ? cats.length - 2 : cats.length;
+      /* the grid closes on two wide cards; a third leftover runs full width under them */
+      const rem = cats.length % 4;
+      const fullAt = rem === 3 ? cats.length - 1 : -1;
+      const wideFrom = rem === 2 ? cats.length - 2 : rem === 3 ? cats.length - 3 : cats.length;
       grid.innerHTML = cats.map((c, i) => `
-        <a href="category.html?c=${encodeURIComponent(c.slug)}" class="cat-card${i >= wideFrom ? ' cat-wide' : ''}">
+        <a href="category.html?c=${encodeURIComponent(c.slug)}" class="cat-card${i === fullAt ? ' cat-full' : i >= wideFrom ? ' cat-wide' : ''}">
           <span class="cat-head"><span class="cat-num">${String(i + 1).padStart(2, '0')}</span></span>
           <span class="cat-shot"><img src="${MM.esc(c.card || c.img)}" alt="${MM.esc(c.name)}"></span>
           <span class="cat-label"><span class="cat-name">${MM.esc(c.name)}</span></span>
