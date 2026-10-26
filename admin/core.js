@@ -146,21 +146,35 @@ const pickFiles = (accept, multiple) => new Promise(res => {
 
 /* ---------- the ⋯ menu ---------- */
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.menu-wrap')) $$('.menu').forEach(m => m.remove());
+  if (!e.target.closest('.menu-wrap') && !e.target.closest('.menu')) $$('.menu').forEach(m => m.remove());
 });
 const openMenu = (anchor, items) => {
+  /* a second tap on the same ⋯ closes it */
+  const was = document.querySelector('.menu');
   $$('.menu').forEach(m => m.remove());
+  if (was && was._anchor === anchor) return;
   const m = document.createElement('div');
   m.className = 'menu';
-  m.innerHTML = items.map((it, i) => `<button data-i="${i}" class="${it.danger ? 'danger' : ''}">${it.icon || ''}${esc(it.label)}</button>`).join('');
-  anchor.closest('.menu-wrap').appendChild(m);
-  /* fixed to the viewport so the list box never clips it; opens upward when
-     there is no room below */
+  m._anchor = anchor;
+  m.innerHTML = items.map((it, i) => `<button type="button" data-i="${i}" class="${it.danger ? 'danger' : ''}">${it.icon || ''}${esc(it.label)}</button>`).join('');
+  /* on the page itself, fixed to the screen, so no list or card around the
+     button can crop it; opens upward when there is no room below */
+  document.body.appendChild(m);
   const r = anchor.getBoundingClientRect();
+  const h = m.offsetHeight, w = m.offsetWidth;
   m.style.position = 'fixed';
-  m.style.right = Math.max(8, innerWidth - r.right) + 'px';
-  m.style.top = (r.bottom + 6 + m.offsetHeight > innerHeight - 8 ? Math.max(8, r.top - 6 - m.offsetHeight) : r.bottom + 6) + 'px';
-  addEventListener('scroll', () => m.remove(), { once: true, capture: true });
+  m.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.right - w)) + 'px';
+  const below = r.bottom + 6, above = r.top - 6 - h;
+  m.style.top = (below + h <= innerHeight - 8 ? below : above >= 8 ? above : Math.max(8, innerHeight - h - 8)) + 'px';
+  m.style.maxHeight = (innerHeight - 16) + 'px';
+  /* closes when the page really scrolls, not on the small jiggle of a tap */
+  const y0 = scrollY;
+  const onScroll = (e) => {
+    if (!m.isConnected) return removeEventListener('scroll', onScroll, true);
+    if (e.target && e.target.nodeType === 1 && m.contains(e.target)) return;
+    if (Math.abs(scrollY - y0) > 30 || (e.target !== document && e.target.nodeType === 1)) { m.remove(); removeEventListener('scroll', onScroll, true); }
+  };
+  setTimeout(() => addEventListener('scroll', onScroll, true), 250);
   m.addEventListener('click', (e) => {
     const b = e.target.closest('[data-i]');
     if (!b) return;
@@ -169,7 +183,6 @@ const openMenu = (anchor, items) => {
     items[Number(b.dataset.i)].run();
   });
 };
-
 /* ===================== image cropper ===================== */
 /* Pan and zoom the photo inside a frame of the chosen shape; what is inside
    the frame becomes the image used on the website. */

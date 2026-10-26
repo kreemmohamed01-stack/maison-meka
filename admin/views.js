@@ -971,7 +971,7 @@ const Reviews = () => {
           <div class="rv-by"><b>${esc(r.name)}</b> <span class="muted">· ${fmtDate(r.date, true)}</span></div>
           ${r.text ? `<p class="rv-txt">${esc(r.text)}</p>` : '<p class="muted">Stars only, no comment.</p>'}
         </div>
-        <div class="li-end"><button class="btn" data-del>Delete</button></div>
+        <div class="li-end"><button class="btn btn-red" data-del>${I.trash} Delete</button></div>
       </div>`;
     }).join('') || '<div class="empty"><b>No reviews yet</b></div>';
   };
