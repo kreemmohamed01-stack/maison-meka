@@ -1,4 +1,4 @@
-/* ===================== Maison Meka — dashboard ===================== */
+﻿/* ===================== Maison Meka — dashboard ===================== */
 :root{
   --bg:      #f4f0e8;
   --panel:   #fbf9f4;
@@ -512,3 +512,12 @@ svg{ width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.6; 
 .img-tile .mk-main{ position:absolute; left:7px; top:7px; z-index:2; width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:#fff; color:var(--yellow); font-size:16px; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.15); }
 .img-tile .mk-main:hover{ background:var(--yellow); color:#fff; }
 .img-tile[data-id="0"]{ outline:2px solid var(--green); outline-offset:2px; }
+
+/* reviews */
+.rv-st{ display:inline-flex; gap:1px; margin-left:8px; }
+.rv-st i{ width:15px; height:15px; display:block; }
+.rv-st svg{ width:100%; height:100%; fill:#e3ddd0; stroke:none; }
+.rv-st i.on svg{ fill:#d4a537; }
+.rv-by{ margin-top:4px; font-size:13px; }
+.rv-txt{ margin-top:6px; font-size:14px; line-height:1.55; white-space:pre-line; overflow-wrap:anywhere; }
+.rv-li{ align-items:flex-start; }

@@ -308,4 +308,69 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   window.addEventListener('scroll', barCheck, { passive: true });
   window.addEventListener('resize', barCheck);
   barCheck();
+
+  /* ===================== reviews: stars + words from visitors ===================== */
+  const box = $('ppReviews');
+  if (box) {
+    const ar = window.MM_LANG === 'ar';
+    const T = ar
+      ? { title: 'آراء العملاء', none: 'لا توجد تقييمات بعد — كن أول من يكتب رأيه.', write: 'اكتب رأيك', name: 'اسمك', text: 'رأيك في المنتج (اختياري)', send: 'إرسال التقييم', pick: 'اختر عدد النجوم', thanks: 'شكراً! تم نشر تقييمك.', of: 'تقييم', fail: 'تعذّر الإرسال، حاول مرة أخرى.' }
+      : { title: 'Customer Reviews', none: 'No reviews yet — be the first to share yours.', write: 'Write a review', name: 'Your name', text: 'Your thoughts on this piece (optional)', send: 'Submit review', pick: 'Choose your stars', thanks: 'Thank you! Your review is live.', of: 'reviews', fail: 'Could not send, please try again.' };
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+    const star = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
+    const stars = (n) => '<span class="rv-stars" aria-label="' + n + '/5">' + [1,2,3,4,5].map(i => '<i class="' + (i <= Math.round(n) ? 'on' : '') + '">' + star + '</i>').join('') + '</span>';
+    let list = [];
+    box.innerHTML = `
+      <div class="rv-head"><h2>${T.title}</h2><div class="rv-sum" id="rvSum"></div></div>
+      <div class="rv-wrap">
+        <form class="rv-form" id="rvForm" novalidate>
+          <h3>${T.write}</h3>
+          <div class="rv-pick" id="rvPick" role="radiogroup" aria-label="${T.pick}">
+            ${[1,2,3,4,5].map(i => `<button type="button" data-v="${i}" aria-label="${i}">${star}</button>`).join('')}
+          </div>
+          <input name="name" maxlength="60" placeholder="${T.name}" required>
+          <textarea name="text" maxlength="1000" rows="4" placeholder="${T.text}"></textarea>
+          <p class="rv-msg" id="rvMsg"></p>
+          <button type="submit" class="rv-send">${T.send}</button>
+        </form>
+        <div class="rv-list" id="rvList"></div>
+      </div>`;
+    const draw = () => {
+      const avg = list.length ? list.reduce((s, r) => s + r.rating, 0) / list.length : 0;
+      $('rvSum').innerHTML = list.length ? `${stars(avg)}<b>${avg.toFixed(1)}</b><span>${list.length} ${T.of}</span>` : '';
+      $('rvList').innerHTML = list.length ? list.map(r => `
+        <article class="rv-item">
+          <div class="rv-top">${stars(r.rating)}<time>${new Date(r.date).toLocaleDateString(ar ? 'ar-EG' : 'en-GB', { day:'numeric', month:'short', year:'numeric' })}</time></div>
+          <h4>${esc(r.name)}</h4>
+          ${r.text ? `<p>${esc(r.text)}</p>` : ''}
+        </article>`).join('') : `<p class="rv-none">${T.none}</p>`;
+    };
+    let rating = 0;
+    const pick = $('rvPick');
+    const paint = (n) => pick.querySelectorAll('button').forEach(b => b.classList.toggle('on', Number(b.dataset.v) <= n));
+    pick.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { rating = Number(b.dataset.v); paint(rating); } });
+    pick.addEventListener('mouseover', (e) => { const b = e.target.closest('button'); if (b) paint(Number(b.dataset.v)); });
+    pick.addEventListener('mouseleave', () => paint(rating));
+    const form = $('rvForm'), msg = $('rvMsg');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      if (!rating) { msg.textContent = T.pick; return; }
+      if (!name) { msg.textContent = T.name; form.name.focus(); return; }
+      const btn = form.querySelector('.rv-send'); btn.disabled = true; msg.textContent = '';
+      try {
+        const r = await fetch(MM_API + '/api/reviews', { method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ product: p.id, name, rating, text: form.text.value.trim() }) });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        list.unshift(d); draw();
+        form.reset(); rating = 0; paint(0);
+        msg.textContent = T.thanks;
+      } catch (err) { msg.textContent = (err && err.message) || T.fail; }
+      btn.disabled = false;
+    });
+    draw();
+    fetch(MM_API + '/api/reviews?product=' + encodeURIComponent(p.id))
+      .then(r => r.json()).then(d => { if (Array.isArray(d)) { list = d; draw(); } }).catch(() => {});
+  }
 }));

@@ -31,10 +31,11 @@ const strip = (p) => { const { status, stockTotal, finalPrice, ...rest } = p; re
 const load = async () => { S.data = await api('GET', '/api/admin/state'); UPLOAD_MODE = S.data.settings.uploadMode || 'local'; paintChrome(); };
 
 /* ===================== shell: navigation, bell, routing ===================== */
+const STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
 const NAV = [
   ['dashboard', 'Dashboard', I.home], ['orders', 'Orders', I.orders], ['products', 'Products', I.box],
   ['categories', 'Categories', I.cats], ['customers', 'Customers', I.users], ['coupons', 'Coupons', I.ticket],
-  ['offers', 'Sales & Offers', I.tag], ['content', 'Website Content', I.page], ['settings', 'Settings', I.gear]
+  ['reviews', 'Reviews', STAR], ['offers', 'Sales & Offers', I.tag], ['content', 'Website Content', I.page], ['settings', 'Settings', I.gear]
 ];
 const route = () => {
   const h = location.hash.replace(/^#\/?/, '') || 'dashboard';
@@ -93,6 +94,7 @@ const render = async () => {
     if (a === 'categories') return b ? CategoryEditor(b) : Categories();
     if (a === 'customers') return Customers();
     if (a === 'coupons') return Coupons();
+    if (a === 'reviews') return Reviews();
     if (a === 'offers') return Offers();
     if (a === 'content') return Content();
     if (a === 'settings') return Settings();
@@ -941,6 +943,47 @@ const Customers = () => {
     m.querySelector('[data-x]').onclick = () => modal.close();
     m.querySelectorAll('a').forEach(a => a.addEventListener('click', () => modal.close()));
   };
+};
+
+/* ===================== Reviews ===================== */
+/* every review left on the website: the product, the stars and the words */
+const Reviews = () => {
+  const st = S.ui.reviews = S.ui.reviews || { q: '', stars: 0 };
+  const R = S.data.reviews || [];
+  const stars = (n) => `<span class="rv-st">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? 'on' : ''}">${STAR}</i>`).join('')}</span>`;
+  const avg = R.length ? (R.reduce((s, r) => s + r.rating, 0) / R.length).toFixed(1) : '–';
+  view.innerHTML = `
+    <div class="ph"><div><h1>Reviews</h1><p>${R.length} reviews · average ${avg} stars. Everything customers wrote on the product pages.</p></div></div>
+    <div class="tabs" id="rtabs"></div>
+    <div class="toolbar"><label class="search">${I.search}<input id="rvq" placeholder="Search product, name or words…" value="${esc(st.q)}"></label></div>
+    <div class="list" id="rvlist"></div>`;
+  const draw = () => {
+    $('#rtabs').innerHTML = [0, 5, 4, 3, 2, 1].map(k => `<button data-t="${k}" class="${st.stars === k ? 'on' : ''}">${k ? k + '★' : 'All'} (${k ? R.filter(r => r.rating === k).length : R.length})</button>`).join('');
+    const q = st.q.toLowerCase();
+    const list = R.filter(r => (!st.stars || r.rating === st.stars) && (!q || [r.productName, r.name, r.text].join(' ').toLowerCase().includes(q)));
+    $('#rvlist').innerHTML = list.map(r => {
+      const p = S.data.products.find(x => x.id === r.product);
+      return `
+      <div class="li rv-li" data-id="${esc(r.id)}">
+        ${p ? `<img class="li-img" src="${pthumb(p)}" alt="">` : ''}
+        <div class="li-body">
+          <div class="li-meta" style="margin:0">${p ? `<a class="link" href="#/products/${encodeURIComponent(p.id)}"><b>${esc(p.name)}</b></a>` : `<b>${esc(r.productName || r.product)}</b> <span class="muted">(removed)</span>`}${stars(r.rating)}</div>
+          <div class="rv-by"><b>${esc(r.name)}</b> <span class="muted">· ${fmtDate(r.date, true)}</span></div>
+          ${r.text ? `<p class="rv-txt">${esc(r.text)}</p>` : '<p class="muted">Stars only, no comment.</p>'}
+        </div>
+        <div class="li-end"><button class="btn" data-del>Delete</button></div>
+      </div>`;
+    }).join('') || '<div class="empty"><b>No reviews yet</b></div>';
+  };
+  $('#rtabs').onclick = (e) => { const b = e.target.closest('button'); if (b) { st.stars = Number(b.dataset.t); draw(); } };
+  $('#rvq').oninput = (e) => { st.q = e.target.value; draw(); };
+  $('#rvlist').onclick = async (e) => {
+    if (!e.target.closest('[data-del]')) return;
+    const id = e.target.closest('.li').dataset.id;
+    if (!confirm('Delete this review? It will be removed from the website too.')) return;
+    await api('DELETE', '/api/admin/reviews/' + encodeURIComponent(id)); await load(); toast('Review deleted'); Reviews();
+  };
+  draw();
 };
 
 /* ===================== Coupons ===================== */
