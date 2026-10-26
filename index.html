@@ -61,13 +61,23 @@
     var q = v.play(); if (q && q.catch) q.catch(finish);
   });
   /* the first touch or click on the screen turns the sound on */
+  /* only taps the browser counts as permission (touchend / click / key);
+     if it still refuses, the film keeps going silently instead of stopping */
+  var EV = ['touchend', 'click', 'keydown'];
   function unmute() {
-    if (done) return;
+    EV.forEach(function (t) { document.removeEventListener(t, unmute); });
+    if (done || !v.muted) return;
     v.muted = false; v.volume = 1;
-    var r = v.play(); if (r && r.catch) r.catch(function () {});
-    ['pointerdown', 'touchstart', 'click', 'keydown'].forEach(function (t) { box.removeEventListener(t, unmute); document.removeEventListener(t, unmute); });
+    var r = v.play();
+    if (r && r.catch) r.catch(function () {
+      v.muted = true;
+      var q = v.play(); if (q && q.catch) q.catch(finish);
+    });
   }
-  ['pointerdown', 'touchstart', 'click', 'keydown'].forEach(function (t) { document.addEventListener(t, unmute, { passive: true }); });
+  EV.forEach(function (t) { document.addEventListener(t, unmute, { passive: true }); });
+  /* never left frozen: if the film stops on its own, the site opens */
+  v.addEventListener('pause', function () { setTimeout(function () { if (v.paused && !v.ended) { var q = v.play(); if (q && q.catch) q.catch(finish); } }, 300); });
+  v.addEventListener('stalled', function () { setTimeout(function () { if (v.paused) finish(); }, 2500); });
   v.addEventListener('ended', finish);
   v.addEventListener('error', finish);
   setTimeout(finish, 12000);
