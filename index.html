@@ -60,6 +60,14 @@
     v.muted = true;
     var q = v.play(); if (q && q.catch) q.catch(finish);
   });
+  /* the first touch or click on the screen turns the sound on */
+  function unmute() {
+    if (done) return;
+    v.muted = false; v.volume = 1;
+    var r = v.play(); if (r && r.catch) r.catch(function () {});
+    ['pointerdown', 'touchstart', 'click', 'keydown'].forEach(function (t) { box.removeEventListener(t, unmute); document.removeEventListener(t, unmute); });
+  }
+  ['pointerdown', 'touchstart', 'click', 'keydown'].forEach(function (t) { document.addEventListener(t, unmute, { passive: true }); });
   v.addEventListener('ended', finish);
   v.addEventListener('error', finish);
   setTimeout(finish, 12000);
