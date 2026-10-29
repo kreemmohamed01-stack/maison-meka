@@ -41,7 +41,7 @@ const MM_READY = fetch(MM_API + '/api/catalog')
       });
       CATEGORIES_ALL.forEach(c => { const a = c.ar || {}; c.name = pick(a.name, c.name); c.desc = pick(a.desc, c.desc); });
       const ca = CONTENT.ar || {};
-      ['hero', 'collections', 'best'].forEach(k => { CONTENT[k] = { ...(CONTENT[k] || {}), ...Object.fromEntries(Object.entries(ca[k] || {}).filter(([, v]) => has(v))) }; });
+      ['hero', 'collections', 'best', 'clients'].forEach(k => { CONTENT[k] = { ...(CONTENT[k] || {}), ...Object.fromEntries(Object.entries(ca[k] || {}).filter(([, v]) => has(v))) }; });
       if (ca.allCategory) {
         if (has(ca.allCategory.name)) ALL_CATEGORY.name = ca.allCategory.name;
         if (has(ca.allCategory.desc)) ALL_CATEGORY.desc = ca.allCategory.desc;

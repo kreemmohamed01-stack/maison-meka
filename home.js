@@ -40,6 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
       setText('.bs-kicker', c.best.kicker);
       setText('.bs-btn span', c.best.button);
     }
+    /* "Loved by our clients": the photos and words chosen in the dashboard */
+    if (c.clients) {
+      setText('.rev-script', c.clients.script);
+      setText('.rev-desc', c.clients.desc);
+      const t = $('.rev-title');
+      if (t && c.clients.title) t.innerHTML = MM.esc(c.clients.title).replace(/\n/g, '<br>');
+      if (Array.isArray(c.clients.photos) && window.mmReviews) window.mmReviews(c.clients.photos);
+    }
   }).catch(() => {});
 
   MM_READY.then(() => {

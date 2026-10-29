@@ -32,10 +32,11 @@ const load = async () => { S.data = await api('GET', '/api/admin/state'); UPLOAD
 
 /* ===================== shell: navigation, bell, routing ===================== */
 const STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
+const CAM = '<svg viewBox="0 0 24 24"><path d="M4 8.5h3l1.6-2.5h6.8L17 8.5h3a1 1 0 011 1V18a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5a1 1 0 011-1z"/><circle cx="12" cy="13.3" r="3.6"/></svg>';
 const NAV = [
   ['dashboard', 'Dashboard', I.home], ['orders', 'Orders', I.orders], ['products', 'Products', I.box],
   ['categories', 'Categories', I.cats], ['customers', 'Customers', I.users], ['coupons', 'Coupons', I.ticket],
-  ['reviews', 'Reviews', STAR], ['offers', 'Sales & Offers', I.tag], ['content', 'Website Content', I.page], ['settings', 'Settings', I.gear]
+  ['reviews', 'Reviews', STAR], ['clients', 'Client Photos', CAM], ['offers', 'Sales & Offers', I.tag], ['content', 'Website Content', I.page], ['settings', 'Settings', I.gear]
 ];
 const route = () => {
   const h = location.hash.replace(/^#\/?/, '') || 'dashboard';
@@ -95,6 +96,7 @@ const render = async () => {
     if (a === 'customers') return Customers();
     if (a === 'coupons') return Coupons();
     if (a === 'reviews') return Reviews();
+    if (a === 'clients') return ClientPhotos();
     if (a === 'offers') return Offers();
     if (a === 'content') return Content();
     if (a === 'settings') return Settings();
@@ -1137,6 +1139,63 @@ const Content = () => {
   view.onclick = async (e) => {
     if (e.target.closest('#ctImg')) { const p = await chooseImage({ title: 'Shop page image', ratio: '4:5' }); if (p) { setPath(D, 'allCategory.img', p); S.dirty = true; S.data.content = D; Content(); } }
     if (e.target.closest('#ctSave')) { await api('PUT', '/api/admin/content', D); S.dirty = false; await load(); toast('Content saved — live on the website'); }
+  };
+};
+
+/* ===================== Client photos ("Loved by our clients" on the home page) ===================== */
+const CLIENT_DEFAULT = [1, 2, 3, 4, 5, 6, 7].map(n => `assets/rev${n}.webp`);
+const ClientPhotos = () => {
+  const D = clone(S.data.content || {});
+  const C = D.clients = { ...(D.clients || {}) };
+  if (!Array.isArray(C.photos)) C.photos = [...CLIENT_DEFAULT];
+  const f = (label, path, area, rtl) => `<label class="fld"${rtl ? ' dir="rtl"' : ''}><span>${label}</span>${area ? `<textarea data-p="${path}">${esc(getPath(D, path) || '')}</textarea>` : `<input data-p="${path}" value="${esc(getPath(D, path) || '')}">`}</label>`;
+  const paint = () => {
+    $('#cpList').innerHTML = C.photos.map((p, i) => `<div class="li" data-id="${i}">
+        <span class="handle">${I.grip}</span><span class="pos">${i + 1}</span>
+        <img class="li-img" src="${site(p)}" alt="">
+        <div class="li-body"><div class="li-t">Photo ${i + 1}</div><div class="li-s">${i === 0 ? 'Shown first' : 'Drag to reorder'}</div></div>
+        <button class="btn btn-sm" data-swap="${i}">Change</button>
+        <button class="btn btn-sm btn-red" data-del="${i}">Delete</button></div>`).join('')
+      || '<div class="empty">No photos yet — the section is hidden on the website until you add one.</div>';
+  };
+  const dirty = () => { S.dirty = true; $('#cpSave').disabled = false; };
+  view.innerHTML = `
+    <div class="ph"><div><h1>Client Photos</h1><p>The "Loved by our clients" section on the home page. Visitors can tap any photo to see it large.</p></div>
+      <div style="display:flex;gap:8px"><button class="btn" id="cpAdd">+ Add photos</button><button class="btn btn-green" id="cpSave" disabled>Save</button></div></div>
+    <div class="grid g2">
+      <div class="card"><h3 style="margin:0 0 10px">Photos</h3><div class="list" id="cpList"></div></div>
+      <div class="form-stack">
+        <div class="card form-stack"><h3 style="margin:0">Section text</h3>
+          ${f('Script line', 'clients.script')}${f('Title', 'clients.title')}${f('Description', 'clients.desc', true)}</div>
+        <div class="card form-stack" dir="rtl"><h3 style="margin:0">العربية</h3>
+          ${f('السطر المميز', 'ar.clients.script', 0, 1)}${f('العنوان', 'ar.clients.title', 0, 1)}${f('الوصف', 'ar.clients.desc', 1, 1)}</div>
+        <p class="muted" style="margin:0">Leave a field empty to keep the text the website shows today.</p>
+      </div>
+    </div>`;
+  paint();
+  sortable($('#cpList'), '.li', { handle: '.handle', onEnd: (ids) => { C.photos = ids.map(i => C.photos[+i]); paint(); dirty(); } });
+  view.oninput = (e) => { const el = e.target; if (el.dataset.p) { setPath(D, el.dataset.p, el.value); dirty(); } };
+  view.onclick = async (e) => {
+    const t = e.target;
+    if (t.closest('#cpAdd')) {
+      const files = await pickFiles('image/*', true);
+      for (const file of files || []) {
+        const out = await cropImage(file, { title: 'Client photo' });
+        if (!out) continue;
+        toast('Uploading…');
+        C.photos.push(await upload(out.blob, out.ext));
+        paint(); dirty();
+      }
+      if (files && files.length) toast('Photos added — press Save');
+    }
+    const sw = t.closest('[data-swap]');
+    if (sw) { const p = await chooseImage({ title: 'Client photo' }); if (p) { C.photos[+sw.dataset.swap] = p; paint(); dirty(); } }
+    const del = t.closest('[data-del]');
+    if (del && confirm('Delete this photo from the website?')) { C.photos.splice(+del.dataset.del, 1); paint(); dirty(); }
+    if (t.closest('#cpSave')) {
+      await api('PUT', '/api/admin/content', D);
+      S.dirty = false; await load(); toast('Client photos saved — live on the website'); ClientPhotos();
+    }
   };
 };
 

@@ -663,11 +663,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Reviews carousel ----------
      Three cards are on stage at a time: the middle one is the focus, the two
-     beside it sit back. Clicking a side card, or a dot, moves the focus. */
+     beside it sit back. Clicking a side card, or a dot, moves the focus;
+     clicking the middle one opens it large. home.js calls this again with the
+     photos chosen in the dashboard. */
   const track = document.getElementById('revTrack');
-  if (track) {
+  let revTimer;
+  const revInit = () => {
     const cards = [...track.querySelectorAll('.rev-card')];
     const dots  = document.getElementById('revDots');
+    clearInterval(revTimer);
+    dots.innerHTML = '';
+    if (!cards.length) return;
     let current = 0;
 
     cards.forEach((_, i) => {
@@ -691,20 +697,73 @@ document.addEventListener('DOMContentLoaded', () => {
       dotEls.forEach((d, idx) => d.classList.toggle('is-on', idx === current));
     }
 
-    // a click on either flanking card brings it to the middle
+    // a click on either flanking card brings it to the middle; on the middle one it opens large
     cards.forEach((card, idx) => {
       card.addEventListener('click', () => {
         if (idx !== current) show(idx);
+        else revOpen(idx);
       });
     });
 
     show(0);
 
-    let timer = setInterval(() => show(current + 1), 5200);
-    track.addEventListener('mouseenter', () => clearInterval(timer));
-    track.addEventListener('mouseleave', () => {
-      timer = setInterval(() => show(current + 1), 5200);
-    });
+    const run = () => { clearInterval(revTimer); revTimer = setInterval(() => show(current + 1), 5200); };
+    run();
+    track.onmouseenter = () => clearInterval(revTimer);
+    track.onmouseleave = run;
+  };
+
+  /* the photo, large in the middle of the screen; arrows and swipes move through them */
+  let revBox, revAt = 0;
+  const revSrcs = () => [...track.querySelectorAll('.rev-card img')].map(i => i.currentSrc || i.src);
+  const revPaint = () => {
+    const list = revSrcs();
+    revAt = (revAt + list.length) % list.length;
+    revBox.querySelector('img').src = list[revAt];
+    revBox.querySelector('.rlb-count').textContent = `${revAt + 1} / ${list.length}`;
+  };
+  const revClose = () => { revBox.classList.remove('open'); document.documentElement.style.overflow = ''; clearInterval(revTimer); };
+  function revOpen(i) {
+    if (!revBox) {
+      revBox = document.createElement('div');
+      revBox.className = 'rev-lightbox';
+      revBox.innerHTML = `<button class="rlb-x" aria-label="Close">&times;</button>
+        <button class="rlb-nav rlb-prev" aria-label="Previous">&#8249;</button>
+        <img alt="Client review"><button class="rlb-nav rlb-next" aria-label="Next">&#8250;</button>
+        <span class="rlb-count"></span>`;
+      document.body.appendChild(revBox);
+      revBox.addEventListener('click', (e) => {
+        if (e.target.closest('.rlb-prev')) { revAt--; revPaint(); }
+        else if (e.target.closest('.rlb-next')) { revAt++; revPaint(); }
+        else if (e.target.tagName !== 'IMG') revClose();
+      });
+      let sx = null;
+      revBox.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+      revBox.addEventListener('touchend', (e) => {
+        if (sx === null) return;
+        const dx = e.changedTouches[0].clientX - sx; sx = null;
+        if (Math.abs(dx) > 40) { revAt += dx < 0 ? 1 : -1; revPaint(); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (!revBox.classList.contains('open')) return;
+        if (e.key === 'Escape') revClose();
+        if (e.key === 'ArrowRight') { revAt++; revPaint(); }
+        if (e.key === 'ArrowLeft') { revAt--; revPaint(); }
+      });
+    }
+    revAt = i; revPaint();
+    clearInterval(revTimer);
+    document.documentElement.style.overflow = 'hidden';
+    revBox.classList.add('open');
+  }
+
+  if (track) {
+    revInit();
+    window.mmReviews = (photos) => {
+      track.innerHTML = photos.map(src => `<figure class="rev-card"><img loading="lazy" decoding="async" src="${MM.esc(src)}" alt="Client review"></figure>`).join('');
+      document.getElementById('reviews').hidden = !photos.length;
+      revInit();
+    };
   }
 
 });
