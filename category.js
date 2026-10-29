@@ -315,10 +315,6 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
       if (!cards.length) return;
       grid.insertAdjacentHTML('beforeend', cards.map(MM.cardHTML).join(''));
       const added = [...grid.querySelectorAll('.pc')].slice(from);
-      /* the first row is on screen as the page opens: fetched now, not lazily */
-      if (!from) added.slice(0, 4).forEach((c, i) => c.querySelectorAll('img').forEach(im => {
-        im.loading = 'eager'; if (i < 2) im.fetchPriority = 'high';
-      }));
       MM.reveal(added);
       if (from + BATCH >= list.length) return;
       const last = added[added.length - 1];
