@@ -2439,3 +2439,12 @@ html[lang="ar"] .mm-sale-bar{ letter-spacing:0; font-size:14px; }
 }
 html[lang="ar"] .sm-nav li a, html[lang="ar"] .sm-heading,
 html[lang="ar"] .sm-nav-minor li a, html[lang="ar"] .sm-cats li a{ font-weight:700; letter-spacing:0; }
+
+/* ===================== speed ===================== */
+/* sections below the first screen are laid out and painted only as they come
+   near it — the page looks exactly the same, the phone just does less work
+   up front. "auto" remembers each section's real height once it has shown. */
+.bs, .features, .collections, .reviews, .inspire, .insta, .site-footer{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 900px;
+}
