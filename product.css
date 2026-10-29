@@ -384,6 +384,10 @@
   .pp-stage{ aspect-ratio:auto; }
   .pp-slide-img{ max-height:72svh; }
 }
+/* before the piece arrives, the gallery holds the 4:5 shape its photos are
+   cropped to, so the details below never jump down when they appear */
+#galSlides:empty{ aspect-ratio:4 / 5; width:min(46vw, calc((100vh - var(--hdr) - 90px) * .8)); }
+@media (max-width:900px){ #galSlides:empty{ width:min(calc(100vw - 24px), calc(72svh * .8)); } }
 
 /* ===================== stock colours on the add buttons ===================== */
 /* green: in stock · yellow: only a few left · red: sold out */
