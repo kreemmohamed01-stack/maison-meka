@@ -52,7 +52,7 @@
   max-width:440px; margin-top:16px;
 }
 /* room for the description before the collection's text arrives */
-.cx-desc:empty{ min-height:calc(1.7em * 3); }
+.cx-desc:empty{ min-height:calc(1.7em * 4); }
 .cx-desc{
   font-size:clamp(14px,1.2vw,16px); line-height:1.7; color:rgba(29,43,74,.75);
 }
