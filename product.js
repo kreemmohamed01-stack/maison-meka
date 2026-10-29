@@ -139,7 +139,14 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   $('galSlides').innerHTML = media.map((m, i) =>
     `<div class="pp-slide${i === 0 ? ' on' : ''}">${m.type === 'video'
       ? `<video class="pp-slide-img pp-video" src="${MM.esc(m.src)}" controls playsinline preload="metadata"></video>`
-      : `<img class="pp-slide-img" width="1080" height="1350" ${MM.imgAttrs(m.src, '(max-width:900px) 100vw, 55vw')} alt="${MM.esc(p.name)} — photo ${i + 1}" ${i ? 'loading="lazy" decoding="async"' : 'fetchpriority="high"'}>`}</div>`).join('');
+      : `<img class="pp-slide-img" ${MM.imgAttrs(m.src, '(max-width:900px) 100vw, 55vw')} alt="${MM.esc(p.name)} — photo ${i + 1}" ${i ? 'loading="lazy" decoding="async"' : 'fetchpriority="high"'}>`}</div>`).join('');
+  /* the gallery keeps its reserved shape until the first photo is in; the
+     details wait with it, so both appear together in their final place */
+  const gal = $('galSlides'), first = gal.querySelector('.pp-slide-img');
+  const ready = () => { gal.classList.add('ready'); document.querySelector('.pp').classList.add('ready'); };
+  setTimeout(ready, 3000);
+  if (!first || first.tagName === 'VIDEO' || first.complete) ready();
+  else { first.addEventListener('load', ready, { once: true }); first.addEventListener('error', ready, { once: true }); }
   thumbs.innerHTML = media.map((m, i) =>
     `<button class="pp-thumb${i === 0 ? ' on' : ''}" data-i="${i}" aria-label="${m.type === 'video' ? 'Video' : 'Photo ' + (i + 1)}">${m.type === 'video'
       ? `<video src="${MM.esc(m.src)}#t=0.5" muted playsinline preload="metadata"></video>${PLAY}` : `<img ${MM.imgAttrs(m.small, '120px')} alt="" loading="lazy" decoding="async">`}</button>`).join('');

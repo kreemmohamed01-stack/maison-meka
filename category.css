@@ -227,6 +227,8 @@
 
 /* --- grid --- */
 .grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(26px,2.6vw,38px) clamp(14px,1.6vw,22px); }
+/* held open until the pieces arrive, so the sections below never flash up */
+.grid:empty{ min-height:100vh; }
 .grid[data-view="2"]{ grid-template-columns:repeat(3,minmax(0,1fr)); }
 
 /* ===================== product card ===================== */

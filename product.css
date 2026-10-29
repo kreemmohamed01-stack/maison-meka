@@ -384,10 +384,14 @@
   .pp-stage{ aspect-ratio:auto; }
   .pp-slide-img{ max-height:72svh; }
 }
-/* before the piece arrives, the gallery holds the 4:5 shape its photos are
-   cropped to, so the details below never jump down when they appear */
-#galSlides:empty{ aspect-ratio:4 / 5; width:min(46vw, calc((100vh - var(--hdr) - 90px) * .8)); }
-@media (max-width:900px){ #galSlides:empty{ width:min(calc(100vw - 24px), calc(72svh * .8)); } }
+/* until the first photo is in, the details and the gallery's buttons wait
+   unseen — then everything appears at once in its final place, so nothing
+   on screen ever jumps */
+.pp:not(.ready) .pp-info, .pp:not(.ready) .pp-thumbs,
+.pp:not(.ready) .pp-fav, .pp:not(.ready) .pp-zoom, .pp:not(.ready) .pp-dots,
+.pp:not(.ready) .pp-hero ~ *{ visibility:hidden; }
+.pp .pp-info{ transition:opacity .45s var(--ease-soft); }
+.pp:not(.ready) .pp-info{ opacity:0; }
 
 /* ===================== stock colours on the add buttons ===================== */
 /* green: in stock · yellow: only a few left · red: sold out */
