@@ -25,11 +25,14 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   const catOf = (slug) => slug === 'all' ? ALL_CATEGORY : MM.catBy(slug);
 
   /* ===================== hero ===================== */
+  const FIRST_SLUG = new URLSearchParams(location.search).get('c') || 'all';
   const hero = $('chHero');
   const paintHero = (animate) => {
     const c = catOf(state.cat);
     const idx = CATEGORIES.findIndex(x => x.slug === c.slug);
     const write = () => {
+      /* the measured shape belongs to the collection the page opened on */
+      if (c.slug !== FIRST_SLUG) document.documentElement.style.removeProperty('--ch-ratio');
       $('chTitle').textContent = c.name;
       $('chCrumb').textContent = c.name;
       $('chDesc').textContent  = c.desc;
