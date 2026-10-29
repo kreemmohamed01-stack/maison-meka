@@ -128,7 +128,7 @@ const hintScript = (param, fallback, map, sizes) =>
 /* Cloudinary photos are written short (~ stands for the host) and get the
    same widths the pages ask for; any other photo is fetched as it is */
 const short = (u) => /^https:\/\/res\.cloudinary\.com\/.+\/upload\/f_auto,q_auto\//.test(u) ? '~' + u.slice(CLD.length) : u;
-const heroHints = (doc) => {
+const heroHints = async (doc) => {
   const inject = (file, script) => {
     const f = path.join(OUT, file);
     fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('</title>', '</title>\n' + script));
@@ -139,6 +139,18 @@ const heroHints = (doc) => {
   cats.all = short(allImg);
   doc.categories.forEach(c => { const u = c.banner || c.img; if (u) cats[c.slug] = short(u); });
   inject('category.html', hintScript('c', 'all', cats, '(max-width:640px) 45vw, 400px'));
+  /* each collection photo's real shape, so its frame is the right size
+     before it loads (Cloudinary reports the size of what it stores) */
+  const ratios = {};
+  await Promise.all(Object.entries(cats).map(async ([slug, u]) => {
+    if (u[0] !== '~') return;
+    try {
+      const info = await (await fetch(CLD + u.slice(1).replace('/upload/f_auto,q_auto/', '/upload/fl_getinfo/'), { signal: AbortSignal.timeout(4000) })).json();
+      if (info.input && info.input.width) ratios[slug] = `${info.input.width} / ${info.input.height}`;
+    } catch {}
+  }));
+  inject('category.html', `<script>(function(){var R=${JSON.stringify(ratios)};var r=R[new URLSearchParams(location.search).get('c')||'all'];` +
+    `if(r)document.documentElement.style.setProperty('--ch-ratio',r);})();</script>`);
   const prods = {};
   doc.products.filter(p => p.active !== false && (p.imgs || [])[0]).forEach(p => { prods[p.id] = short(p.imgs[0]); });
   inject('product.html', hintScript('id', '', prods, '(max-width:900px) 100vw, 55vw'));
@@ -156,7 +168,7 @@ const heroHints = (doc) => {
     const store = require('../lib/store');
     const { doc } = await store.loadDoc();
     if (doc) {
-      heroHints(doc);
+      await heroHints(doc);
       doc.categories.forEach(c => urls.push('category.html?c=' + encodeURIComponent(c.slug)));
       doc.products.filter(p => p.active !== false).forEach(p => urls.push('product.html?id=' + encodeURIComponent(p.id)));
     }

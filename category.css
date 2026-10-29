@@ -80,7 +80,7 @@
   display:block; width:100%; height:auto;
   /* holds the 4:5 shape the dashboard crops to while the photo loads, so
      nothing below it moves when it arrives */
-  aspect-ratio:auto 4 / 5;
+  aspect-ratio:auto var(--ch-ratio, 4 / 5);
   border-radius:14px;
   box-shadow:0 24px 50px rgba(29,43,74,.16);
   transition:opacity .4s var(--ease-soft);
