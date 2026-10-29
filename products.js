@@ -225,9 +225,22 @@ const MM = (() => {
      same way there, so the dashboard preview is exactly what shows here */
   /* every card photo fills its square — the old per-product framing is ignored */
   const fitStyle = () => '';
+  /* a Cloudinary photo can be fetched at any width: the browser picks the
+     copy that fits the card on its screen, at the same quality setting */
+  const CLD_W = [320, 480, 720, 1080];
+  const srcset = (url) => /res\.cloudinary\.com\/.+\/upload\/f_auto,q_auto\//.test(url || '')
+    ? CLD_W.map(w => url.replace('/upload/f_auto,q_auto/', `/upload/f_auto,q_auto,c_limit,w_${w}/`) + ` ${w}w`).join(', ') + `, ${url} 2400w`
+    : '';
+  /* src + srcset + sizes for any photo, ready to drop into an <img> */
+  const imgAttrs = (src, sizes) => {
+    const set = srcset(src);
+    return `src="${esc(src)}"${set ? ` srcset="${esc(set)}" sizes="${sizes}"` : ''}`;
+  };
+  const CARD_SIZES = '(max-width:640px) 50vw, (max-width:1100px) 33vw, 25vw';
   /* the photo is shown whole, just as it was cropped in the dashboard */
-  const squareImg = (p, cls = '') =>
-    `<img class="mm-sq-img${cls ? ' ' + cls : ''}" src="${esc(thumb(p))}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
+  const squareImg = (p, cls = '') => {
+    return `<img class="mm-sq-img${cls ? ' ' + cls : ''}" ${imgAttrs(thumb(p), CARD_SIZES)} alt="${esc(p.name)}" loading="lazy" decoding="async">`;
+  };
 
   /* ---------- one product card, used by the grid and by "you may also like" ---------- */
   const cardHTML = (p) => {
@@ -310,5 +323,5 @@ const MM = (() => {
   };
 
   return { safeHTML, money, catBy, byId, homeCat, status, STATUS_LABEL, esc, wlHas, wlToggle, addToBag, openBag,
-           toast, ICON, thumb, fitStyle, squareImg, cardHTML, wireCards, reveal };
+           toast, ICON, thumb, srcset, imgAttrs, fitStyle, squareImg, cardHTML, wireCards, reveal };
 })();

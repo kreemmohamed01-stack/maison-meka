@@ -70,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ${c.desc ? `<span class="cat-feat-desc">${MM.esc(c.desc)}</span>` : ''}
             <span class="cat-feat-cta"><span>Discover the collection</span><i aria-hidden="true">→</i></span>
           </span>
-          <span class="cat-shot"><img src="${MM.esc(c.card || c.img)}" alt="${MM.esc(c.name)}"></span>
+          <span class="cat-shot"><img ${MM.imgAttrs(c.card || c.img, '(max-width:640px) 50vw, 34vw')} alt="${MM.esc(c.name)}" loading="lazy" decoding="async"></span>
         </a>` : `
         <a href="category.html?c=${encodeURIComponent(c.slug)}" class="cat-card${i >= wideFrom ? ' cat-wide' : ''}">
           <span class="cat-head"><span class="cat-num">${String(i + 1).padStart(2, '0')}</span></span>
-          <span class="cat-shot"><img src="${MM.esc(c.card || c.img)}" alt="${MM.esc(c.name)}"></span>
+          <span class="cat-shot"><img ${MM.imgAttrs(c.card || c.img, '(max-width:640px) 50vw, 34vw')} alt="${MM.esc(c.name)}" loading="lazy" decoding="async"></span>
           <span class="cat-label"><span class="cat-name">${MM.esc(c.name)}</span></span>
         </a>`).join('');
       reveal(grid.querySelectorAll('.cat-card'));

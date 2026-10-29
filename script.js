@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const itemHTML = (it, i) => `
     <div class="cd-item" data-id="${it.id}" style="--i:${i}">
-      <span class="cdi-shot"><img src="${it.img}" alt="${it.name}"></span>
+      <span class="cdi-shot"><img ${typeof MM !== 'undefined' ? MM.imgAttrs(it.img, '120px') : `src="${it.img}"`} alt="${it.name}" loading="lazy" decoding="async"></span>
       <div class="cdi-body">
         <p class="cdi-name">${liveName(it)}</p>
         <p class="cdi-meta">${it.meta || ''}</p>
@@ -715,7 +715,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* the photo, large in the middle of the screen; arrows and swipes move through them */
   let revBox, revAt = 0;
-  const revSrcs = () => [...track.querySelectorAll('.rev-card img')].map(i => i.currentSrc || i.src);
+  /* always the full photo here, never the small copy the carousel shows */
+  const revSrcs = () => [...track.querySelectorAll('.rev-card img')].map(i => i.src);
   const revPaint = () => {
     const list = revSrcs();
     revAt = (revAt + list.length) % list.length;
@@ -760,7 +761,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (track) {
     revInit();
     window.mmReviews = (photos) => {
-      track.innerHTML = photos.map(src => `<figure class="rev-card"><img loading="lazy" decoding="async" src="${MM.esc(src)}" alt="Client review"></figure>`).join('');
+      const small = (src) => {
+        const own = String(src).match(/^assets\/(rev\d+)\.webp$/);
+        return own ? `assets/sm/${own[1]}-300.webp 300w, assets/sm/${own[1]}-600.webp 600w, ${src} 1080w` : MM.srcset(src);
+      };
+      track.innerHTML = photos.map(src => { const set = small(src); return `<figure class="rev-card"><img loading="lazy" decoding="async" src="${MM.esc(src)}"${set ? ` srcset="${MM.esc(set)}" sizes="(max-width:640px) 26vw, (min-width:1600px) 340px, 22vw"` : ''} alt="Client review"></figure>`; }).join('');
       document.getElementById('reviews').hidden = !photos.length;
       revInit();
     };

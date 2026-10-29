@@ -20,7 +20,7 @@
   /* Arabic faces: Amiri for titles and names, Tajawal for everything else */
   const font = document.createElement('link');
   font.rel = 'stylesheet';
-  font.href = 'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap';
+  font.href = 'assets/fonts/arabic.css';
   document.head.appendChild(font);
   const hide = document.createElement('style');
   hide.textContent = 'html.i18n-pending body{opacity:0}';

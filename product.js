@@ -139,10 +139,10 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   $('galSlides').innerHTML = media.map((m, i) =>
     `<div class="pp-slide${i === 0 ? ' on' : ''}">${m.type === 'video'
       ? `<video class="pp-slide-img pp-video" src="${MM.esc(m.src)}" controls playsinline preload="metadata"></video>`
-      : `<img class="pp-slide-img" src="${MM.esc(m.src)}" alt="${MM.esc(p.name)} — photo ${i + 1}" ${i ? 'loading="lazy" decoding="async"' : 'fetchpriority="high"'}>`}</div>`).join('');
+      : `<img class="pp-slide-img" ${MM.imgAttrs(m.src, '(max-width:900px) 100vw, 55vw')} alt="${MM.esc(p.name)} — photo ${i + 1}" ${i ? 'loading="lazy" decoding="async"' : 'fetchpriority="high"'}>`}</div>`).join('');
   thumbs.innerHTML = media.map((m, i) =>
     `<button class="pp-thumb${i === 0 ? ' on' : ''}" data-i="${i}" aria-label="${m.type === 'video' ? 'Video' : 'Photo ' + (i + 1)}">${m.type === 'video'
-      ? `<video src="${MM.esc(m.src)}#t=0.5" muted playsinline preload="metadata"></video>${PLAY}` : `<img src="${MM.esc(m.small)}" alt="" loading="lazy" decoding="async">`}</button>`).join('');
+      ? `<video src="${MM.esc(m.src)}#t=0.5" muted playsinline preload="metadata"></video>${PLAY}` : `<img ${MM.imgAttrs(m.small, '120px')} alt="" loading="lazy" decoding="async">`}</button>`).join('');
   dots.innerHTML = media.map((_, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('');
   thumbs.hidden = dots.hidden = media.length < 2;
   slides = [...gal.querySelectorAll('.pp-slide')];

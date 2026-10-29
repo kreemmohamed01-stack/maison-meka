@@ -42,6 +42,43 @@ copyDir(path.join(ROOT, 'assets'), path.join(OUT, 'assets'),
 copyDir(path.join(ROOT, 'admin'), path.join(OUT, 'admin'));
 pages.push(path.join(OUT, 'admin', 'index.html'));
 
+/* every stylesheet and script is minified — the same code, fewer bytes */
+let esbuild = null;
+try { esbuild = require('esbuild'); } catch { console.log('esbuild missing — files are copied unminified'); }
+const minifyDir = (dir) => {
+  if (!esbuild) return;
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const f = path.join(dir, e.name);
+    if (e.isDirectory()) { if (e.name !== 'assets') minifyDir(f); continue; }
+    const loader = { '.css': 'css', '.js': 'js' }[path.extname(f)];
+    if (!loader) continue;
+    try { fs.writeFileSync(f, esbuild.transformSync(fs.readFileSync(f, 'utf8'), { loader, minify: true, charset: 'utf8', legalComments: 'none' }).code); }
+    catch (err) { console.log('kept unminified:', f, err.message.split('\n')[0]); }
+  }
+};
+minifyDir(OUT);
+
+/* the fonts live on this site: their @font-face rules are written into each
+   page, and the two faces the first screen uses are fetched straight away */
+const FONT_CSS = fs.readFileSync(path.join(ROOT, 'assets', 'fonts', 'fonts.css'), 'utf8');
+const fontFile = (family, weight) => {
+  const m = FONT_CSS.split('\n').find(l => l.includes(`'${family}'`) && l.includes('font-style: normal') && l.includes(`font-weight: ${weight}`) && l.includes('U+0000-00FF'));
+  return m && m.match(/url\(([^)]+)\)/)[1];
+};
+const FONT_HEAD = ['Jost', 'Italiana'].map((f, i) => fontFile(f, i ? 400 : 300)).filter(Boolean)
+  .map(u => `<link rel="preload" href="${u}" as="font" type="font/woff2" crossorigin>`).join('\n') +
+  `\n<style>${FONT_CSS.replace(/\n/g, '')}</style>`;
+
+/* a page's own stylesheets are joined into one file, so the first paint
+   waits on a single request instead of three or four */
+const bundles = new Map();
+const bundleCss = (refs) => {
+  const code = refs.map(r => fs.readFileSync(path.join(OUT, r), 'utf8')).join('\n');
+  const name = 'b-' + crypto.createHash('sha1').update(code).digest('hex').slice(0, 10) + '.css';
+  if (!bundles.has(name)) { fs.writeFileSync(path.join(OUT, name), code); bundles.set(name, refs); }
+  return name;
+};
+
 /* where uploaded product photos are served from (vercel_blob_rw_<store>_<secret>) */
 const BLOB_HOST = (() => {
   const m = String(process.env.BLOB_READ_WRITE_TOKEN || '').match(/^vercel_blob_rw_([^_]+)_/);
@@ -53,6 +90,11 @@ const stamp = (file) => crypto.createHash('sha1').update(fs.readFileSync(file)).
 for (const page of pages) {
   const dir = path.dirname(page);
   let html = fs.readFileSync(page, 'utf8');
+  if (dir === OUT) {
+    html = html.replace(/<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com">\s*<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com" crossorigin>\s*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]+>/, FONT_HEAD);
+    html = html.replace(/(?:<link rel="stylesheet" href="[\w.-]+\.css">\s*){2,}/, (block) =>
+      `<link rel="stylesheet" href="${bundleCss([...block.matchAll(/href="([^"]+)"/g)].map(m => m[1]))}">\n`);
+  }
   html = html.replace(/(href|src)="([^"?#:]+\.(?:css|js))"/g, (m, attr, ref) => {
     const file = path.join(dir, ref);
     return fs.existsSync(file) ? `${attr}="${ref}?v=${stamp(file)}"` : m;
@@ -62,7 +104,8 @@ for (const page of pages) {
   if (/products\.js/.test(html) && !html.includes('href="/api/catalog"')) {
     const hints = ['<link rel="preload" href="/api/catalog" as="fetch" crossorigin="anonymous">'];
     if (BLOB_HOST) hints.push(`<link rel="preconnect" href="https://${BLOB_HOST}">`);
-    html = html.replace('<link rel="preconnect"', hints.join('\n') + '\n<link rel="preconnect"');
+    hints.push('<link rel="preconnect" href="https://res.cloudinary.com">');
+    html = html.replace('</title>', '</title>\n' + hints.join('\n'));
   }
   fs.writeFileSync(page, html);
 }

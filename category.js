@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     `<a href="category.html" class="cat-chip" data-cat="all"><span class="cat-chip-all">${allThumbs}</span>All Pieces</a>` +
     CATEGORIES.map(c =>
       `<a href="category.html?c=${c.slug}" class="cat-chip" data-cat="${c.slug}">
-         <img src="${c.img}" alt="" loading="lazy">${MM.esc(c.name)}
+         <img ${MM.imgAttrs(c.img, '96px')} alt="" loading="lazy" decoding="async">${MM.esc(c.name)}
        </a>`).join('');
   const chips = [...track.querySelectorAll('.cat-chip')];
 

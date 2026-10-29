@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardHTML = (item) => `
     <article class="wl-card" data-id="${item.id}">
       <div class="wlc-shot">
-        <img src="${item.img}" alt="${item.name}">
+        <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
         <span class="wlc-tag">SAVED</span>
         <button class="wlc-drop" aria-label="Remove ${item.name} from wishlist">
           <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.3-4.7-9.6-9.2C.8 7.9 2.2 4.5 5.4 3.7c1.9-.5 3.9.3 5 1.9.4.7 1 1.5 1.6 1.5s1.2-.8 1.6-1.5c1.1-1.6 3.1-2.4 5-1.9 3.2.8 4.6 4.2 3 7.6C19.3 15.8 12 20.5 12 20.5z"/></svg>
