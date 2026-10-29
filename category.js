@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
       $('chKicker').textContent = idx >= 0
         ? `Collection ${String(idx + 1).padStart(2, '0')} / ${CATEGORIES.length}`
         : 'Maison Meka · Home Art';
-      $('chImg').src = c.banner || c.img; $('chImg').alt = c.name;
+      const im = $('chImg'), src = c.banner || c.img, set = MM.srcset(src);
+      if (set) { im.srcset = set; im.sizes = '(max-width:640px) 45vw, 400px'; } else im.removeAttribute('srcset');
+      im.src = src; im.alt = c.name;
       document.title = `${c.name} | Maison Meka`;
     };
     if (!animate) { write(); return; }

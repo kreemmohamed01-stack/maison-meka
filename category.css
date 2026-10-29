@@ -50,6 +50,10 @@
 }
 .cx-desc{
   max-width:440px; margin-top:16px;
+}
+/* room for the description before the collection's text arrives */
+.cx-desc:empty{ min-height:calc(1.7em * 3); }
+.cx-desc{
   font-size:clamp(14px,1.2vw,16px); line-height:1.7; color:rgba(29,43,74,.75);
 }
 .cx-meta{ display:flex; align-items:center; flex-wrap:wrap; gap:14px 22px; margin-top:clamp(18px,2.4vw,30px); }
@@ -74,6 +78,9 @@
 .cx-visual img{
   position:relative; z-index:1;
   display:block; width:100%; height:auto;
+  /* holds the 4:5 shape the dashboard crops to while the photo loads, so
+     nothing below it moves when it arrives */
+  aspect-ratio:auto 4 / 5;
   border-radius:14px;
   box-shadow:0 24px 50px rgba(29,43,74,.16);
   transition:opacity .4s var(--ease-soft);
@@ -89,6 +96,9 @@
   overflow-x:auto; scroll-snap-type:x proximity; scroll-behavior:smooth;
   padding:16px var(--gutter);
   scrollbar-width:none;
+  /* one row of chips (38px photo + 5px padding + border) is held open
+     before the categories arrive */
+  min-height:calc(50px + 32px);
 }
 .cats-track::-webkit-scrollbar{ display:none; }
 .cat-chip{
@@ -373,6 +383,7 @@
   .cx-kicker{ margin-top:12px; font-size:9px; letter-spacing:2px; }
   .cx-title{ font-size:clamp(32px,10vw,44px); margin-top:6px; }
   .cx-desc{ font-size:13px; line-height:1.55; margin-top:10px; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+  .cx-desc:empty{ min-height:calc(1.55em * 4); }
   .cx-meta{ margin-top:14px; gap:10px 14px; }
   .cx-count{ font-size:12px; }
   .cx-cta{ height:38px; padding:0 14px; font-size:12px; gap:7px; }
@@ -380,7 +391,7 @@
   .cx-visual::before{ inset:10px -8px -10px 10px; border-radius:10px; }
   .cx-visual img{ border-radius:10px; }
 
-  .cats-track{ gap:6px; padding-top:12px; padding-bottom:12px; }
+  .cats-track{ gap:6px; padding-top:12px; padding-bottom:12px; min-height:calc(50px + 24px); }
   .cat-chip{ font-size:13px; padding:4px 13px 4px 4px; gap:8px; }
   .cat-chip img, .cat-chip-all{ width:32px; height:32px; }
 
