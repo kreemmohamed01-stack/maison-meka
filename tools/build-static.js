@@ -111,6 +111,39 @@ for (const page of pages) {
 }
 console.log(`public/ ready — ${pages.length} pages stamped, assets and dashboard copied`);
 
+/* ---------- the first photo of the shop and product pages ----------
+   Each page learns its main photo from the catalogue, which arrives after
+   the scripts. A small map written into the page lets it ask for that photo
+   straight away instead, with the same srcset the page uses — so the browser
+   simply reuses it. A photo changed after this deploy is still shown
+   correctly; it just is not fetched early until the next deploy. */
+const CLD = 'https://res.cloudinary.com/';
+const hintScript = (param, fallback, map, sizes) =>
+  `<script>(function(){var M=${JSON.stringify(map)};var u=M[new URLSearchParams(location.search).get('${param}')||'${fallback}'];` +
+  `if(!u)return;var l=document.createElement('link');l.rel='preload';l.as='image';l.fetchPriority='high';` +
+  `if(u.indexOf('~')===0){u='${CLD}'+u.slice(1);var k='/upload/f_auto,q_auto/';` +
+  `l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace(k,'/upload/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';l.imageSizes='${sizes}';}` +
+  `l.href=u;document.head.appendChild(l);})();</script>`;
+/* Cloudinary photos are written short (~ stands for the host) and get the
+   same widths the pages ask for; any other photo is fetched as it is */
+const short = (u) => /^https:\/\/res\.cloudinary\.com\/.+\/upload\/f_auto,q_auto\//.test(u) ? '~' + u.slice(CLD.length) : u;
+const heroHints = (doc) => {
+  const inject = (file, script) => {
+    const f = path.join(OUT, file);
+    fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('</title>', '</title>\n' + script));
+  };
+  const cats = {};
+  const all = (doc.content && doc.content.allCategory) || {};
+  const allImg = all.banner || all.img || 'assets/cat-potiches.webp';
+  cats.all = short(allImg);
+  doc.categories.forEach(c => { const u = c.banner || c.img; if (u) cats[c.slug] = short(u); });
+  inject('category.html', hintScript('c', 'all', cats, '(max-width:640px) 45vw, 400px'));
+  const prods = {};
+  doc.products.filter(p => p.active !== false && (p.imgs || [])[0]).forEach(p => { prods[p.id] = short(p.imgs[0]); });
+  inject('product.html', hintScript('id', '', prods, '(max-width:900px) 100vw, 55vw'));
+  console.log(`early photos — ${Object.keys(cats).length} collections, ${Object.keys(prods).length} products`);
+};
+
 /* ---------- search engines: robots.txt + a sitemap of every page ---------- */
 (async () => {
   const SITE = (process.env.SITE_URL || 'https://maison-meka-lemon.vercel.app').replace(/\/$/, '');
@@ -122,6 +155,7 @@ console.log(`public/ ready — ${pages.length} pages stamped, assets and dashboa
     const store = require('../lib/store');
     const { doc } = await store.loadDoc();
     if (doc) {
+      heroHints(doc);
       doc.categories.forEach(c => urls.push('category.html?c=' + encodeURIComponent(c.slug)));
       doc.products.filter(p => p.active !== false).forEach(p => urls.push('product.html?id=' + encodeURIComponent(p.id)));
     }
