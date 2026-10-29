@@ -304,9 +304,31 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   const render = (fade) => {
     const list = pick();
 
+    /* the first cards are drawn at once; the rest follow in batches well
+       before the visitor scrolls to them, so the page opens without drawing
+       every piece in the collection up front */
+    const BATCH = 12;
+    const more = (from) => {
+      const cards = list.slice(from, from + BATCH);
+      if (!cards.length) return;
+      grid.insertAdjacentHTML('beforeend', cards.map(MM.cardHTML).join(''));
+      const added = [...grid.querySelectorAll('.pc')].slice(from);
+      MM.reveal(added);
+      if (from + BATCH >= list.length) return;
+      const last = added[added.length - 1];
+      if (!('IntersectionObserver' in window)) return more(from + BATCH);
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        if (grid.dataset.draw === token) more(from + BATCH);
+      }, { rootMargin: '1500px 0px' });
+      io.observe(last);
+    };
+    const token = String(Math.random());
     const draw = () => {
-      grid.innerHTML = list.map(MM.cardHTML).join('');
-      MM.reveal(grid.querySelectorAll('.pc'));
+      grid.dataset.draw = token;
+      grid.innerHTML = '';
+      more(0);
       grid.style.opacity = '';
     };
     if (fade && grid.children.length) {
