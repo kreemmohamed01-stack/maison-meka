@@ -65,7 +65,8 @@ const fontFile = (family, weight) => {
   const m = FONT_CSS.split('\n').find(l => l.includes(`'${family}'`) && l.includes('font-style: normal') && l.includes(`font-weight: ${weight}`) && l.includes('U+0000-00FF'));
   return m && m.match(/url\(([^)]+)\)/)[1];
 };
-const FONT_HEAD = ['Jost', 'Italiana'].map((f, i) => fontFile(f, i ? 400 : 300)).filter(Boolean)
+/* Jost for the text, Italiana and Cormorant for the titles */
+const FONT_HEAD = [['Jost', 300], ['Italiana', 400], ['Cormorant Garamond', 500]].map(([f, w]) => fontFile(f, w)).filter(Boolean)
   .map(u => `<link rel="preload" href="${u}" as="font" type="font/woff2" crossorigin>`).join('\n') +
   `\n<style>${FONT_CSS.replace(/\n/g, '')}</style>`;
 
