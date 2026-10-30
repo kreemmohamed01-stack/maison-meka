@@ -83,7 +83,7 @@
     'Filter & Sort':'تصفية وترتيب', 'Sort by':'ترتيب حسب', 'Featured':'المميز', 'Newest':'الأحدث', 'Price: Low to High':'السعر: من الأقل للأعلى',
     'Price: High to Low':'السعر: من الأعلى للأقل', 'Name A–Z':'الاسم أ–ي', 'Relevance':'الأكثر صلة',
     'Nothing matches — yet':'لا توجد نتائج — حتى الآن', 'Try widening the price, or clearing a filter or two.':'جرّب توسيع نطاق السعر أو إزالة بعض عوامل التصفية.',
-    'Clear Filters':'مسح التصفية', 'BESPOKE SOURCING':'توفير حسب الطلب', 'Looking for something\nparticular?':'تبحث عن\nقطعة بعينها؟',
+    'Clear Filters':'مسح التصفية', 'SPECIAL REQUESTS':'طلبات خاصة', 'Looking for something\nparticular?':'تبحث عن\nقطعة بعينها؟',
     'Tell us the piece you have in mind — the size, the finish, the room it belongs to — and we will find it for you.':'أخبرنا بالقطعة التي تتخيلها — المقاس واللمسة والمكان الذي تنتمي إليه — وسنجدها لك.',
     'Message us on Instagram':'راسلنا على إنستجرام', 'Glass':'زجاج', 'Ceramic':'سيراميك', 'Porcelain':'بورسلين', 'Metal':'معدن', 'Wood':'خشب',
     'View Piece':'عرض القطعة', 'Add to Cart':'أضف إلى الحقيبة', 'Added':'تمت الإضافة', 'Sold Out':'نفدت الكمية',
