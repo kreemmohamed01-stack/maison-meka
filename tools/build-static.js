@@ -81,8 +81,10 @@ const bundleCss = (refs) => {
 };
 
 /* a white screen with a counter from 0 to 100 covers each page until it has
-   loaded (never longer than 6 s); the home page's intro film replaces it */
-const LOADER = `<div id="mmLoad" style="position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .45s ease">` +
+   loaded (never longer than 6 s); the home page's intro film replaces it.
+   It only appears when a page is still loading after half a second, so a
+   fast connection never sees it */
+const LOADER = `<div id="mmLoad" style="position:fixed;inset:0;z-index:99999;background:#fff;display:none;align-items:center;justify-content:center;transition:opacity .45s ease">` +
   `<div style="position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center;font:300 20px Jost,sans-serif;color:#23201c;letter-spacing:.04em">` +
   `<svg viewBox="0 0 100 100" style="position:absolute;inset:0;transform:rotate(-90deg)"><circle cx="50" cy="50" r="46" fill="none" stroke="#efe9dc" stroke-width="3"/>` +
   `<circle id="mmLoadRing" cx="50" cy="50" r="46" fill="none" stroke="#23201c" stroke-width="3" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289"/></svg>` +
@@ -91,8 +93,9 @@ const LOADER = `<div id="mmLoad" style="position:fixed;inset:0;z-index:99999;bac
   `var n=document.getElementById('mmLoadN'),r=document.getElementById('mmLoadRing'),p=0,done=0,t0=Date.now();` +
   `function show(v){n.textContent=Math.round(v)+'%';r.style.strokeDashoffset=289*(1-v/100);}` +
   `function tick(){if(done){p+=(100-p)*.35+1;if(p>=100){show(100);setTimeout(function(){b.style.opacity=0;setTimeout(function(){b.remove()},460)},120);return;}}` +
-  `else p+=(90-p)*.04;show(p);requestAnimationFrame(tick);}requestAnimationFrame(tick);` +
-  `function end(){done=1}addEventListener('load',end);setTimeout(end,6000);})();</script>`;
+  `else p+=(90-p)*.04;show(p);requestAnimationFrame(tick);}` +
+  `var shown=0;function end(){done=1;if(!shown)b.remove()}addEventListener('load',end);setTimeout(end,6000);` +
+  `setTimeout(function(){if(done)return;shown=1;b.style.display='flex';requestAnimationFrame(tick)},500);})();</script>`;
 
 /* where uploaded product photos are served from (vercel_blob_rw_<store>_<secret>) */
 const BLOB_HOST = (() => {
