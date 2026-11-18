@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   /* the results come from the live catalogue, so every product added in the
      dashboard can be found here */
   if (PRODUCTS.length) {
-    grid.innerHTML = PRODUCTS.map(p => {
+    grid.innerHTML = PRODUCTS.map((p, i) => {
       const cat = MM.homeCat(p);
       const meta = [cat ? cat.name : '', p.dims].filter(Boolean).join('  •  ');
       return `
       <article class="sp-card" data-price="${p.price}" data-name="${MM.esc(p.name)}" data-id="${MM.esc(p.id)}">
         <div class="spc-shot mm-sq" style="${MM.fitStyle(p)}">
-          <a href="product.html?id=${encodeURIComponent(p.id)}">${MM.squareImg(p)}</a>
+          <a href="product.html?id=${encodeURIComponent(p.id)}">${i < 4 ? MM.squareImg(p).replace('loading="lazy"', 'fetchpriority="high"') : MM.squareImg(p)}</a>
           <button class="spc-fav" aria-label="Add to favourites">${MM.ICON.heart}</button>
         </div>
         <div class="spc-body">
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   // header, bar and meta row glide in first, in document order
   const intro = [...document.querySelectorAll('.sp-rise')];
   intro.forEach((el, i) => {
-    setTimeout(() => el.classList.add('in'), 180 + i * 150);
+    setTimeout(() => el.classList.add('in'), i * 70);
   });
 
   /* ---------- cards drift in as they reach the viewport ---------- */
@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
 
-  // the first row waits for the intro to finish before it starts
-  setTimeout(() => cards.forEach(c => io.observe(c)), 180 + intro.length * 150);
+  // the first row comes in with the header, not after it
+  cards.forEach(c => io.observe(c));
 
   /* ---------- filter + sort ---------- */
   const apply = () => {
