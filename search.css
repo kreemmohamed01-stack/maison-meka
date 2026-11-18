@@ -210,6 +210,8 @@
   display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
   gap:clamp(8px,1vw,16px);
 }
+/* cards far down the page are not laid out or painted until they come near */
+.sp-card{ content-visibility:auto; contain-intrinsic-size:auto 340px; }
 .sp-card{
   display:flex; flex-direction:column;
   background:rgba(255,253,248,.94);

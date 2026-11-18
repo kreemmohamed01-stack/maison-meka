@@ -227,10 +227,12 @@ const heroHints = async (doc) => {
       if (ids.length) { const pos = new Map(ids.map((id, i) => [id, i])); own.sort((a, b) => (pos.has(a.id) ? pos.get(a.id) : 1e6) - (pos.has(b.id) ? pos.get(b.id) : 1e6)); }
       first[c.slug] = own.slice(0, 4).map(thumb);
     });
-    inject('category.html', `<script>(function(){var L=${JSON.stringify(first)}[new URLSearchParams(location.search).get('c')||'all']||[];` +
+    const firstCards = (L) => `<script>(function(){var L=${L};` +
       `L.forEach(function(u,i){var l=document.createElement('link');l.rel='preload';l.as='image';if(i<2)l.fetchPriority='high';` +
       `if(u.indexOf('~')===0){u='/cld/'+u.slice(1);l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace('/f_auto,q_auto/','/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';` +
-      `l.imageSizes='(max-width:640px) 50vw, (max-width:1100px) 33vw, 25vw';}l.href=u;document.head.appendChild(l);});})();</script>`);
+      `l.imageSizes='(max-width:640px) 50vw, (max-width:1100px) 33vw, 25vw';}l.href=u;document.head.appendChild(l);});})();</script>`;
+    inject('category.html', firstCards(`${JSON.stringify(first)}[new URLSearchParams(location.search).get('c')||'all']||[]`));
+    inject('search.html', firstCards(JSON.stringify(first.all)));
   }
   const prods = {};
   doc.products.filter(p => p.active !== false && (p.imgs || [])[0]).forEach(p => { prods[p.id] = short(p.imgs[0]); });
