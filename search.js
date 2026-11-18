@@ -1,13 +1,13 @@
 // ===================== Maison Meka — search page ===================== //
 
-document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
+document.addEventListener('DOMContentLoaded', () => MM_READY.then(async () => {
 
   const grid  = document.getElementById('spGrid');
 
   /* the results come from the live catalogue, so every product added in the
      dashboard can be found here */
   if (PRODUCTS.length) {
-    grid.innerHTML = PRODUCTS.map((p, i) => {
+    const html = PRODUCTS.map((p, i) => {
       const cat = MM.homeCat(p);
       const meta = [cat ? cat.name : '', p.dims].filter(Boolean).join('  •  ');
       return `
@@ -25,7 +25,14 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
           </div>
         </div>
       </article>`;
-    }).join('');
+    });
+    /* the first pieces are drawn at once, the rest in small steps, so the
+       page never freezes while 100+ cards are built */
+    grid.innerHTML = html.slice(0, 12).join('');
+    for (let i = 12; i < html.length; i += 24) {
+      await new Promise(r => setTimeout(r, 0));
+      grid.insertAdjacentHTML('beforeend', html.slice(i, i + 24).join(''));
+    }
   } else grid.innerHTML = '';
   const input = document.getElementById('spInput');
   const sort  = document.getElementById('spSort');
