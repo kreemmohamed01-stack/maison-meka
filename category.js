@@ -332,6 +332,8 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
         ? MM.cardHTML(p).replace('loading="lazy"', 'fetchpriority="high"') : MM.cardHTML(p)).join(''));
       const added = [...grid.querySelectorAll('.pc')].slice(from);
       MM.reveal(added);
+      /* the first row starts its rise at once instead of waiting its turn */
+      if (from === 0) requestAnimationFrame(() => added.slice(0, 4).forEach(el => el.classList.add('in')));
       if (from + BATCH >= list.length) return;
       const last = added[added.length - 1];
       if (!('IntersectionObserver' in window)) return more(from + BATCH);
