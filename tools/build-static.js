@@ -213,6 +213,25 @@ const heroHints = async (doc) => {
   }));
   inject('category.html', `<script>(function(){var R=${JSON.stringify(ratios)};var r=R[new URLSearchParams(location.search).get('c')||'all'];` +
     `if(r)document.documentElement.style.setProperty('--ch-ratio',r);})();</script>`);
+  /* the first four card photos of each collection, in the order the shop
+     shows them, so they start downloading before the catalogue arrives */
+  {
+    const order = doc.order || {}, byPos = (ids = []) => { const pos = new Map(ids.map((id, i) => [id, i]));
+      return (a, b) => (pos.has(a.id) ? pos.get(a.id) : 1e9 - (a.added || 0) / 1e13) - (pos.has(b.id) ? pos.get(b.id) : 1e9 - (b.added || 0) / 1e13); };
+    const live = doc.products.filter(p => p.active !== false && (p.imgs || [])[0]).sort(byPos((order.all) || []));
+    const thumb = (p) => short((p.sm && p.sm[p.imgs[0]]) || p.imgs[0]);
+    const first = { all: live.slice(0, 4).map(thumb) };
+    doc.categories.forEach(c => {
+      const own = live.filter(p => (p.cats || []).includes(c.slug));
+      const ids = (order.cats || {})[c.slug] || [];
+      if (ids.length) { const pos = new Map(ids.map((id, i) => [id, i])); own.sort((a, b) => (pos.has(a.id) ? pos.get(a.id) : 1e6) - (pos.has(b.id) ? pos.get(b.id) : 1e6)); }
+      first[c.slug] = own.slice(0, 4).map(thumb);
+    });
+    inject('category.html', `<script>(function(){var L=${JSON.stringify(first)}[new URLSearchParams(location.search).get('c')||'all']||[];` +
+      `L.forEach(function(u,i){var l=document.createElement('link');l.rel='preload';l.as='image';if(i<2)l.fetchPriority='high';` +
+      `if(u.indexOf('~')===0){u='/cld/'+u.slice(1);l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace('/f_auto,q_auto/','/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';` +
+      `l.imageSizes='(max-width:640px) 50vw, (max-width:1100px) 33vw, 25vw';}l.href=u;document.head.appendChild(l);});})();</script>`);
+  }
   const prods = {};
   doc.products.filter(p => p.active !== false && (p.imgs || [])[0]).forEach(p => { prods[p.id] = short(p.imgs[0]); });
   inject('product.html', hintScript('id', '', prods, '(max-width:900px) 100vw, 55vw'));
