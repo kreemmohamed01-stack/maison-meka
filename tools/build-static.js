@@ -95,7 +95,7 @@ const LOADER = `<div id="mmLoad" style="position:fixed;inset:0;z-index:99999;bac
   `function show(v){n.textContent=Math.round(v)+'%';r.style.strokeDashoffset=289*(1-v/100);}` +
   `function tick(){if(done){p+=(100-p)*.35+1;if(p>=100){show(100);setTimeout(function(){b.style.opacity=0;setTimeout(function(){b.remove()},460)},120);return;}}` +
   `else p+=(90-p)*.04;show(p);requestAnimationFrame(tick);}` +
-  `var shown=0;function end(){done=1;if(!shown)b.remove()}addEventListener('load',end);setTimeout(end,6000);` +
+  `var shown=0;function end(){done=1;if(!shown)b.remove()}if(document.readyState!=='loading')end();else addEventListener('DOMContentLoaded',end);setTimeout(end,4000);` +
   `setTimeout(function(){if(done)return;shown=1;b.style.display='flex';requestAnimationFrame(tick)},500);})();</script>`;
 
 /* where uploaded product photos are served from (vercel_blob_rw_<store>_<secret>) */
