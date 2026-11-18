@@ -327,7 +327,9 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     const more = (from) => {
       const cards = list.slice(from, from + BATCH);
       if (!cards.length) return;
-      grid.insertAdjacentHTML('beforeend', cards.map(MM.cardHTML).join(''));
+      /* the first row on screen is fetched straight away, not lazily */
+      grid.insertAdjacentHTML('beforeend', cards.map((p, i) => from === 0 && i < 4
+        ? MM.cardHTML(p).replace('loading="lazy"', 'fetchpriority="high"') : MM.cardHTML(p)).join(''));
       const added = [...grid.querySelectorAll('.pc')].slice(from);
       MM.reveal(added);
       if (from + BATCH >= list.length) return;
