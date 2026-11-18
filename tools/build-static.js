@@ -40,6 +40,7 @@ for (const f of fs.readdirSync(ROOT)) {
 copyDir(path.join(ROOT, 'assets'), path.join(OUT, 'assets'),
   (p) => p.includes(path.join('assets', 'uploads')) || hasWebp(p) || /insta\.mp4$/.test(p));
 copyDir(path.join(ROOT, 'admin'), path.join(OUT, 'admin'));
+fs.copyFileSync(path.join(ROOT, 'favicon.ico'), path.join(OUT, 'favicon.ico'));
 pages.push(path.join(OUT, 'admin', 'index.html'));
 
 /* every stylesheet and script is minified — the same code, fewer bytes */
@@ -114,7 +115,7 @@ const ORG = {
   '@context': 'https://schema.org',
   '@graph': [
     { '@type': 'HomeGoodsStore', '@id': SITE_URL + '/#store', name: 'Maison Meka', alternateName: ['Maison Meka Home Art', 'ميزون ميكا'],
-      url: SITE_URL + '/', logo: SITE_URL + '/assets/apple-touch-icon.png', image: SITE_URL + '/assets/og-image.jpg',
+      url: SITE_URL + '/', logo: SITE_URL + '/assets/icon-512.png', image: SITE_URL + '/assets/og-image.jpg',
       description: 'Curated home art and decor in Egypt: Murano glass, porcelain, potiches, vases, lamps and timeless pieces.',
       telephone: '+201211179625', priceRange: 'EGP', currenciesAccepted: 'EGP',
       address: { '@type': 'PostalAddress', addressCountry: 'EG' }, areaServed: { '@type': 'Country', name: 'Egypt' },
