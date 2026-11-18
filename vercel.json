@@ -18,6 +18,10 @@
     {
       "source": "/o/(.*)",
       "destination": "/api/index"
+    },
+    {
+      "source": "/links",
+      "destination": "/links.html"
     }
   ],
   "redirects": [
