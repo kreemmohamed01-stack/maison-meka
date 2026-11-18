@@ -231,7 +231,7 @@ const MM = (() => {
   /* a Cloudinary photo can be fetched at any width: the browser picks the
      copy that fits the card on its screen, at the same quality setting */
   const CLD_W = [320, 480, 720, 1080];
-  const srcset = (url) => /res\.cloudinary\.com\/.+\/upload\/f_auto,q_auto\//.test(url || '')
+  const srcset = (url) => /(res\.cloudinary\.com\/.+\/upload|^\/cld)\/f_auto,q_auto\//.test(url || '')
     ? CLD_W.map(w => url.replace('/f_auto,q_auto/', `/f_auto,q_auto,c_limit,w_${w}/`) + ` ${w}w`).join(', ') + `, ${url} 2400w`
     : '';
   /* one copy of a photo at a set width, for small spots (thumbnails, the cart bar) */
