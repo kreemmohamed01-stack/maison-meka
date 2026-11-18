@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   /* ===================== category strip ===================== */
   const track = $('catsTrack');
   const allThumbs = CATEGORIES.slice(0, 4)
-    .map(c => `<i style="background-image:url('${c.img}')"></i>`).join('');
+    .map(c => `<i style="background-image:url('${MM.sized(c.img, 160)}')"></i>`).join('');
   track.innerHTML =
     `<a href="category.html" class="cat-chip" data-cat="all"><span class="cat-chip-all">${allThumbs}</span>All Pieces</a>` +
     CATEGORIES.map(c =>

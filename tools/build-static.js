@@ -162,7 +162,6 @@ for (const page of pages) {
   if (/products\.js/.test(html) && !html.includes('href="/api/catalog"')) {
     const hints = ['<link rel="preload" href="/api/catalog" as="fetch" crossorigin="anonymous">'];
     if (BLOB_HOST) hints.push(`<link rel="preconnect" href="https://${BLOB_HOST}">`);
-    hints.push('<link rel="preconnect" href="https://res.cloudinary.com">');
     html = html.replace('</title>', '</title>\n' + hints.join('\n'));
   }
   if (dir === OUT) html = seoHead(html, path.basename(page));
@@ -176,16 +175,18 @@ console.log(`public/ ready — ${pages.length} pages stamped, assets and dashboa
    straight away instead, with the same srcset the page uses — so the browser
    simply reuses it. A photo changed after this deploy is still shown
    correctly; it just is not fetched early until the next deploy. */
-const CLD = 'https://res.cloudinary.com/';
+/* Cloudinary photos are fetched through this site: /cld/ is passed on to
+   the store's upload folder (vercel.json), the same path products.js uses */
+const CLD = 'https://res.cloudinary.com/stw7muwi/image/upload/';
 const hintScript = (param, fallback, map, sizes) =>
   `<script>(function(){var M=${JSON.stringify(map)};var u=M[new URLSearchParams(location.search).get('${param}')||'${fallback}'];` +
   `if(!u)return;var l=document.createElement('link');l.rel='preload';l.as='image';l.fetchPriority='high';` +
-  `if(u.indexOf('~')===0){u='${CLD}'+u.slice(1);var k='/upload/f_auto,q_auto/';` +
-  `l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace(k,'/upload/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';l.imageSizes='${sizes}';}` +
+  `if(u.indexOf('~')===0){u='/cld/'+u.slice(1);var k='/f_auto,q_auto/';` +
+  `l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace(k,'/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';l.imageSizes='${sizes}';}` +
   `l.href=u;document.head.appendChild(l);})();</script>`;
-/* Cloudinary photos are written short (~ stands for the host) and get the
-   same widths the pages ask for; any other photo is fetched as it is */
-const short = (u) => /^https:\/\/res\.cloudinary\.com\/.+\/upload\/f_auto,q_auto\//.test(u) ? '~' + u.slice(CLD.length) : u;
+/* Cloudinary photos are written short (~ stands for the store's folder) and
+   get the same widths the pages ask for; any other photo is fetched as it is */
+const short = (u) => String(u).startsWith(CLD + 'f_auto,q_auto/') ? '~' + u.slice(CLD.length) : u;
 const heroHints = async (doc) => {
   const inject = (file, script) => {
     const f = path.join(OUT, file);
@@ -203,7 +204,7 @@ const heroHints = async (doc) => {
   await Promise.all(Object.entries(cats).map(async ([slug, u]) => {
     if (u[0] !== '~') return;
     try {
-      const info = await (await fetch(CLD + u.slice(1).replace('/upload/f_auto,q_auto/', '/upload/fl_getinfo/'), { signal: AbortSignal.timeout(4000) })).json();
+      const info = await (await fetch(CLD + u.slice(1).replace(/^f_auto,q_auto\//, 'fl_getinfo/'), { signal: AbortSignal.timeout(4000) })).json();
       if (info.input && info.input.width) ratios[slug] = `${info.input.width} / ${info.input.height}`;
     } catch {}
   }));

@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     imgs = next;
     smalls = own.length ? own.map(i => (p.thumbs || p.imgs)[i]) : (p.thumbs || p.imgs);
     drawGallery();
-    $('barImg').src = smalls[0] || imgs[0];
+    $('barImg').src = MM.sized(smalls[0] || imgs[0], 160);
   };
   drawGallery();
   const show = (i) => {
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
   if (p.banner) {
     const band = document.createElement('section');
     band.className = 'pp-banner';
-    band.innerHTML = `<img src="${MM.esc(p.banner)}" alt="${MM.esc(p.name)}" loading="lazy">`;
+    band.innerHTML = `<img ${MM.imgAttrs(p.banner, '100vw')} alt="${MM.esc(p.name)}" loading="lazy" decoding="async">`;
     const rel = document.querySelector('.pp-rel');
     rel.parentNode.insertBefore(band, rel);
   }
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
 
   /* ===================== the sticky bar on phones ===================== */
   showColorPhotos();
-  $('barImg').src = smalls[0] || imgs[0];
+  $('barImg').src = MM.sized(smalls[0] || imgs[0], 160);
   $('barName').textContent = p.name;
   const bar = $('pdBar');
   const buy = $('pdBuy');

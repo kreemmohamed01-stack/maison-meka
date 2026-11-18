@@ -17,7 +17,10 @@ let POPUP = null;          // the coupon set to pop up, if any
    pages read the live store instead */
 const MM_API = location.protocol === 'file:' ? 'https://maisonmeka.com' : '';
 const MM_READY = fetch(MM_API + '/api/catalog')
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+  /* product photos are fetched through this site (/cld/ → Cloudinary), so they
+     reuse the connection the page already has instead of opening a new one */
+  .then(t => JSON.parse(MM_API ? t : t.split('https://res.cloudinary.com/stw7muwi/image/upload/').join('/cld/')))
   .then(d => {
     PREVIEW_FILL   = !!d.settings.previewFill;
     STORE          = { ...d.settings, sale: d.sale || null };
@@ -229,8 +232,10 @@ const MM = (() => {
      copy that fits the card on its screen, at the same quality setting */
   const CLD_W = [320, 480, 720, 1080];
   const srcset = (url) => /res\.cloudinary\.com\/.+\/upload\/f_auto,q_auto\//.test(url || '')
-    ? CLD_W.map(w => url.replace('/upload/f_auto,q_auto/', `/upload/f_auto,q_auto,c_limit,w_${w}/`) + ` ${w}w`).join(', ') + `, ${url} 2400w`
+    ? CLD_W.map(w => url.replace('/f_auto,q_auto/', `/f_auto,q_auto,c_limit,w_${w}/`) + ` ${w}w`).join(', ') + `, ${url} 2400w`
     : '';
+  /* one copy of a photo at a set width, for small spots (thumbnails, the cart bar) */
+  const sized = (url, w) => srcset(url) ? url.replace('/f_auto,q_auto/', `/f_auto,q_auto,c_limit,w_${w}/`) : url;
   /* src + srcset + sizes for any photo, ready to drop into an <img> */
   const imgAttrs = (src, sizes) => {
     const set = srcset(src);
@@ -322,6 +327,6 @@ const MM = (() => {
     });
   };
 
-  return { safeHTML, money, catBy, byId, homeCat, status, STATUS_LABEL, esc, wlHas, wlToggle, addToBag, openBag,
+  return { sized, safeHTML, money, catBy, byId, homeCat, status, STATUS_LABEL, esc, wlHas, wlToggle, addToBag, openBag,
            toast, ICON, thumb, srcset, imgAttrs, fitStyle, squareImg, cardHTML, wireCards, reveal };
 })();
