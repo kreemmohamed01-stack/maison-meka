@@ -183,7 +183,10 @@ const hintScript = (param, fallback, map, sizes) =>
   `if(!u)return;var l=document.createElement('link');l.rel='preload';l.as='image';l.fetchPriority='high';` +
   `if(u.indexOf('~')===0){u='/cld/'+u.slice(1);var k='/f_auto,q_auto/';` +
   `l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace(k,'/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';l.imageSizes='${sizes}';}` +
-  `l.href=u;document.head.appendChild(l);})();</script>`;
+  `l.href=u;document.head.appendChild(l);window.MMHERO={u:u,set:l.imageSrcset||'',sizes:l.imageSizes||''};})();</script>`;
+/* the main photo is put on the page as soon as its spot is parsed, so it
+   shows the moment it arrives instead of after the scripts and catalogue */
+const HERO_IMG = `var h=window.MMHERO;if(!h)return;var a=h.set?' srcset="'+h.set+'" sizes="'+h.sizes+'"':'';`;
 /* Cloudinary photos are written short (~ stands for the store's folder) and
    get the same widths the pages ask for; any other photo is fetched as it is */
 const short = (u) => String(u).startsWith(CLD + 'f_auto,q_auto/') ? '~' + u.slice(CLD.length) : u;
@@ -213,6 +216,12 @@ const heroHints = async (doc) => {
   const prods = {};
   doc.products.filter(p => p.active !== false && (p.imgs || [])[0]).forEach(p => { prods[p.id] = short(p.imgs[0]); });
   inject('product.html', hintScript('id', '', prods, '(max-width:900px) 100vw, 55vw'));
+  { const f = path.join(OUT, 'product.html');
+    fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('<div id="galSlides"></div>', '<div id="galSlides"></div><script>(function(){' + HERO_IMG +
+      `document.getElementById('galSlides').innerHTML='<div class="pp-slide on"><img class="pp-slide-img" src="'+h.u+'"'+a+' alt="" fetchpriority="high"></div>';})();</script>`)); }
+  { const f = path.join(OUT, 'category.html');
+    fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace(/(<img id="chImg"[^>]*>)/, '$1<script>(function(){' + HERO_IMG +
+      `var i=document.getElementById('chImg');if(h.set){i.sizes=h.sizes;i.srcset=h.set;}i.src=h.u;})();</script>`)); }
   console.log(`early photos — ${Object.keys(cats).length} collections, ${Object.keys(prods).length} products`);
 };
 
