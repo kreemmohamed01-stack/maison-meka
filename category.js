@@ -43,6 +43,17 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
       if (set) { im.srcset = set; im.sizes = '(max-width:640px) 45vw, 400px'; } else im.removeAttribute('srcset');
       im.src = src; im.alt = c.name;
       document.title = `${c.name} | Maison Meka`;
+      /* search engines: this collection's own address and description */
+      {
+        const url = 'https://maisonmeka.com/category.html' + (c.slug && idx >= 0 ? `?c=${encodeURIComponent(c.slug)}` : '');
+        const d = c.desc ? `${c.desc} — Maison Meka, curated home art in Egypt.` : `Shop ${c.name} at Maison Meka — curated home art and decor in Egypt.`;
+        const set = (sel, attr, key, val) => { let el = document.head.querySelector(sel); if (!el) { el = document.createElement(sel.startsWith('link') ? 'link' : 'meta'); el.setAttribute(attr, key); document.head.appendChild(el); } el.setAttribute(sel.startsWith('link') ? 'href' : 'content', val); };
+        set('link[rel="canonical"]', 'rel', 'canonical', url);
+        set('meta[name="description"]', 'name', 'description', d);
+        set('meta[property="og:url"]', 'property', 'og:url', url);
+        set('meta[property="og:title"]', 'property', 'og:title', document.title);
+        set('meta[property="og:description"]', 'property', 'og:description', d);
+      }
     };
     if (!animate) { write(); return; }
     hero.classList.add('swap');

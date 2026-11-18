@@ -103,6 +103,44 @@ const BLOB_HOST = (() => {
   return m ? m[1].toLowerCase() + '.public.blob.vercel-storage.com' : '';
 })();
 
+/* ---------- search engines and social previews, written into every page ----------
+   canonical address, Twitter/WhatsApp preview tags, locale, and on the home
+   page the shop's identity (name, logo, Instagram, Facebook, WhatsApp) so
+   Google can show it as one brand. Shop and product pages refine theirs once
+   the piece or collection is known. */
+const SITE_URL = (process.env.SITE_URL || 'https://maisonmeka.com').replace(/\/$/, '');
+const SOCIAL = ['https://www.instagram.com/maisonmeka2', 'https://www.facebook.com/share/1k3PEEDo3X/'];
+const ORG = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'HomeGoodsStore', '@id': SITE_URL + '/#store', name: 'Maison Meka', alternateName: ['Maison Meka Home Art', 'ميزون ميكا'],
+      url: SITE_URL + '/', logo: SITE_URL + '/assets/apple-touch-icon.png', image: SITE_URL + '/assets/og-image.jpg',
+      description: 'Curated home art and decor in Egypt: Murano glass, porcelain, potiches, vases, lamps and timeless pieces.',
+      telephone: '+201211179625', priceRange: 'EGP', currenciesAccepted: 'EGP',
+      address: { '@type': 'PostalAddress', addressCountry: 'EG' }, areaServed: { '@type': 'Country', name: 'Egypt' },
+      founder: [{ '@type': 'Person', name: 'Iman' }, { '@type': 'Person', name: 'Mai' }],
+      sameAs: SOCIAL,
+      contactPoint: { '@type': 'ContactPoint', telephone: '+201211179625', contactType: 'customer service', availableLanguage: ['English', 'Arabic'] } },
+    { '@type': 'WebSite', '@id': SITE_URL + '/#site', url: SITE_URL + '/', name: 'Maison Meka', inLanguage: ['en', 'ar'],
+      publisher: { '@id': SITE_URL + '/#store' },
+      potentialAction: { '@type': 'SearchAction', target: SITE_URL + '/search.html?q={search_term_string}', 'query-input': 'required name=search_term_string' } }
+  ]
+};
+const seoHead = (html, file) => {
+  const get = (re) => (html.match(re) || [])[1] || '';
+  const title = get(/<title>([^<]*)<\/title>/), desc = get(/<meta name="description" content="([^"]*)"/);
+  const url = file === 'index.html' ? SITE_URL + '/' : `${SITE_URL}/${file}`;
+  const tags = [];
+  if (file !== '404.html' && !html.includes('rel="canonical"')) tags.push(`<link rel="canonical" href="${url}">`);
+  if (!html.includes('og:locale')) tags.push('<meta property="og:locale" content="en_US">', '<meta property="og:locale:alternate" content="ar_EG">');
+  if (!html.includes('twitter:title') && title) tags.push(`<meta name="twitter:title" content="${title}">`);
+  if (!html.includes('twitter:description') && desc) tags.push(`<meta name="twitter:description" content="${desc}">`);
+  if (!html.includes('twitter:image')) tags.push(`<meta name="twitter:image" content="${SITE_URL}/assets/og-image.jpg">`);
+  if (!html.includes('og:image:alt')) tags.push('<meta property="og:image:alt" content="Maison Meka — curated home art">');
+  if (file === 'index.html') tags.push(`<script type="application/ld+json">${JSON.stringify(ORG)}</script>`);
+  return html.replace('</title>', '</title>\n' + tags.join('\n'));
+};
+
 /* version stamps on every local .css / .js the pages load */
 const stamp = (file) => crypto.createHash('sha1').update(fs.readFileSync(file)).digest('hex').slice(0, 10);
 for (const page of pages) {
@@ -126,6 +164,7 @@ for (const page of pages) {
     hints.push('<link rel="preconnect" href="https://res.cloudinary.com">');
     html = html.replace('</title>', '</title>\n' + hints.join('\n'));
   }
+  if (dir === OUT) html = seoHead(html, path.basename(page));
   fs.writeFileSync(page, html);
 }
 console.log(`public/ ready — ${pages.length} pages stamped, assets and dashboard copied`);
@@ -177,7 +216,7 @@ const heroHints = async (doc) => {
 
 /* ---------- search engines: robots.txt + a sitemap of every page ---------- */
 (async () => {
-  const SITE = (process.env.SITE_URL || 'https://maison-meka-lemon.vercel.app').replace(/\/$/, '');
+  const SITE = (process.env.SITE_URL || 'https://maisonmeka.com').replace(/\/$/, '');
   fs.writeFileSync(path.join(OUT, 'robots.txt'),
     `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`);
   const urls = ['', 'category.html', 'search.html', 'returns.html', 'shipping.html', 'about.html', 'faq.html', 'terms.html', 'privacy.html'];

@@ -19,6 +19,40 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
     m.content = p.seo.description;
   }
+  /* search engines: this piece's own address, preview and product details */
+  {
+    const url = `https://maisonmeka.com/product.html?id=${encodeURIComponent(p.id)}`;
+    const plain = (s) => String(s || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const desc = (p.seo && p.seo.description) || plain(p.shortDesc) || plain(p.desc).slice(0, 160) || `${p.name} — a curated piece from Maison Meka.`;
+    const abs = (u) => /^https?:/.test(u) ? u : `https://maisonmeka.com/${String(u).replace(/^\//, '')}`;
+    const tag = (sel, make, val) => { let el = document.head.querySelector(sel); if (!el) { el = make(); document.head.appendChild(el); } el.setAttribute(sel.includes('link') ? 'href' : 'content', val); };
+    const meta = (attr, key) => () => { const m = document.createElement('meta'); m.setAttribute(attr, key); return m; };
+    tag('link[rel="canonical"]', () => { const l = document.createElement('link'); l.rel = 'canonical'; return l; }, url);
+    tag('meta[name="description"]', meta('name', 'description'), desc);
+    tag('meta[property="og:title"]', meta('property', 'og:title'), document.title);
+    tag('meta[property="og:description"]', meta('property', 'og:description'), desc);
+    tag('meta[property="og:url"]', meta('property', 'og:url'), url);
+    tag('meta[property="og:type"]', meta('property', 'og:type'), 'product');
+    if (p.imgs[0]) { tag('meta[property="og:image"]', meta('property', 'og:image'), abs(p.imgs[0])); tag('meta[name="twitter:image"]', meta('name', 'twitter:image'), abs(p.imgs[0])); }
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'Product', name: p.name, description: desc, image: p.imgs.slice(0, 6).map(abs), sku: String(p.id),
+          brand: { '@type': 'Brand', name: 'Maison Meka' }, category: cat ? cat.name : undefined, material: p.material || undefined,
+          offers: { '@type': 'Offer', url, priceCurrency: 'EGP', price: Number(p.price) || 0,
+            availability: p.stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            itemCondition: 'https://schema.org/NewCondition', seller: { '@type': 'Organization', name: 'Maison Meka' },
+            shippingDetails: { '@type': 'OfferShippingDetails', shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'EG' } } } },
+        { '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://maisonmeka.com/' },
+          ...(cat ? [{ '@type': 'ListItem', position: 2, name: cat.name, item: `https://maisonmeka.com/category.html?c=${cat.slug}` }] : []),
+          { '@type': 'ListItem', position: cat ? 3 : 2, name: p.name, item: url }] }
+      ]
+    });
+    document.head.appendChild(ld);
+  }
   $('pdTitle').textContent = p.name;
   $('pdCrumbName').textContent = p.name;
   $('pdBadge').textContent = p.badge || '';

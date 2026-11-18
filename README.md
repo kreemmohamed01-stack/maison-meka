@@ -2,8 +2,8 @@
 
 ## Live (Vercel)
 
-- Website: https://maison-meka-lemon.vercel.app
-- Dashboard: https://maison-meka-lemon.vercel.app/admin — sign in with the dashboard account (change it in Settings → Account)
+- Website: https://maisonmeka.com
+- Dashboard: https://maisonmeka.com/admin — sign in with the dashboard account (change it in Settings → Account)
 
 On Vercel the data lives in an **Upstash Redis** database. Uploaded product photos and videos go to
 **Cloudinary** (`CLOUDINARY_URL` environment variable); Vercel Blob is only a fallback when Cloudinary

@@ -15,7 +15,7 @@ let CONTENT = {};
 let POPUP = null;          // the coupon set to pop up, if any
 /* opened straight from the folder (file://) there is no local server, so the
    pages read the live store instead */
-const MM_API = location.protocol === 'file:' ? 'https://maison-meka-lemon.vercel.app' : '';
+const MM_API = location.protocol === 'file:' ? 'https://maisonmeka.com' : '';
 const MM_READY = fetch(MM_API + '/api/catalog')
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(d => {
