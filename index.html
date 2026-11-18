@@ -48,6 +48,10 @@
   /* the film is fetched only when it is going to play */
   v.src = v.getAttribute('data-src');
   var done = false;
+  /* the film is sped up so it lasts about 3 seconds */
+  var fast = function () { v.playbackRate = v.defaultPlaybackRate = v.duration > 3 ? v.duration / 3 : 1; };
+  v.addEventListener('loadedmetadata', fast);
+  v.addEventListener('play', fast);
   /* the film ends on the finished logo, then the site fades in */
   function finish() {
     if (done) return; done = true;
