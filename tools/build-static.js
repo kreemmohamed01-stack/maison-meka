@@ -161,6 +161,7 @@ for (const page of pages) {
      the page is still loading, instead of after their scripts have run */
   if (/products\.js/.test(html) && !html.includes('href="/api/catalog"')) {
     const hints = ['<link rel="preload" href="/api/catalog" as="fetch" crossorigin="anonymous">'];
+    hints.push('<link rel="preconnect" href="https://res.cloudinary.com">');
     if (BLOB_HOST) hints.push(`<link rel="preconnect" href="https://${BLOB_HOST}">`);
     html = html.replace('</title>', '</title>\n' + hints.join('\n'));
   }
@@ -175,13 +176,13 @@ console.log(`public/ ready — ${pages.length} pages stamped, assets and dashboa
    straight away instead, with the same srcset the page uses — so the browser
    simply reuses it. A photo changed after this deploy is still shown
    correctly; it just is not fetched early until the next deploy. */
-/* Cloudinary photos are fetched through this site: /cld/ is passed on to
-   the store's upload folder (vercel.json), the same path products.js uses */
+/* Cloudinary photos are fetched straight from Cloudinary, so they do not
+   count against this site's Vercel bandwidth */
 const CLD = 'https://res.cloudinary.com/stw7muwi/image/upload/';
 const hintScript = (param, fallback, map, sizes) =>
   `<script>(function(){var M=${JSON.stringify(map)};var u=M[new URLSearchParams(location.search).get('${param}')||'${fallback}'];` +
   `if(!u)return;var l=document.createElement('link');l.rel='preload';l.as='image';l.fetchPriority='high';` +
-  `if(u.indexOf('~')===0){u='/cld/'+u.slice(1);var k='/f_auto,q_auto/';` +
+  `if(u.indexOf('~')===0){u='${CLD}'+u.slice(1);var k='/f_auto,q_auto/';` +
   `l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace(k,'/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';l.imageSizes='${sizes}';}` +
   `l.href=u;document.head.appendChild(l);window.MMHERO={u:u,set:l.imageSrcset||'',sizes:l.imageSizes||''};})();</script>`;
 /* the main photo is put on the page as soon as its spot is parsed, so it
@@ -229,7 +230,7 @@ const heroHints = async (doc) => {
     });
     const firstCards = (L) => `<script>(function(){var L=${L};` +
       `L.forEach(function(u,i){var l=document.createElement('link');l.rel='preload';l.as='image';if(i<2)l.fetchPriority='high';` +
-      `if(u.indexOf('~')===0){u='/cld/'+u.slice(1);l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace('/f_auto,q_auto/','/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';` +
+      `if(u.indexOf('~')===0){u='${CLD}'+u.slice(1);l.imageSrcset=[320,480,720,1080].map(function(w){return u.replace('/f_auto,q_auto/','/f_auto,q_auto,c_limit,w_'+w+'/')+' '+w+'w'}).join(', ')+', '+u+' 2400w';` +
       `l.imageSizes='(max-width:640px) 50vw, (max-width:1100px) 33vw, 25vw';}l.href=u;document.head.appendChild(l);});})();</script>`;
     inject('category.html', firstCards(`${JSON.stringify(first)}[new URLSearchParams(location.search).get('c')||'all']||[]`));
     inject('search.html', firstCards(JSON.stringify(first.all)));

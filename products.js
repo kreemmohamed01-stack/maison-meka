@@ -18,9 +18,7 @@ let POPUP = null;          // the coupon set to pop up, if any
 const MM_API = location.protocol === 'file:' ? 'https://maisonmeka.com' : '';
 const MM_READY = fetch(MM_API + '/api/catalog')
   .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
-  /* product photos are fetched through this site (/cld/ → Cloudinary), so they
-     reuse the connection the page already has instead of opening a new one */
-  .then(t => JSON.parse(MM_API ? t : t.split('https://res.cloudinary.com/stw7muwi/image/upload/').join('/cld/')))
+  .then(t => JSON.parse(t))
   .then(d => {
     PREVIEW_FILL   = !!d.settings.previewFill;
     STORE          = { ...d.settings, sale: d.sale || null };
