@@ -2450,16 +2450,16 @@ html[lang="ar"] .sm-nav-minor li a, html[lang="ar"] .sm-cats li a{ font-weight:7
 }
 
 /* ===================== byline: thin black & white ===================== */
-.foot-credit{ color:rgba(255,255,255,.7); font-weight:300; border-top-color:rgba(255,255,255,.14); }
+.foot-credit{ color:rgba(255,255,255,.85); font-weight:300; border-top-color:rgba(255,255,255,.14); }
 .foot-credit svg{ color:#fff; width:11px; height:11px; }
 .credit-name, .sm-credit .credit-name{
-  font-family:var(--font-sans); font-style:normal; font-weight:200;
+  font-family:var(--font-sans); font-style:normal; font-weight:300;
   letter-spacing:3px; text-transform:lowercase;
   background:none; -webkit-text-fill-color:currentColor; animation:none;
-  color:#fff; border-bottom:1px solid rgba(255,255,255,.35); padding:0 2px 1px;
+  color:#fff; opacity:1; text-shadow:0 0 1px rgba(255,255,255,.5); border-bottom:1px solid rgba(255,255,255,.6); padding:0 2px 1px;
   transition:border-color .4s, letter-spacing .5s var(--ease-lux);
 }
 .credit-name:hover{ filter:none; transform:none; letter-spacing:4px; border-bottom-color:#fff; }
 .cn-glow{ display:none; }
-.sm-credit .credit-name{ color:#111; border-bottom-color:rgba(0,0,0,.3); }
+.sm-credit .credit-name{ text-shadow:none; color:#111; border-bottom-color:rgba(0,0,0,.3); }
 .sm-credit .credit-name:hover{ border-bottom-color:#111; }
