@@ -365,7 +365,10 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
       <div class="rv-head"><h2>${T.title}</h2><div class="rv-sum" id="rvSum"></div></div>
       <div class="rv-wrap">
         <form class="rv-form" id="rvForm" novalidate>
-          <h3>${T.write}</h3>
+          <span class="rvf-blob b1" aria-hidden="true"></span><span class="rvf-blob b2" aria-hidden="true"></span><span class="rvf-blob b3" aria-hidden="true"></span>
+          <span class="rvf-sticker" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="rvfC" d="M50 50m-36 0a36 36 0 1 1 72 0a36 36 0 1 1-72 0"/></defs><text><textPath href="#rvfC">${ar ? '✦ رأيك يهمنا ✦ رأيك يهمنا ' : '✦ YOUR WORDS MATTER ✦ THANK YOU '}</textPath></text></svg><i>✿</i></span>
+          <h3>${T.write.split(' ').map((w, k) => `<span class="rvf-w"><span style="--i:${k}">${w}</span></span>`).join(' ')}</h3>
+          <p class="rvf-mood" id="rvMood" aria-live="polite"><span class="rvf-face">🙂</span><span class="rvf-word">${T.pick}</span></p>
           <div class="rv-pick" id="rvPick" role="radiogroup" aria-label="${T.pick}">
             ${[1,2,3,4,5].map(i => `<button type="button" data-v="${i}" aria-label="${i}">${star}</button>`).join('')}
           </div>
@@ -388,8 +391,24 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
     };
     let rating = 0;
     const pick = $('rvPick');
-    const paint = (n) => pick.querySelectorAll('button').forEach(b => b.classList.toggle('on', Number(b.dataset.v) <= n));
-    pick.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { rating = Number(b.dataset.v); paint(rating); } });
+    const MOODS = ar ? [['🙂', T.pick], ['😕','مش أحسن حاجة'], ['😐','كويس'], ['🙂','حلو'], ['😍','جميل جداً'], ['🤩','تحفة!']]
+                     : [['🙂', T.pick], ['😕','Not quite'], ['😐',"It's okay"], ['🙂','Lovely'], ['😍','Gorgeous'], ['🤩','Absolutely stunning!']];
+    const mood = $('rvMood');
+    const paint = (n) => {
+      pick.querySelectorAll('button').forEach(b => b.classList.toggle('on', Number(b.dataset.v) <= n));
+      const [f, w] = MOODS[n] || MOODS[0];
+      if (mood.dataset.n !== String(n)) { mood.dataset.n = n; mood.innerHTML = `<span class="rvf-face">${f}</span><span class="rvf-word">${w}</span>`; }
+      $('rvForm').style.setProperty('--hue', n ? (n - 1) * 22 : 0);
+    };
+    const burst = (el) => {
+      const r = el.getBoundingClientRect(), C = ['#ff8a65','#ffd166','#7bdcb5','#b39ddb','#f48fb1','#64b5f6'];
+      for (let k = 0; k < 26; k++) {
+        const d = document.createElement('i'); d.className = 'rvf-conf';
+        d.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;background:${C[k % 6]};--dx:${(Math.random() - .5) * 360}px;--dy:${-80 - Math.random() * 220}px;--rot:${Math.random() * 720}deg`;
+        document.body.appendChild(d); setTimeout(() => d.remove(), 1300);
+      }
+    };
+    pick.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { rating = Number(b.dataset.v); paint(rating); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); } });
     pick.addEventListener('mouseover', (e) => { const b = e.target.closest('button'); if (b) paint(Number(b.dataset.v)); });
     pick.addEventListener('mouseleave', () => paint(rating));
     const form = $('rvForm'), msg = $('rvMsg');
@@ -406,11 +425,14 @@ document.addEventListener('DOMContentLoaded', () => MM_READY.then(() => {
         if (!r.ok) throw new Error(d.error);
         list.unshift(d); draw();
         form.reset(); rating = 0; paint(0);
-        msg.textContent = T.thanks;
+        msg.textContent = T.thanks; burst(btn);
       } catch (err) { msg.textContent = (err && err.message) || T.fail; }
       btn.disabled = false;
     });
     draw();
+    if ('IntersectionObserver' in window) new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { form.classList.add('in'); o.disconnect(); } }, { threshold: .25 }).observe(form);
+    else form.classList.add('in');
+    form.addEventListener('pointermove', (e) => { const b = form.getBoundingClientRect(); form.style.setProperty('--mx', ((e.clientX - b.left) / b.width * 100) + '%'); form.style.setProperty('--my', ((e.clientY - b.top) / b.height * 100) + '%'); });
     fetch(MM_API + '/api/reviews?product=' + encodeURIComponent(p.id))
       .then(r => r.json()).then(d => { if (Array.isArray(d)) { list = d; draw(); } }).catch(() => {});
   }
