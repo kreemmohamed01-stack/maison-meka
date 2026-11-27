@@ -2463,3 +2463,17 @@ html[lang="ar"] .sm-nav-minor li a, html[lang="ar"] .sm-cats li a{ font-weight:7
 .cn-glow{ display:none; }
 .sm-credit .credit-name{ text-shadow:none; color:#111; border-bottom-color:rgba(0,0,0,.3); }
 .sm-credit .credit-name:hover{ border-bottom-color:#111; }
+
+/* reviews: a swipeable strip — every card on it, the middle one in focus */
+.rev-stage .rev-card, .rev-stage .rev-card.on-stage{ display:block; }
+.rev-track{ justify-content:flex-start; overflow-x:auto; overflow-y:visible; scroll-snap-type:x mandatory;
+  padding:clamp(30px,3vw,50px) calc(50% - clamp(120px,20vw,320px) / 2); scrollbar-width:none; cursor:grab;
+  -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; }
+.rev-track::-webkit-scrollbar{ display:none; }
+.rev-track.dragging{ cursor:grabbing; scroll-snap-type:none; }
+.rev-track.dragging .rev-card{ transition:none; }
+.rev-track .rev-card, .rev-track .rev-card.is-active, .rev-track .rev-card:not(.is-active):hover{
+  scroll-snap-align:center; opacity:var(--ro,.55); transform:scale(var(--rs,.86)) rotateY(var(--rr,0deg));
+  transition:transform .25s ease-out, opacity .25s ease-out, box-shadow .6s, border-color .6s; }
+.rev-track .rev-card img{ pointer-events:none; user-select:none; }
+.rev-dot{ cursor:pointer; }

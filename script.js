@@ -686,31 +686,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mod = (n) => (n + cards.length) % cards.length;
 
-    function show(i) {
+    /* a horizontal strip you swipe or drag left and right; the card nearest
+       the middle is the focus and grows, the others sit back */
+    const centerOf = (c) => c.offsetLeft + c.offsetWidth / 2;
+    const go = (i, smooth = true) => {
       current = mod(i);
-      const trio = [mod(current - 1), current, mod(current + 1)];
-
-      cards.forEach((card, idx) => {
-        card.classList.toggle('on-stage', trio.includes(idx));
-        card.classList.toggle('is-active', idx === current);
+      track.scrollTo({ left: centerOf(cards[current]) - track.clientWidth / 2, behavior: smooth ? 'smooth' : 'auto' });
+    };
+    function show(i) { go(i); }
+    const paint = () => {
+      const mid = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, bd = Infinity;
+      cards.forEach((c, idx) => {
+        const d = (centerOf(c) - mid) / track.clientWidth;          // -1 … 1
+        const k = Math.min(Math.abs(d) * 1.6, 1);
+        c.style.setProperty('--rs', (1.06 - k * .2).toFixed(3));
+        c.style.setProperty('--ro', (1 - k * .45).toFixed(3));
+        c.style.setProperty('--rr', (d * -14).toFixed(2) + 'deg');
+        if (Math.abs(d) < bd) { bd = Math.abs(d); best = idx; }
       });
-      dotEls.forEach((d, idx) => d.classList.toggle('is-on', idx === current));
-    }
+      current = best;
+      cards.forEach((c, idx) => c.classList.toggle('is-active', idx === best));
+      dotEls.forEach((d, idx) => d.classList.toggle('is-on', idx === best));
+    };
+    let raf = 0;
+    track.onscroll = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; paint(); }); };
+    addEventListener('resize', () => go(current, false));
 
-    // a click on either flanking card brings it to the middle; on the middle one it opens large
+    // mouse drag (touch swipes natively)
+    let down = null, moved = false;
+    track.onpointerdown = (e) => { if (e.pointerType !== 'mouse') return; down = { x: e.clientX, l: track.scrollLeft }; moved = false; track.classList.add('dragging'); };
+    addEventListener('pointermove', (e) => { if (!down) return; const dx = e.clientX - down.x; if (Math.abs(dx) > 5) moved = true; track.scrollLeft = down.l - dx; });
+    addEventListener('pointerup', () => { if (!down) return; down = null; track.classList.remove('dragging'); paint(); go(current); });
+    track.ondragstart = (e) => e.preventDefault();
+
+    // a click on a side card brings it to the middle; on the middle one it opens large
     cards.forEach((card, idx) => {
-      card.addEventListener('click', () => {
-        if (idx !== current) show(idx);
+      card.onclick = () => {
+        if (moved) { moved = false; return; }
+        if (idx !== current) go(idx);
         else revOpen(idx);
-      });
+      };
     });
 
-    show(0);
+    requestAnimationFrame(() => { go(Math.floor(cards.length / 2), false); paint(); });
 
-    const run = () => { clearInterval(revTimer); revTimer = setInterval(() => show(current + 1), 5200); };
+    const run = () => { clearInterval(revTimer); revTimer = setInterval(() => go(current + 1 >= cards.length ? 0 : current + 1), 5200); };
     run();
     track.onmouseenter = () => clearInterval(revTimer);
     track.onmouseleave = run;
+    track.ontouchstart = () => clearInterval(revTimer);
   };
 
   /* the photo, large in the middle of the screen; arrows and swipes move through them */

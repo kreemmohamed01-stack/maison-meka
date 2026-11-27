@@ -47,6 +47,15 @@
     words(col.querySelector('.collections-title'), 2);
     if (reduce) col.classList.add('m-on');
     else watch(col.querySelector('.collections-intro'), col, 'm-on', .3);
+    /* tiles open on their own watcher, a short stagger per row */
+    const grid = col.querySelector('.cat-grid');
+    const tio = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; tio.unobserve(e.target);
+      const k = [...grid.children].indexOf(e.target) % 4;
+      setTimeout(() => e.target.classList.add('in'), k * 110);
+    }), { threshold: .05 });
+    const hook = () => grid && grid.querySelectorAll('.cat-card').forEach(c => { if (!c.classList.contains('in')) tio.observe(c); });
+    hook(); if (grid) new MutationObserver(hook).observe(grid, { childList: true });
   }
   if (reduce) return;
 
